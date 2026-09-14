@@ -31,10 +31,12 @@ class Agent:
         pct = int(round(state.progress * 100))
         nxt = state.next_task() or "(none)"
         versions = count_versions_file(self.changelog_path)
+        kinds = self.journal.format_recent_kinds()
         return (
             f"phase={state.phase} progress={pct}%\n"
             f"next={nxt}\n"
             f"changelog_versions={versions}\n"
+            f"journal_kinds={kinds}\n"
             f"updated={state.last_updated}"
         )
 

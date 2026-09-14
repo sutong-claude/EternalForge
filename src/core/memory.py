@@ -36,6 +36,32 @@ class Journal:
         lines = [ln for ln in self.path.read_text(encoding="utf-8").splitlines() if ln.strip()]
         out: list[MemoryEntry] = []
         for line in lines[-n:]:
-            data = json.loads(line)
-            out.append(MemoryEntry(**data))
+            try:
+                data = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(data, dict):
+                continue
+            kind = str(data.get("kind", "")).strip()
+            summary = str(data.get("summary", ""))
+            details = str(data.get("details", ""))
+            timestamp = str(data.get("timestamp", ""))
+            if not kind:
+                continue
+            out.append(
+                MemoryEntry(
+                    timestamp=timestamp,
+                    kind=kind,
+                    summary=summary,
+                    details=details,
+                )
+            )
         return out
+
+    def recent_kinds(self, n: int = 8) -> list[str]:
+        """Kinds of the last n journal entries, oldest-to-newest within that window."""
+        return [entry.kind for entry in self.recent(n)]
+
+    def format_recent_kinds(self, n: int = 8) -> str:
+        kinds = self.recent_kinds(n)
+        return ",".join(kinds) if kinds else "-"

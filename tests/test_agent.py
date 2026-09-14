@@ -5,6 +5,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from core.agent import Agent
+from core.memory import Journal, MemoryEntry
 from core.state import dump_state, ForgeState, parse_state
 
 
@@ -37,6 +38,7 @@ def test_status_includes_changelog_versions(tmp_path: Path) -> None:
     assert "changelog_versions=1" in text
     assert "phase=Core Agent" in text
     assert "progress=18%" in text
+    assert "journal_kinds=-" in text
 
 
 def test_status_zero_versions_when_changelog_missing(tmp_path: Path) -> None:
@@ -44,6 +46,15 @@ def test_status_zero_versions_when_changelog_missing(tmp_path: Path) -> None:
     (root / "CHANGELOG.md").unlink()
     text = Agent(root).status()
     assert "changelog_versions=0" in text
+
+
+def test_status_includes_recent_journal_kinds(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    journal = Journal(root / "memory" / "journal.jsonl")
+    journal.append(MemoryEntry.now("capture", "notes"))
+    journal.append(MemoryEntry.now("research", "query"))
+    text = Agent(root).status()
+    assert "journal_kinds=capture,research" in text
 
 
 def test_dry_run_does_not_mutate(tmp_path: Path) -> None:
@@ -65,4 +76,6 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
-    assert "changelog_versions=2" in Agent(root).status()
+    status = Agent(root).status()
+    assert "changelog_versions=2" in status
+    assert "journal_kinds=cycle" in status

@@ -1,18 +1,19 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-14 21:15 UTC
+**Last updated:** 2026-09-14 22:15 UTC
 **Current phase:** Core Agent
-**Overall progress:** 35%
+**Overall progress:** 36%
 
 ## Current Goal
 Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
 
 ## Immediate Priorities (next few runs)
-1. Surface recent journal kinds in `eternalforge status`
-2. Add a third live SearchAdapter or merge-hits multi-backend search
-3. Knowledge-base index over memory/ markdown + journal
+1. Add a third live SearchAdapter or merge-hits multi-backend search
+2. Knowledge-base index over memory/ markdown + journal
+3. Journal kind filter on `eternalforge status` / recent dump command
 
 ## Recent Actions
+- [2026-09-14 22:15 UTC] Surface recent journal kinds in status: `Journal.recent_kinds` / `format_recent_kinds`; `Agent.status` prints `journal_kinds=...` (or `-` if empty).
 - [2026-09-14 21:15 UTC] Harden STATE progress parser: `parse_progress` helper; percent/fraction/invalid/clamp; no duplicate try-blocks.
 - [2026-09-14 20:05 UTC] Count changelog versions in status: `count_versions` / `count_versions_file`; `Agent.status` prints `changelog_versions=N`.
 - [2026-09-14 19:20 UTC] Second live SearchAdapter: DuckDuckGo Instant Answer (`DuckDuckGoAdapter`, `parse_duckduckgo_payload`, `get_adapter`); CLI `--backend wikipedia|duckduckgo|fixture` on research and capture.
@@ -29,10 +30,10 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 
 ## Metrics
 - Files: 32
-- Tests: 45
-- Features shipped: 9
-- Cycles: 4
+- Tests: 48
+- Features shipped: 10
+- Cycles: 5
 - Documentation coverage: Core
 
 ## Notes for next agent
-Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research and capture live paths use Wikipedia by default; pass `--backend duckduckgo` for Instant Answer. Tests must inject FixtureAdapter or call parse_*_payload helpers (no network). Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Planner skips blank/None-yet entries. Status includes `changelog_versions`. Progress parsing is `parse_progress` in core.state (percent, fraction, clamp). Next: surface recent journal kinds in `eternalforge status`. Keep one task per hour. Do not rewrite the protocol; extend it.
+Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research and capture live paths use Wikipedia by default; pass `--backend duckduckgo` for Instant Answer. Tests must inject FixtureAdapter or call parse_*_payload helpers (no network). Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Planner skips blank/None-yet entries. Status includes `changelog_versions` and `journal_kinds` (comma-separated last 8 kinds, or `-`). Progress parsing is `parse_progress` in core.state. Next: third SearchAdapter or merged multi-backend search. Keep one task per hour. Do not rewrite the protocol; extend it.

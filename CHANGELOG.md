@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.3 — 2026-09-14
+
+- `eternalforge status` prints `journal_kinds=` from the last JSONL entries.
+- `Journal.recent_kinds` / `format_recent_kinds`; skip blank kinds and bad JSON lines.
+- Tests for empty journal, window limit, and status wiring after a cycle.
+
 ## 0.6.2 — 2026-09-14
 
 - Harden STATE progress parsing: single `parse_progress` helper (no duplicate try-blocks).
