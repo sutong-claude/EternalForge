@@ -1,7 +1,8 @@
 """Research tool with a pluggable SearchAdapter interface.
 
-Default live backend is Wikipedia OpenSearch (stdlib urllib, no API key).
-Tests inject FixtureAdapter so they never hit the network.
+Live backends: Wikipedia OpenSearch and DuckDuckGo Instant Answer
+(stdlib urllib, no API key). Tests inject FixtureAdapter so they
+never hit the network.
 """
 
 from __future__ import annotations
@@ -15,6 +16,8 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 from core.memory import Journal, MemoryEntry
+
+USER_AGENT = "EternalForge/0.1 (research tool)"
 
 
 @dataclass(frozen=True)
@@ -77,6 +80,17 @@ class FixtureAdapter:
         return hits[: max(0, max_results)]
 
 
+def _unavailable(name: str, query: str) -> list[Hit]:
+    return [
+        Hit(
+            title=f"{name} unavailable for: {query}",
+            url="",
+            snippet="Network or parse error; use FixtureAdapter offline.",
+            source=name,
+        )
+    ]
+
+
 class WikipediaAdapter:
     """Wikipedia OpenSearch over HTTPS. Safe to call without credentials."""
 
@@ -95,33 +109,129 @@ class WikipediaAdapter:
             f"{self.endpoint}?action=opensearch&format=json"
             f"&limit={limit}&namespace=0&search={quote(q)}"
         )
-        req = Request(url, headers={"User-Agent": "EternalForge/0.1 (research tool)"})
+        req = Request(url, headers={"User-Agent": USER_AGENT})
         try:
             with urlopen(req, timeout=self.timeout) as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
         except (URLError, TimeoutError, json.JSONDecodeError, OSError):
-            return [
-                Hit(
-                    title=f"Wikipedia unavailable for: {q}",
-                    url="",
-                    snippet="Network or parse error; use FixtureAdapter offline.",
-                    source=self.name,
-                )
-            ]
-        if not isinstance(payload, list) or len(payload) < 4:
-            return []
-        titles, snippets, urls = payload[1], payload[2], payload[3]
-        hits: list[Hit] = []
-        for title, snippet, link in zip(titles, snippets, urls):
-            hits.append(
-                Hit(
-                    title=str(title),
-                    url=str(link),
-                    snippet=str(snippet) or f"Wikipedia article: {title}",
-                    source=self.name,
-                )
+            return _unavailable(self.name, q)
+        return parse_wikipedia_payload(payload, limit=limit)
+
+
+def parse_wikipedia_payload(payload: object, limit: int = 5) -> list[Hit]:
+    if not isinstance(payload, list) or len(payload) < 4:
+        return []
+    titles, snippets, urls = payload[1], payload[2], payload[3]
+    hits: list[Hit] = []
+    for title, snippet, link in zip(titles, snippets, urls):
+        hits.append(
+            Hit(
+                title=str(title),
+                url=str(link),
+                snippet=str(snippet) or f"Wikipedia article: {title}",
+                source="wikipedia",
             )
-        return hits[:limit]
+        )
+    return hits[:limit]
+
+
+class DuckDuckGoAdapter:
+    """DuckDuckGo Instant Answer API. No key required."""
+
+    name = "duckduckgo"
+    endpoint = "https://api.duckduckgo.com/"
+
+    def __init__(self, timeout: float = 8.0) -> None:
+        self.timeout = timeout
+
+    def search(self, query: str, max_results: int = 5) -> list[Hit]:
+        q = query.strip()
+        if not q:
+            return []
+        limit = max(1, min(max_results, 20))
+        url = (
+            f"{self.endpoint}?q={quote(q)}&format=json"
+            f"&no_html=1&skip_disambig=1"
+        )
+        req = Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urlopen(req, timeout=self.timeout) as resp:
+                payload = json.loads(resp.read().decode("utf-8"))
+        except (URLError, TimeoutError, json.JSONDecodeError, OSError):
+            return _unavailable(self.name, q)
+        if not isinstance(payload, dict):
+            return []
+        return parse_duckduckgo_payload(payload, limit=limit)
+
+
+def parse_duckduckgo_payload(payload: dict, limit: int = 5) -> list[Hit]:
+    """Map Instant Answer JSON into Hits (abstract + related topics)."""
+    hits: list[Hit] = []
+    heading = str(payload.get("Heading") or payload.get("AnswerType") or "DuckDuckGo")
+    abstract = str(payload.get("AbstractText") or payload.get("Abstract") or "").strip()
+    abstract_url = str(payload.get("AbstractURL") or "").strip()
+    answer = str(payload.get("Answer") or "").strip()
+    if abstract or answer:
+        hits.append(
+            Hit(
+                title=heading,
+                url=abstract_url,
+                snippet=abstract or answer,
+                source="duckduckgo",
+            )
+        )
+    related = payload.get("RelatedTopics") or []
+    if isinstance(related, list):
+        for item in related:
+            if not isinstance(item, dict):
+                continue
+            if "Topics" in item and isinstance(item["Topics"], list):
+                for nested in item["Topics"]:
+                    hit = _ddg_topic_hit(nested)
+                    if hit:
+                        hits.append(hit)
+                continue
+            hit = _ddg_topic_hit(item)
+            if hit:
+                hits.append(hit)
+    # Deduplicate by URL+title while preserving order.
+    seen: set[tuple[str, str]] = set()
+    unique: list[Hit] = []
+    for hit in hits:
+        key = (hit.title, hit.url)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(hit)
+    return unique[:limit]
+
+
+def _ddg_topic_hit(item: object) -> Hit | None:
+    if not isinstance(item, dict):
+        return None
+    text = str(item.get("Text") or "").strip()
+    url = str(item.get("FirstURL") or "").strip()
+    if not text and not url:
+        return None
+    title = text.split(" -", 1)[0].strip() or text[:80] or url
+    return Hit(title=title, url=url, snippet=text, source="duckduckgo")
+
+
+ADAPTERS: dict[str, type] = {
+    "wikipedia": WikipediaAdapter,
+    "duckduckgo": DuckDuckGoAdapter,
+    "ddg": DuckDuckGoAdapter,
+    "fixture": FixtureAdapter,
+}
+
+
+def get_adapter(name: str | None = None) -> SearchAdapter:
+    key = (name or "wikipedia").strip().lower()
+    cls = ADAPTERS.get(key)
+    if cls is None:
+        known = ", ".join(sorted(set(ADAPTERS)))
+        raise ValueError(f"Unknown search backend {name!r}. Known: {known}")
+    return cls()
 
 
 def default_adapter() -> SearchAdapter:

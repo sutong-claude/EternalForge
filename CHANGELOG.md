@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0 — 2026-09-14
+
+- Second live SearchAdapter: DuckDuckGo Instant Answer (`DuckDuckGoAdapter`).
+- `get_adapter(name)` factory; CLI `--backend wikipedia|duckduckgo|fixture` on `research` and `capture`.
+- Payload parsers covered by tests without hitting the network.
+
 ## 0.5.0 — 2026-09-14
 
 - Research hits persist to `memory/journal.jsonl` via `tools.research.record_hits`.

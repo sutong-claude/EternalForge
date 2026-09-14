@@ -12,6 +12,7 @@
 - [x] Research tool beyond skeleton (adapter interface + Wikipedia)
 - [x] Daily knowledge capture
 - [x] Persist research hits into the JSONL journal
+- [x] Second live SearchAdapter (DuckDuckGo Instant Answer)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter

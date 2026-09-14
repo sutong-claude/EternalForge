@@ -8,7 +8,7 @@ import sys
 
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
-from tools.research import FixtureAdapter, WikipediaAdapter, format_hits, record_hits, search
+from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -23,9 +23,14 @@ def main(argv: list[str] | None = None) -> int:
     research.add_argument("query", nargs="+", help="Search query")
     research.add_argument("--max", type=int, default=5, dest="max_results")
     research.add_argument(
+        "--backend",
+        default="wikipedia",
+        help="Search backend: wikipedia, duckduckgo, fixture",
+    )
+    research.add_argument(
         "--offline",
         action="store_true",
-        help="Use FixtureAdapter instead of Wikipedia",
+        help="Use FixtureAdapter instead of a live backend",
     )
     research.add_argument(
         "--no-journal",
@@ -42,9 +47,14 @@ def main(argv: list[str] | None = None) -> int:
     cap.add_argument("--max", type=int, default=3, dest="max_results")
     cap.add_argument("--day", default=None, help="Override date key YYYY-MM-DD")
     cap.add_argument(
+        "--backend",
+        default="wikipedia",
+        help="Search backend: wikipedia, duckduckgo, fixture",
+    )
+    cap.add_argument(
         "--offline",
         action="store_true",
-        help="Use FixtureAdapter instead of Wikipedia",
+        help="Use FixtureAdapter instead of a live backend",
     )
 
     args = parser.parse_args(argv)
@@ -58,13 +68,13 @@ def main(argv: list[str] | None = None) -> int:
             print(agent.run_once(dry_run=args.dry_run))
         elif args.cmd == "research":
             query = " ".join(args.query)
-            adapter = FixtureAdapter() if args.offline else WikipediaAdapter()
+            adapter = FixtureAdapter() if args.offline else get_adapter(args.backend)
             hits = search(query, max_results=args.max_results, adapter=adapter)
             if not args.no_journal:
                 record_hits(query, hits, root=args.root)
             print(format_hits(hits))
         elif args.cmd == "capture":
-            adapter = FixtureAdapter() if args.offline else WikipediaAdapter()
+            adapter = FixtureAdapter() if args.offline else get_adapter(args.backend)
             topics = args.topics or list(DEFAULT_TOPICS)
             result = capture(
                 args.root,
