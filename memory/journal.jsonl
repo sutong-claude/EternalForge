@@ -1,2 +1,3 @@
 {"timestamp": "2026-09-14T13:50:00Z", "kind": "milestone", "summary": "Core Agent foundation", "details": "STATE parser, journal, planner, CLI, tests"}
 {"timestamp": "2026-09-14T14:40:00Z", "kind": "feature", "summary": "Research SearchAdapter", "details": "Protocol + FixtureAdapter + WikipediaAdapter + CLI research command"}
+{"timestamp": "2026-09-14T23:15:00Z", "kind": "feature", "summary": "Open Library + multi search", "details": "OpenLibraryAdapter, merge_hits, MultiAdapter, CLI backends multi/openlibrary"}
