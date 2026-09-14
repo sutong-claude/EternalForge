@@ -10,10 +10,14 @@ from tools.research import (
     DuckDuckGoAdapter,
     FixtureAdapter,
     Hit,
+    MultiAdapter,
+    OpenLibraryAdapter,
     WikipediaAdapter,
     format_hits,
     get_adapter,
+    merge_hits,
     parse_duckduckgo_payload,
+    parse_openlibrary_payload,
     parse_wikipedia_payload,
     record_hits,
     search,
@@ -32,6 +36,8 @@ def test_empty_query_returns_nothing() -> None:
     assert FixtureAdapter().search("   ") == []
     assert DuckDuckGoAdapter().search("") == []
     assert WikipediaAdapter().search("") == []
+    assert OpenLibraryAdapter().search("") == []
+    assert MultiAdapter(adapters=[FixtureAdapter()]).search("  ") == []
 
 
 def test_unknown_topic_returns_placeholder() -> None:
@@ -96,6 +102,11 @@ def test_get_adapter_resolves_known_backends() -> None:
     assert get_adapter("wikipedia").name == "wikipedia"
     assert get_adapter("duckduckgo").name == "duckduckgo"
     assert get_adapter("ddg").name == "duckduckgo"
+    assert get_adapter("openlibrary").name == "openlibrary"
+    assert get_adapter("ol").name == "openlibrary"
+    assert get_adapter("books").name == "openlibrary"
+    assert get_adapter("multi").name == "multi"
+    assert get_adapter("all").name == "multi"
     assert get_adapter("fixture").name == "fixture"
     assert get_adapter(None).name == "wikipedia"
 
@@ -158,3 +169,75 @@ def test_parse_duckduckgo_respects_limit_and_dedupes() -> None:
     hits = parse_duckduckgo_payload(payload, limit=1)
     assert len(hits) == 1
     assert hits[0].title == "X"
+
+
+def test_parse_openlibrary_payload() -> None:
+    payload = {
+        "docs": [
+            {
+                "title": "Godel, Escher, Bach",
+                "key": "/works/OL123W",
+                "author_name": ["Douglas Hofstadter"],
+                "first_publish_year": 1979,
+            },
+            {
+                "title": "I Am a Strange Loop",
+                "key": "/works/OL456W",
+                "author_name": ["Douglas Hofstadter"],
+                "first_publish_year": 2007,
+            },
+            {"title": "", "key": ""},
+        ]
+    }
+    hits = parse_openlibrary_payload(payload, limit=5)
+    assert len(hits) == 2
+    assert hits[0].title == "Godel, Escher, Bach"
+    assert hits[0].url == "https://openlibrary.org/works/OL123W"
+    assert "Hofstadter" in hits[0].snippet
+    assert "1979" in hits[0].snippet
+    assert hits[0].source == "openlibrary"
+
+
+def test_parse_openlibrary_respects_limit() -> None:
+    payload = {
+        "docs": [
+            {"title": "A", "key": "/works/A"},
+            {"title": "B", "key": "/works/B"},
+        ]
+    }
+    hits = parse_openlibrary_payload(payload, limit=1)
+    assert [h.title for h in hits] == ["A"]
+
+
+def test_merge_hits_round_robin_and_dedupe() -> None:
+    wiki = [
+        Hit("Python", "https://en.wikipedia.org/wiki/Python", "lang", "wikipedia"),
+        Hit("Monty", "https://en.wikipedia.org/wiki/Monty_Python", "tv", "wikipedia"),
+    ]
+    books = [
+        Hit("Python", "https://en.wikipedia.org/wiki/Python", "dup url", "openlibrary"),
+        Hit("Fluent Python", "https://openlibrary.org/works/OL1W", "book", "openlibrary"),
+    ]
+    merged = merge_hits(wiki, books, limit=3)
+    assert [h.title for h in merged] == ["Python", "Fluent Python", "Monty"]
+    assert merged[0].source == "wikipedia"
+
+
+def test_merge_hits_drops_unavailable_when_real_exist() -> None:
+    dead = [Hit("wikipedia unavailable for: q", "", "err", "wikipedia")]
+    live = [Hit("Book", "https://openlibrary.org/works/OL1W", "ok", "openlibrary")]
+    merged = merge_hits(dead, live, limit=5)
+    assert [h.source for h in merged] == ["openlibrary"]
+
+
+def test_merge_hits_keeps_unavailable_if_all_fail() -> None:
+    dead = [Hit("wikipedia unavailable for: q", "", "err", "wikipedia")]
+    merged = merge_hits(dead, [], limit=5)
+    assert merged[0].source == "wikipedia"
+
+
+def test_multi_adapter_uses_injected_backends() -> None:
+    a = FixtureAdapter({"q": [Hit("FromA", "https://a.example/1", "a", "fixture-a")]})
+    b = FixtureAdapter({"q": [Hit("FromB", "https://b.example/1", "b", "fixture-b")]})
+    hits = MultiAdapter(adapters=[a, b]).search("q", max_results=2)
+    assert [h.title for h in hits] == ["FromA", "FromB"]
