@@ -33,6 +33,43 @@ class ForgeState:
 
 
 _BOLD = re.compile(r"\*\*(.+?):\*\*\s*(.+)")
+_NUMBER = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
+
+
+def parse_progress(raw: str | None) -> float:
+    """Normalize a STATE progress field to a fraction in [0.0, 1.0].
+
+    Accepts ``34%``, ``34 percent``, ``34``, or ``0.34``. A ``%`` / ``percent``
+    marker, or any value greater than 1, is treated as a percentage. Invalid,
+    empty, or negative input becomes ``0.0``. Results above 1.0 are clamped.
+    """
+    if raw is None:
+        return 0.0
+    original = str(raw).strip()
+    if not original:
+        return 0.0
+    lowered = original.lower()
+    is_percent = "%" in lowered or "percent" in lowered
+    cleaned = lowered.replace("%", "")
+    cleaned = re.sub(r"\bpercent(age)?\b", "", cleaned)
+    cleaned = cleaned.replace(",", "").strip()
+    try:
+        value = float(cleaned)
+    except ValueError:
+        match = _NUMBER.search(cleaned)
+        if not match:
+            return 0.0
+        try:
+            value = float(match.group(0))
+        except ValueError:
+            return 0.0
+    if is_percent or value > 1.0:
+        value = value / 100.0
+    if value < 0.0:
+        return 0.0
+    if value > 1.0:
+        return 1.0
+    return value
 
 
 def parse_state(text: str) -> ForgeState:
@@ -84,22 +121,7 @@ def parse_state(text: str) -> ForgeState:
                 items.append(s)
         return items
 
-    progress_raw = fields.get("overall progress", "0%").replace("%", "").strip()
-    try:
-        progress = float(progress_raw) / 100.0 if float(progress_raw) > 1 else float(progress_raw)
-        if float(progress_raw) > 1:
-            progress = float(progress_raw) / 100.0
-        else:
-            progress = float(progress_raw)
-            if progress > 1:
-                progress = progress / 100.0
-    except ValueError:
-        progress = 0.0
-    try:
-        raw_n = float(progress_raw)
-        progress = raw_n / 100.0 if raw_n > 1 else raw_n
-    except ValueError:
-        progress = 0.0
+    progress = parse_progress(fields.get("overall progress", "0%"))
 
     metrics: dict[str, str] = {}
     for row in bullets("metric"):

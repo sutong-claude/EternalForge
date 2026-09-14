@@ -4,7 +4,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from core.state import dump_state, ForgeState, parse_state
+from core.state import dump_state, ForgeState, parse_progress, parse_state
 
 SAMPLE = """# EternalForge Live State
 
@@ -56,3 +56,40 @@ def test_complete_current_rotates_queue() -> None:
     state.complete_current("did a")
     assert state.priorities == ["b"]
     assert "did a" in state.recent_actions[0]
+
+
+def test_parse_progress_percent_and_fraction() -> None:
+    assert parse_progress("34%") == 0.34
+    assert parse_progress("  18 % ") == 0.18
+    assert parse_progress("0.34") == 0.34
+    assert parse_progress("34") == 0.34
+    assert parse_progress("100%") == 1.0
+    assert parse_progress("0%") == 0.0
+
+
+def test_parse_progress_percent_word_and_comma() -> None:
+    assert parse_progress("34 percent") == 0.34
+    assert parse_progress("34 percentage") == 0.34
+    assert parse_progress("1,000%") == 1.0
+
+
+def test_parse_progress_invalid_and_edge() -> None:
+    assert parse_progress(None) == 0.0
+    assert parse_progress("") == 0.0
+    assert parse_progress("   ") == 0.0
+    assert parse_progress("n/a") == 0.0
+    assert parse_progress("about 25% complete") == 0.25
+    assert parse_progress("-5%") == 0.0
+    assert parse_progress("150%") == 1.0
+
+
+def test_parse_state_progress_fraction_field() -> None:
+    text = SAMPLE.replace("18%", "0.42")
+    state = parse_state(text)
+    assert abs(state.progress - 0.42) < 1e-9
+
+
+def test_parse_state_progress_garbage_defaults_zero() -> None:
+    text = SAMPLE.replace("18%", "not-a-number")
+    state = parse_state(text)
+    assert state.progress == 0.0

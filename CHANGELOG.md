@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.2 — 2026-09-14
+
+- Harden STATE progress parsing: single `parse_progress` helper (no duplicate try-blocks).
+- Accepts ``34%``, ``34 percent``, bare ``34``, or fraction ``0.34``; clamps to [0, 1].
+- Tests for percent/fraction/invalid/clamped values and STATE field wiring.
+
 ## 0.6.1 — 2026-09-14
 
 - Count CHANGELOG `## X.Y.Z` headings via `count_versions` / `count_versions_file`.
