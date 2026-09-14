@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 — 2026-09-14
+
+- Cycle changelog + metrics: `core.changelog.append_entry` and `core.metrics.bump_metrics`.
+- `Agent.reflect` writes CHANGELOG.md, recounts Files/Tests, increments Cycles, journals the version.
+- Tests for version bump, changelog prepend, metrics recount, and live cycle side-effects.
+
 ## 0.3.0 — 2026-09-14
 
 - Daily knowledge capture: `tools.capture.capture()` writes `memory/YYYY-MM-DD.md`.
