@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0 — 2026-09-14
+
+- Third live SearchAdapter: Open Library (`OpenLibraryAdapter`, `parse_openlibrary_payload`).
+- Multi-backend search: `merge_hits` (round-robin, URL/title dedupe, drop unavailable placeholders) and `MultiAdapter`.
+- CLI `--backend wikipedia|duckduckgo|openlibrary|multi|fixture` (aliases: ddg, ol, books, all).
+- Payload / merge tests do not hit the network.
+
 ## 0.6.3 — 2026-09-14
 
 - `eternalforge status` prints `journal_kinds=` from the last JSONL entries.
