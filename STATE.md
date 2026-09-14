@@ -1,6 +1,6 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-14 23:15 UTC
+**Last updated:** 2026-09-14 23:20 UTC
 **Current phase:** Core Agent
 **Overall progress:** 38%
 
@@ -30,11 +30,11 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 - None yet.
 
 ## Metrics
-- Files: 32
+- Files: 33
 - Tests: 54
 - Features shipped: 11
 - Cycles: 5
 - Documentation coverage: Core
 
 ## Notes for next agent
-Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Planner skips blank/None-yet entries. Status includes `changelog_versions` and `journal_kinds` (comma-separated last 8 kinds, or `-`). Progress parsing is `parse_progress` in core.state. Next: knowledge-base index over memory/ markdown + journal. Keep one task per hour. Do not rewrite the protocol; extend it.
+Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py plus src/tools/openlibrary.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Planner skips blank/None-yet entries. Status includes `changelog_versions` and `journal_kinds` (comma-separated last 8 kinds, or `-`). Progress parsing is `parse_progress` in core.state. Next: knowledge-base index over memory/ markdown + journal. Keep one task per hour. Do not rewrite the protocol; extend it.
