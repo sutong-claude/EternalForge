@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 — 2026-09-14
+
+- Planner skips blank, whitespace-only, and "None yet" priorities.
+- Empty queue returns FALLBACK instead of an empty string.
+- Added `tests/test_planner.py` covering empty, placeholder, strip, parse-round-trip, and post-complete cases.
+
 ## 0.4.0 — 2026-09-14
 
 - Cycle changelog + metrics: `core.changelog.append_entry` and `core.metrics.bump_metrics`.
