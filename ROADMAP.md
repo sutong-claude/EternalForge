@@ -11,12 +11,12 @@
 - [x] CLI surface
 - [x] Research tool beyond skeleton (adapter interface + Wikipedia)
 - [x] Daily knowledge capture
+- [x] Persist research hits into the JSONL journal
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
 - Knowledge base
 - Automated report generation
-- Persist research hits into the JSONL journal
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking

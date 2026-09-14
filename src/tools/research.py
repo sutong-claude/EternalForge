@@ -8,10 +8,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+from pathlib import Path
 from typing import Protocol
 from urllib.error import URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+
+from core.memory import Journal, MemoryEntry
 
 
 @dataclass(frozen=True)
@@ -152,3 +155,20 @@ def format_hits(hits: list[Hit]) -> str:
         if hit.snippet:
             lines.append(f"   {summarize(hit.snippet, 180)}")
     return "\n".join(lines)
+
+
+def record_hits(
+    query: str,
+    hits: list[Hit],
+    journal: Journal | None = None,
+    root: Path | None = None,
+) -> MemoryEntry:
+    """Append a kind=research journal entry summarizing the hits."""
+    log = journal or Journal((root or Path.cwd()) / "memory" / "journal.jsonl")
+    entry = MemoryEntry.now(
+        "research",
+        f"Research {query!r}: {len(hits)} hit(s)",
+        format_hits(hits),
+    )
+    log.append(entry)
+    return entry

@@ -8,7 +8,7 @@ import sys
 
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
-from tools.research import FixtureAdapter, WikipediaAdapter, format_hits, search
+from tools.research import FixtureAdapter, WikipediaAdapter, format_hits, record_hits, search
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -26,6 +26,11 @@ def main(argv: list[str] | None = None) -> int:
         "--offline",
         action="store_true",
         help="Use FixtureAdapter instead of Wikipedia",
+    )
+    research.add_argument(
+        "--no-journal",
+        action="store_true",
+        help="Skip writing hits to memory/journal.jsonl",
     )
     cap = sub.add_parser("capture", help="Research topics and write memory/YYYY-MM-DD.md")
     cap.add_argument(
@@ -55,6 +60,8 @@ def main(argv: list[str] | None = None) -> int:
             query = " ".join(args.query)
             adapter = FixtureAdapter() if args.offline else WikipediaAdapter()
             hits = search(query, max_results=args.max_results, adapter=adapter)
+            if not args.no_journal:
+                record_hits(query, hits, root=args.root)
             print(format_hits(hits))
         elif args.cmd == "capture":
             adapter = FixtureAdapter() if args.offline else WikipediaAdapter()

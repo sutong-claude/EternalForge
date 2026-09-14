@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 — 2026-09-14
+
+- Research hits persist to `memory/journal.jsonl` via `tools.research.record_hits`.
+- CLI `research` writes `kind=research` entries unless `--no-journal`.
+- Tests for journaled hits and empty-result entries.
+
 ## 0.4.1 — 2026-09-14
 
 - Planner skips blank, whitespace-only, and "None yet" priorities.
@@ -9,7 +15,7 @@
 ## 0.4.0 — 2026-09-14
 
 - Cycle changelog + metrics: `core.changelog.append_entry` and `core.metrics.bump_metrics`.
-- `Agent.reflect` writes CHANGELOG.md, recounts Files/Tests, increments Cycles, journals the version.
+- `Agent.reflect` writes CHANGELOG.md, recounts Files/Tests, increments Cycles.
 - Tests for version bump, changelog prepend, metrics recount, and live cycle side-effects.
 
 ## 0.3.0 — 2026-09-14

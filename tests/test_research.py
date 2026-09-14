@@ -1,10 +1,12 @@
 from pathlib import Path
+import json
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tools.research import FixtureAdapter, Hit, format_hits, search, summarize
+from core.memory import Journal
+from tools.research import FixtureAdapter, Hit, format_hits, record_hits, search, summarize
 
 
 def test_fixture_adapter_matches_seeded_topic() -> None:
@@ -45,3 +47,32 @@ def test_summarize_truncates() -> None:
 
 def test_format_hits_empty() -> None:
     assert format_hits([]) == "(no results)"
+
+
+def test_record_hits_writes_journal(tmp_path: Path) -> None:
+    hits = [
+        Hit(
+            title="EternalForge",
+            url="https://github.com/sutong-claude/EternalForge",
+            snippet="Personal AI research platform.",
+            source="fixture",
+        )
+    ]
+    journal = Journal(tmp_path / "memory" / "journal.jsonl")
+    entry = record_hits("eternalforge", hits, journal=journal)
+    assert entry.kind == "research"
+    assert "eternalforge" in entry.summary
+    assert "1 hit" in entry.summary
+    path = tmp_path / "memory" / "journal.jsonl"
+    assert path.exists()
+    row = json.loads(path.read_text(encoding="utf-8").splitlines()[-1])
+    assert row["kind"] == "research"
+    assert "EternalForge" in row["details"]
+
+
+def test_record_hits_empty_query_still_journals(tmp_path: Path) -> None:
+    journal = Journal(tmp_path / "journal.jsonl")
+    entry = record_hits("blank", [], journal=journal)
+    assert entry.kind == "research"
+    assert "0 hit" in entry.summary
+    assert "(no results)" in entry.details
