@@ -4,7 +4,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from core.changelog import append_entry, next_version
+from core.changelog import append_entry, count_versions, count_versions_file, next_version
 from core.metrics import bump_metrics, count_tests
 from core.state import ForgeState
 
@@ -12,6 +12,24 @@ from core.state import ForgeState
 def test_next_version_bumps_patch() -> None:
     text = "# Changelog\n\n## 0.3.0 — 2026-09-14\n\n- item\n"
     assert next_version(text) == "0.3.1"
+
+
+def test_count_versions_ignores_non_semver() -> None:
+    text = (
+        "# Changelog\n\n"
+        "## 0.2.0 — 2026-09-14\n\n- a\n\n"
+        "## Notes\n\n"
+        "## 0.1.0 — 2026-09-13\n\n- b\n"
+    )
+    assert count_versions(text) == 2
+    assert count_versions("") == 0
+
+
+def test_count_versions_file_missing(tmp_path: Path) -> None:
+    assert count_versions_file(tmp_path / "CHANGELOG.md") == 0
+    path = tmp_path / "CHANGELOG.md"
+    path.write_text("# Changelog\n\n## 1.0.0 — today\n\n- x\n", encoding="utf-8")
+    assert count_versions_file(path) == 1
 
 
 def test_append_entry_prepends_section(tmp_path: Path) -> None:
@@ -23,6 +41,7 @@ def test_append_entry_prepends_section(tmp_path: Path) -> None:
     assert text.startswith("# Changelog\n\n## 0.1.1 — 2026-09-14\n")
     assert "Did the thing" in text
     assert "## 0.1.0" in text
+    assert count_versions(text) == 2
 
 
 def test_bump_metrics_increments_cycles(tmp_path: Path) -> None:

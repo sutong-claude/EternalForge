@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from core.changelog import append_entry
+from core.changelog import append_entry, count_versions_file
 from core.memory import Journal, MemoryEntry
 from core.metrics import bump_metrics
 from core.planner import select_task
@@ -30,9 +30,11 @@ class Agent:
         state = self.load_state()
         pct = int(round(state.progress * 100))
         nxt = state.next_task() or "(none)"
+        versions = count_versions_file(self.changelog_path)
         return (
             f"phase={state.phase} progress={pct}%\n"
             f"next={nxt}\n"
+            f"changelog_versions={versions}\n"
             f"updated={state.last_updated}"
         )
 

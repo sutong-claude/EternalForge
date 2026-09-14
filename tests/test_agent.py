@@ -31,6 +31,21 @@ def test_plan_returns_first_priority(tmp_path: Path) -> None:
     assert agent.plan() == "Implement CLI"
 
 
+def test_status_includes_changelog_versions(tmp_path: Path) -> None:
+    agent = Agent(_seed(tmp_path))
+    text = agent.status()
+    assert "changelog_versions=1" in text
+    assert "phase=Core Agent" in text
+    assert "progress=18%" in text
+
+
+def test_status_zero_versions_when_changelog_missing(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    (root / "CHANGELOG.md").unlink()
+    text = Agent(root).status()
+    assert "changelog_versions=0" in text
+
+
 def test_dry_run_does_not_mutate(tmp_path: Path) -> None:
     root = _seed(tmp_path)
     before = (root / "STATE.md").read_text(encoding="utf-8")
@@ -50,3 +65,4 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
+    assert "changelog_versions=2" in Agent(root).status()

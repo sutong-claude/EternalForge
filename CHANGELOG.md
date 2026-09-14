@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1 — 2026-09-14
+
+- Count CHANGELOG `## X.Y.Z` headings via `count_versions` / `count_versions_file`.
+- `eternalforge status` prints `changelog_versions=N`.
+- Tests for missing file, non-semver headings, and status line.
+
 ## 0.6.0 — 2026-09-14
 
 - Second live SearchAdapter: DuckDuckGo Instant Answer (`DuckDuckGoAdapter`).

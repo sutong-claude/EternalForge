@@ -4,10 +4,31 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
+import re
+
+_VERSION_HEADING = re.compile(r"^##\s+(\d+\.\d+\.\d+)\b")
 
 
 def utc_day() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def count_versions(text: str) -> int:
+    """Count ## X.Y.Z headings in a changelog body."""
+    n = 0
+    for line in text.splitlines():
+        if _VERSION_HEADING.match(line.strip()):
+            n += 1
+    return n
+
+
+def count_versions_file(path: Path) -> int:
+    if not path.exists():
+        return 0
+    try:
+        return count_versions(path.read_text(encoding="utf-8"))
+    except OSError:
+        return 0
 
 
 def next_version(existing: str) -> str:
