@@ -9,11 +9,11 @@
 - [x] Plan-act-reflect loop
 - [x] Persistent memory (STATE.md + JSONL)
 - [x] CLI surface
-- [ ] Research tool beyond skeleton
+- [x] Research tool beyond skeleton (adapter interface + Wikipedia)
 - [ ] Daily knowledge capture
 
 ## Phase 2 – Research Capabilities
-- Web research pipeline
+- Additional live search backends behind SearchAdapter
 - Knowledge base
 - Automated report generation
 

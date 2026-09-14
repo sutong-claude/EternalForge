@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run]"""
+"""eternalforge status | next | cycle [--dry-run] | research QUERY"""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 
 from core.agent import Agent
+from tools.research import FixtureAdapter, WikipediaAdapter, format_hits, search
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -17,6 +18,14 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("next", help="Print the planned next task")
     cycle = sub.add_parser("cycle", help="Run one plan-act-reflect loop")
     cycle.add_argument("--dry-run", action="store_true")
+    research = sub.add_parser("research", help="Run a search via an adapter")
+    research.add_argument("query", nargs="+", help="Search query")
+    research.add_argument("--max", type=int, default=5, dest="max_results")
+    research.add_argument(
+        "--offline",
+        action="store_true",
+        help="Use FixtureAdapter instead of Wikipedia",
+    )
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -27,6 +36,11 @@ def main(argv: list[str] | None = None) -> int:
             print(agent.plan())
         elif args.cmd == "cycle":
             print(agent.run_once(dry_run=args.dry_run))
+        elif args.cmd == "research":
+            query = " ".join(args.query)
+            adapter = FixtureAdapter() if args.offline else WikipediaAdapter()
+            hits = search(query, max_results=args.max_results, adapter=adapter)
+            print(format_hits(hits))
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)
         return 1
