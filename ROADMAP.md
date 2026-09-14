@@ -1,34 +1,28 @@
 # EternalForge Roadmap
 
-## Phase 0 – Bootstrap (current)
+## Phase 0 – Bootstrap
 - [x] Create repository and vision
-- [ ] Solid directory structure and architecture doc
-- [ ] Core Agent loop skeleton
-- [ ] STATE-driven continuous improvement process proven
+- [x] Directory structure and architecture doc
+- [x] STATE-driven continuous improvement process
 
-## Phase 1 – Core Agent (target: first 1-2 weeks of hourly runs)
-- Robust plan-act-reflect loop
-- Persistent memory (file-based + optional Drive)
-- Basic tool use (file ops, search, code generation)
-- Self-updating STATE and changelog
+## Phase 1 – Core Agent (current)
+- [x] Plan-act-reflect loop
+- [x] Persistent memory (STATE.md + JSONL)
+- [x] CLI surface
+- [ ] Research tool beyond skeleton
+- [ ] Daily knowledge capture
 
 ## Phase 2 – Research Capabilities
 - Web research pipeline
-- Knowledge base (Markdown + embeddings later)
+- Knowledge base
 - Automated report generation
-- Source citation and summarization
 
 ## Phase 3 – Personal Productivity Platform
-- Task and project tracking
-- Daily/weekly review automation
-- Integration with Gmail / Drive / Calendar (via connectors)
-- CLI interface
+- Task tracking
+- Daily/weekly review
+- Gmail / Drive integration
 
 ## Phase 4 – Self-Improvement & Scale
-- Automated testing and quality gates
+- Automated testing gates
 - Architecture evolution
-- Multi-agent coordination experiments
-- Public releases and documentation site
-
-## Long-term Vision
-A fully autonomous, continuously improving personal AI forge that can research any topic, maintain a knowledge base, write and maintain software, and produce high-value artifacts with minimal human intervention.
+- Public releases

@@ -1,1 +1,1 @@
-"""Tools for the EternalForge agent"""
+"""Tools for the EternalForge agent."""

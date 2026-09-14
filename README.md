@@ -2,44 +2,42 @@
 
 **A continuously evolving large-scale open-source software forge.**
 
-Built and improved *hourly* by autonomous AI agents (Grok).  
-Ultimate goal: deliver a production-grade personal AI research, knowledge management, and development platform.
+Built and improved *hourly* by autonomous AI agents.  
+Goal: a production-grade personal AI research, knowledge, and development platform.
 
-## Vision
-EternalForge is not a static project. It is a living system that:
-- Maintains its own context and priorities across runs
-- Continuously ships code, documentation, tests and features
-- Self-improves its architecture and processes
-- Produces real, usable tools for research and personal productivity
+## Live contract
 
-## Current Status
-See [STATE.md](./STATE.md) for the live context and next actions.
+Every hour:
 
-## Structure
-```
-EternalForge/
-├── STATE.md              # Living context (read & write every run)
-├── ROADMAP.md            # High-level milestones
-├── docs/
-│   └── architecture.md   # System design
-├── src/
-│   ├── core/             # Agent core, memory, planner
-│   ├── tools/            # Research, code, file tools
-│   └── interfaces/       # CLI / future web UI
-├── tests/
-└── scripts/
+1. Read [STATE.md](./STATE.md)
+2. Take **one** priority
+3. Implement it
+4. Update STATE + journal
+5. Commit
+6. Email only if the step is significant
+
+See [AGENTS.md](./AGENTS.md) and [docs/protocol.md](./docs/protocol.md).
+
+## Local CLI
+
+```bash
+PYTHONPATH=src python -m interfaces.cli status
+PYTHONPATH=src python -m interfaces.cli next
+PYTHONPATH=src python -m interfaces.cli cycle --dry-run
+PYTHONPATH=src python -m pytest tests -q
 ```
 
-## How it works
-1. Every hour an automation wakes Grok
-2. Grok reads STATE.md + recent commits
-3. Decides the highest-value next task
-4. Implements it, writes tests/docs if needed
-5. Commits, updates STATE.md
-6. Sends progress email when significant work is done
+## Layout
 
-## Contributing
-This project is primarily driven by autonomous hourly runs. Human direction is welcome via Issues or direct edits to STATE.md / ROADMAP.md.
+```
+STATE.md                 living context
+AGENTS.md                hourly operator manual
+src/core/                agent, state, memory, planner
+src/tools/               research + files
+src/interfaces/cli.py    status / next / cycle
+memory/journal.jsonl     structured history (created on first cycle)
+tests/
+```
 
 ---
-*Started: 2026-09-14 | Owner: sutong-claude | Powered by Grok Automations*
+*Started: 2026-09-14 | https://github.com/sutong-claude/EternalForge*
