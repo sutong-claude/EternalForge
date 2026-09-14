@@ -15,6 +15,7 @@
 - `src/core/agent.py` — plan-act-reflect
 - `src/interfaces/cli.py` — local operator surface
 - `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends
+- `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
 - Gmail — significant-progress signal

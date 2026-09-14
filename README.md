@@ -26,6 +26,7 @@ PYTHONPATH=src python -m interfaces.cli next
 PYTHONPATH=src python -m interfaces.cli cycle --dry-run
 PYTHONPATH=src python -m interfaces.cli research "attention mechanism" --max 3
 PYTHONPATH=src python -m interfaces.cli research eternalforge --offline
+PYTHONPATH=src python -m interfaces.cli capture --topic eternalforge --offline
 PYTHONPATH=src python -m pytest tests -q
 ```
 
@@ -35,9 +36,10 @@ PYTHONPATH=src python -m pytest tests -q
 STATE.md                 living context
 AGENTS.md                hourly operator manual
 src/core/                agent, state, memory, planner
-src/tools/               research adapters + files
-src/interfaces/cli.py    status / next / cycle / research
+src/tools/               research adapters + daily capture + files
+src/interfaces/cli.py    status / next / cycle / research / capture
 memory/journal.jsonl     structured history
+memory/YYYY-MM-DD.md     daily knowledge digests
 tests/
 ```
 

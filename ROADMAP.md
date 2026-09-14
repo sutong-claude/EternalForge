@@ -10,12 +10,13 @@
 - [x] Persistent memory (STATE.md + JSONL)
 - [x] CLI surface
 - [x] Research tool beyond skeleton (adapter interface + Wikipedia)
-- [ ] Daily knowledge capture
+- [x] Daily knowledge capture
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
 - Knowledge base
 - Automated report generation
+- Persist research hits into the JSONL journal
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking

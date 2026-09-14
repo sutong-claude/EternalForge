@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | research QUERY"""
+"""eternalforge status | next | cycle [--dry-run] | research QUERY | capture"""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 
 from core.agent import Agent
+from tools.capture import DEFAULT_TOPICS, capture
 from tools.research import FixtureAdapter, WikipediaAdapter, format_hits, search
 
 
@@ -26,6 +27,20 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Use FixtureAdapter instead of Wikipedia",
     )
+    cap = sub.add_parser("capture", help="Research topics and write memory/YYYY-MM-DD.md")
+    cap.add_argument(
+        "--topic",
+        action="append",
+        dest="topics",
+        help="Topic to capture (repeatable). Defaults to a small curated list.",
+    )
+    cap.add_argument("--max", type=int, default=3, dest="max_results")
+    cap.add_argument("--day", default=None, help="Override date key YYYY-MM-DD")
+    cap.add_argument(
+        "--offline",
+        action="store_true",
+        help="Use FixtureAdapter instead of Wikipedia",
+    )
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -41,7 +56,21 @@ def main(argv: list[str] | None = None) -> int:
             adapter = FixtureAdapter() if args.offline else WikipediaAdapter()
             hits = search(query, max_results=args.max_results, adapter=adapter)
             print(format_hits(hits))
+        elif args.cmd == "capture":
+            adapter = FixtureAdapter() if args.offline else WikipediaAdapter()
+            topics = args.topics or list(DEFAULT_TOPICS)
+            result = capture(
+                args.root,
+                topics=topics,
+                adapter=adapter,
+                max_results=args.max_results,
+                day=args.day,
+            )
+            print(f"wrote {result.path} ({result.hit_count} hits, {len(result.topics)} topics)")
     except FileNotFoundError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    except ValueError as exc:
         print(str(exc), file=sys.stderr)
         return 1
     return 0

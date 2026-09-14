@@ -1,6 +1,6 @@
 [project]
 name = "eternalforge"
-version = "0.1.0"
+version = "0.3.0"
 description = "Continuously evolving personal AI research and development platform."
 readme = "README.md"
 requires-python = ">=3.11"
