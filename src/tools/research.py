@@ -1,8 +1,9 @@
 """Research tool with a pluggable SearchAdapter interface.
 
-Live backends: Wikipedia OpenSearch and DuckDuckGo Instant Answer
-(stdlib urllib, no API key). Tests inject FixtureAdapter so they
-never hit the network.
+Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
+and Open Library (stdlib urllib, no API key). Tests inject
+FixtureAdapter or call parse_*_payload helpers so they never hit
+the network. Backend ``multi`` merges those three live adapters.
 """
 
 from __future__ import annotations
@@ -227,9 +228,14 @@ ADAPTERS: dict[str, type] = {
 
 def get_adapter(name: str | None = None) -> SearchAdapter:
     key = (name or "wikipedia").strip().lower()
+    if key in {"openlibrary", "ol", "books", "multi", "all"}:
+        from tools import openlibrary as olmod
+        if key in {"multi", "all"}:
+            return olmod.MultiAdapter()
+        return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
-        known = ", ".join(sorted(set(ADAPTERS)))
+        known = ", ".join(sorted(set(ADAPTERS) | {"openlibrary", "multi"}))
         raise ValueError(f"Unknown search backend {name!r}. Known: {known}")
     return cls()
 
@@ -259,7 +265,8 @@ def format_hits(hits: list[Hit]) -> str:
         return "(no results)"
     lines: list[str] = []
     for i, hit in enumerate(hits, 1):
-        lines.append(f"{i}. {hit.title}")
+        label = f"{hit.title} [{hit.source}]" if hit.source else hit.title
+        lines.append(f"{i}. {label}")
         if hit.url:
             lines.append(f"   {hit.url}")
         if hit.snippet:
@@ -282,3 +289,20 @@ def record_hits(
     )
     log.append(entry)
     return entry
+
+
+def parse_openlibrary_payload(payload: dict, limit: int = 5):
+    from tools.openlibrary import parse_openlibrary_payload as _parse
+    return _parse(payload, limit=limit)
+
+
+def merge_hits(*groups, limit: int = 5):
+    from tools.openlibrary import merge_hits as _merge
+    return _merge(*groups, limit=limit)
+
+
+def __getattr__(name: str):
+    if name in {"OpenLibraryAdapter", "MultiAdapter"}:
+        from tools import openlibrary as olmod
+        return getattr(olmod, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
