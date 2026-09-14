@@ -10,6 +10,11 @@ from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
 
+BACKEND_HELP = (
+    "Search backend: wikipedia, duckduckgo, openlibrary, multi, fixture "
+    "(aliases: ddg, ol, books, all)"
+)
+
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="eternalforge")
@@ -22,11 +27,7 @@ def main(argv: list[str] | None = None) -> int:
     research = sub.add_parser("research", help="Run a search via an adapter")
     research.add_argument("query", nargs="+", help="Search query")
     research.add_argument("--max", type=int, default=5, dest="max_results")
-    research.add_argument(
-        "--backend",
-        default="wikipedia",
-        help="Search backend: wikipedia, duckduckgo, fixture",
-    )
+    research.add_argument("--backend", default="wikipedia", help=BACKEND_HELP)
     research.add_argument(
         "--offline",
         action="store_true",
@@ -46,11 +47,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     cap.add_argument("--max", type=int, default=3, dest="max_results")
     cap.add_argument("--day", default=None, help="Override date key YYYY-MM-DD")
-    cap.add_argument(
-        "--backend",
-        default="wikipedia",
-        help="Search backend: wikipedia, duckduckgo, fixture",
-    )
+    cap.add_argument("--backend", default="wikipedia", help=BACKEND_HELP)
     cap.add_argument(
         "--offline",
         action="store_true",

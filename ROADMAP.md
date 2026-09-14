@@ -13,6 +13,7 @@
 - [x] Daily knowledge capture
 - [x] Persist research hits into the JSONL journal
 - [x] Second live SearchAdapter (DuckDuckGo Instant Answer)
+- [x] Third live SearchAdapter (Open Library) + merge-hits MultiAdapter
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
