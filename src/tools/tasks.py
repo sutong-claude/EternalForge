@@ -92,6 +92,10 @@ def normalize_tag_token(tag: str | None) -> str:
     return (tag or "").strip().lstrip("#").lower()
 
 
+def normalize_query(query: str | None) -> str:
+    return " ".join((query or "").strip().lower().split())
+
+
 def normalize_due_soon_days(days: int | str | None) -> int:
     if days is None or days is False:
         return DEFAULT_DUE_SOON_DAYS
@@ -153,6 +157,13 @@ class Task:
         if not wanted:
             return True
         return any(self.matches_tag(item) for item in wanted)
+
+    def matches_query(self, query: str | None) -> bool:
+        needle = normalize_query(query)
+        if not needle:
+            return True
+        haystack = f"{self.title} {self.notes}".lower()
+        return needle in haystack
 
     def is_overdue(self, today: date | str | None = None) -> bool:
         if self.status != "open" or not self.due:
@@ -268,6 +279,7 @@ def list_tasks(
     priority: str | None = None,
     *,
     tag: str | Iterable[str] | None = None,
+    query: str | None = None,
     overdue: bool = False,
     due_soon: bool | int | str | None = False,
     sort: str | None = "due",
@@ -285,6 +297,7 @@ def list_tasks(
         if task.matches_status(wanted)
         and task.matches_priority(wanted_pri)
         and task.matches_tags(tag_filter)
+        and task.matches_query(query)
     ]
     if overdue:
         rows = [task for task in rows if task.is_overdue(today)]

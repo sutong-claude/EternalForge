@@ -181,6 +181,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Filter by tag (repeatable; match any; leading # optional)",
     )
     task_list.add_argument(
+        "--query",
+        default=None,
+        help="Case-insensitive substring match on title and notes",
+    )
+    task_list.add_argument(
         "--overdue",
         action="store_true",
         help="Only open tasks whose due date is before today",
@@ -317,6 +322,7 @@ def main(argv: list[str] | None = None) -> int:
                             status=args.status,
                             priority=args.priority,
                             tag=args.tags,
+                            query=args.query,
                             overdue=args.overdue,
                             due_soon=args.due_soon if args.due_soon is not None else False,
                             sort=args.sort,
