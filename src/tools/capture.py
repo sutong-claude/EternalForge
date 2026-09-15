@@ -9,8 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
+from typing import Iterable
 
-from core.memory import Journal, MemoryEntry
+from core.memory import Journal, MemoryEntry, normalize_tags
 from tools.research import Hit, SearchAdapter, format_hits, search, summarize
 
 DEFAULT_TOPICS = (
@@ -71,11 +72,11 @@ def capture(
     max_results: int = 3,
     day: str | None = None,
     journal: Journal | None = None,
+    tags: Iterable[str] | None = None,
 ) -> CaptureResult:
     """Research each topic and write a daily markdown file under memory/."""
     chosen = [t.strip() for t in (topics or list(DEFAULT_TOPICS)) if t.strip()]
     day_key = day or _utc_day()
-    # Validate date-ish keys without being pedantic about calendar correctness.
     try:
         date.fromisoformat(day_key)
     except ValueError as exc:
@@ -99,11 +100,13 @@ def capture(
         path.write_text(markdown, encoding="utf-8")
 
     log = journal or Journal(memory_dir / "journal.jsonl")
+    extra = list(tags) if tags is not None else []
     log.append(
         MemoryEntry.now(
             "capture",
             f"Captured {len(chosen)} topic(s) into {path.name}",
             format_hits([h for hits in hits_by_topic.values() for h in hits]),
+            tags=normalize_tags(["capture", *extra]),
         )
     )
     return CaptureResult(
