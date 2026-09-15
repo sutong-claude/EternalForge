@@ -13,6 +13,8 @@ import re
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 DAY_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+HASH_TAG_RE = re.compile(r"(?:^|[\s(,\[])#([a-zA-Z][a-zA-Z0-9_-]{0,40})\b")
+TAGS_LINE_RE = re.compile(r"(?im)^tags?\s*[:=]\s*(.+)$")
 SKIP_NAMES = {"kb-index.json"}
 
 
@@ -25,6 +27,7 @@ class Document:
     text: str
     kind: str = ""
     timestamp: str = ""
+    tags: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -37,6 +40,7 @@ class IndexHit:
     snippet: str
     kind: str = ""
     timestamp: str = ""
+    tags: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -76,15 +80,50 @@ def normalize_kind(kind: str | None) -> str:
     return (kind or "").strip().lower()
 
 
+def normalize_tag(tag: str | None) -> str:
+    raw = (tag or "").strip().lower()
+    if raw.startswith("#"):
+        raw = raw[1:]
+    return raw.strip()
+
+
+def extract_tags(*parts: str) -> list[str]:
+    """Collect unique lowercase tags from #hashtags and `tags:` lines."""
+    seen: dict[str, None] = {}
+    for part in parts:
+        text = part or ""
+        for match in TAGS_LINE_RE.finditer(text):
+            payload = match.group(1)
+            for chunk in re.split(r"[,;]+", payload):
+                token = normalize_tag(chunk)
+                if token and token not in seen:
+                    seen[token] = None
+        for match in HASH_TAG_RE.finditer(text):
+            token = normalize_tag(match.group(1))
+            if token and token not in seen:
+                seen[token] = None
+    return list(seen)
+
+
 def document_matches(
     doc: Document,
     kind: str | None = None,
     since: str | None = None,
     until: str | None = None,
+    source: str | None = None,
+    tag: str | None = None,
 ) -> bool:
     wanted = normalize_kind(kind)
     if wanted and normalize_kind(doc.kind) != wanted and normalize_kind(doc.source) != wanted:
         return False
+    wanted_source = normalize_kind(source)
+    if wanted_source and normalize_kind(doc.source) != wanted_source:
+        return False
+    wanted_tag = normalize_tag(tag)
+    if wanted_tag:
+        doc_tags = {normalize_tag(t) for t in doc.tags}
+        if wanted_tag not in doc_tags:
+            return False
     since_day = extract_day(since) if since else None
     until_day = extract_day(until) if until else None
     if since_day or until_day:
@@ -153,6 +192,7 @@ def _add_markdown_docs(docs: list[Document], root: Path, paths: list[Path]) -> N
                 text=text,
                 kind=kind,
                 timestamp=day or "",
+                tags=extract_tags(text),
             )
         )
 
@@ -190,6 +230,12 @@ def collect_documents(root: Path) -> list[Document]:
             timestamp = str(data.get("timestamp", "")).strip()
             if not kind and not summary and not details:
                 continue
+            raw_tags = data.get("tags", [])
+            extra_tags: list[str] = []
+            if isinstance(raw_tags, str):
+                extra_tags = extract_tags(f"tags: {raw_tags}")
+            elif isinstance(raw_tags, list):
+                extra_tags = [normalize_tag(str(t)) for t in raw_tags if normalize_tag(str(t))]
             title = f"{kind or 'entry'}: {summary}".strip()
             body = " ".join(part for part in (kind, summary, details) if part)
             docs.append(
@@ -201,6 +247,7 @@ def collect_documents(root: Path) -> list[Document]:
                     text=body,
                     kind=kind or "journal",
                     timestamp=timestamp,
+                    tags=extract_tags(summary, details) + extra_tags,
                 )
             )
     return docs
@@ -225,6 +272,8 @@ def search_index(
     kind: str | None = None,
     since: str | None = None,
     until: str | None = None,
+    source: str | None = None,
+    tag: str | None = None,
 ) -> list[IndexHit]:
     tokens = tokenize(query)
     if not tokens or not index.documents:
@@ -232,7 +281,9 @@ def search_index(
     allowed = {
         doc.doc_id
         for doc in index.documents
-        if document_matches(doc, kind=kind, since=since, until=until)
+        if document_matches(
+            doc, kind=kind, since=since, until=until, source=source, tag=tag
+        )
     }
     if not allowed:
         return []
@@ -257,6 +308,7 @@ def search_index(
                 snippet=_snippet(doc.text, tokens),
                 kind=doc.kind,
                 timestamp=doc.timestamp,
+                tags=list(doc.tags),
             )
         )
     return hits
@@ -269,6 +321,8 @@ def search_kb(
     kind: str | None = None,
     since: str | None = None,
     until: str | None = None,
+    source: str | None = None,
+    tag: str | None = None,
 ) -> list[IndexHit]:
     return search_index(
         build_index(root=root),
@@ -277,6 +331,8 @@ def search_kb(
         kind=kind,
         since=since,
         until=until,
+        source=source,
+        tag=tag,
     )
 
 
@@ -287,7 +343,9 @@ def format_index_hits(hits: list[IndexHit]) -> str:
     for hit in hits:
         meta = hit.kind or hit.source
         stamp = f" {hit.timestamp}" if hit.timestamp else ""
-        lines.append(f"[{hit.score}] {hit.title} ({meta}{stamp} {hit.path})")
+        tag_bit = f" #{',#'.join(hit.tags)}" if hit.tags else ""
+        source_bit = f" src={hit.source}" if hit.source and hit.source != meta else ""
+        lines.append(f"[{hit.score}] {hit.title} ({meta}{stamp}{source_bit}{tag_bit} {hit.path})")
         if hit.snippet:
             lines.append(f"    {hit.snippet}")
     return "\n".join(lines)

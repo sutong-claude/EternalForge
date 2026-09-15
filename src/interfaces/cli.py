@@ -76,6 +76,16 @@ def main(argv: list[str] | None = None) -> int:
         help="Filter by document kind (research, capture, markdown, journal, ...)",
     )
     kb.add_argument(
+        "--source",
+        default=None,
+        help="Filter by source facet (markdown, journal, report)",
+    )
+    kb.add_argument(
+        "--tag",
+        default=None,
+        help="Filter by tag / hashtag extracted from the document",
+    )
+    kb.add_argument(
         "--since",
         default=None,
         help="Only documents on or after YYYY-MM-DD",
@@ -155,6 +165,8 @@ def main(argv: list[str] | None = None) -> int:
                 kind=args.kind,
                 since=since,
                 until=until,
+                source=args.source,
+                tag=args.tag,
             )
             print(format_index_hits(hits))
         elif args.cmd == "report":

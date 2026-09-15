@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.5 — 2026-09-15
+
+- Knowledge-base source and tag facets on hits.
+- Extract tags from `#hashtag` tokens and `tags:` / `tag:` lines; journal rows also honor a `tags` field.
+- `search_kb` / `search_index` / `document_matches` accept `source` and `tag`.
+- CLI: `eternalforge kb QUERY [--source S] [--tag T]`.
+- Hit formatting shows `src=` when it differs from kind, plus `#tags`.
+
 ## 0.8.4 — 2026-09-15
 
 - Knowledge base indexes `memory/reports/*.md` as `kind=report` / `source=report`.

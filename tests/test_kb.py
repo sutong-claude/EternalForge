@@ -13,6 +13,7 @@ from tools.kb import (
     collect_documents,
     document_matches,
     extract_day,
+    extract_tags,
     format_index_hits,
     parse_day,
     search_index,
@@ -27,14 +28,15 @@ def _seed(tmp_path: Path) -> Path:
     memory.mkdir()
     (memory / "2026-09-14.md").write_text(
         "# Knowledge capture \u2014 2026-09-14\n\n"
-        "Notes about autonomous software agents and personal knowledge.\n",
+        "tags: agents, pkm\n\n"
+        "Notes about autonomous software agents and personal knowledge. #agents\n",
         encoding="utf-8",
     )
     reports = memory / "reports"
     reports.mkdir()
     (reports / "2026-09-15.md").write_text(
         "# Research report \u2014 2026-09-15\n\n"
-        "Compiled findings on transformer attention and retrieval.\n",
+        "Compiled findings on transformer attention and retrieval. #transformers\n",
         encoding="utf-8",
     )
     journal = Journal(memory / "journal.jsonl")
@@ -42,7 +44,7 @@ def _seed(tmp_path: Path) -> Path:
         MemoryEntry(
             timestamp="2026-09-10T12:00:00Z",
             kind="research",
-            summary="agents paper",
+            summary="agents paper #agents",
             details="attention mechanism notes",
         )
     )
@@ -59,6 +61,13 @@ def _seed(tmp_path: Path) -> Path:
 
 def test_tokenize_lowercases() -> None:
     assert tokenize("Hello, Agents!") == ["hello", "agents"]
+
+
+def test_extract_tags_hashtags_and_lines() -> None:
+    text = "tags: Agents, PKM\nNotes #Agents and #pkm in the body."
+    assert extract_tags(text) == ["agents", "pkm"]
+    assert extract_tags("#Heading is not a tag because of the space") == []
+    assert extract_tags("") == []
 
 
 def test_extract_and_parse_day() -> None:
@@ -83,6 +92,8 @@ def test_collect_markdown_and_journal(tmp_path: Path) -> None:
     assert md.kind == "markdown"
     assert md.timestamp == "2026-09-14"
     assert md.doc_id.startswith("md:")
+    assert "agents" in md.tags
+    assert "pkm" in md.tags
 
 
 def test_collect_indexes_reports_subdir(tmp_path: Path) -> None:
@@ -95,6 +106,7 @@ def test_collect_indexes_reports_subdir(tmp_path: Path) -> None:
     assert doc.doc_id == "md:memory/reports/2026-09-15.md"
     assert doc.timestamp == "2026-09-15"
     assert "transformer" in doc.text.lower()
+    assert "transformers" in doc.tags
 
 
 def test_search_ranks_matching_docs(tmp_path: Path) -> None:
@@ -122,6 +134,33 @@ def test_search_filters_by_kind(tmp_path: Path) -> None:
     assert missing == []
 
 
+def test_search_filters_by_source(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    journal = search_kb(root, "agents", source="journal")
+    assert journal
+    assert all(h.source == "journal" for h in journal)
+    markdown = search_kb(root, "agents", source="MARKDOWN")
+    assert markdown
+    assert all(h.source == "markdown" for h in markdown)
+    report = search_kb(root, "transformer", source="report")
+    assert report
+    assert all(h.source == "report" for h in report)
+    missing = search_kb(root, "agents", source="email")
+    assert missing == []
+
+
+def test_search_filters_by_tag(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    tagged = search_kb(root, "agents", tag="agents")
+    assert tagged
+    assert all("agents" in h.tags for h in tagged)
+    hashed = search_kb(root, "transformer", tag="#Transformers")
+    assert hashed
+    assert all("transformers" in h.tags for h in hashed)
+    missing = search_kb(root, "agents", tag="nonexistent")
+    assert missing == []
+
+
 def test_search_filters_by_date_range(tmp_path: Path) -> None:
     root = _seed(tmp_path)
     early = search_kb(root, "agents", until="2026-09-12")
@@ -143,12 +182,39 @@ def test_document_matches_undated_excluded_when_ranged() -> None:
     undated = Document("x", "markdown", "memory/note.md", "t", "alpha", kind="markdown", timestamp="")
     assert document_matches(undated, kind="markdown")
     assert not document_matches(undated, since="2026-09-01")
+    tagged = Document(
+        "y", "journal", "memory/journal.jsonl", "t", "alpha", kind="research", tags=["agents"]
+    )
+    assert document_matches(tagged, source="journal", tag="#Agents")
+    assert not document_matches(tagged, source="markdown")
+    assert not document_matches(tagged, tag="pkm")
 
 
 def test_empty_query_and_missing_memory(tmp_path: Path) -> None:
     assert search_kb(tmp_path, "") == []
     assert search_kb(tmp_path, "anything") == []
     assert format_index_hits([]) == "(no matches)"
+
+
+def test_format_includes_source_and_tags() -> None:
+    from tools.kb import IndexHit
+
+    text = format_index_hits(
+        [
+            IndexHit(
+                "md:memory/note.md",
+                "markdown",
+                "memory/note.md",
+                "Note",
+                3,
+                "snippet",
+                kind="markdown",
+                tags=["agents"],
+            )
+        ]
+    )
+    assert "#agents" in text
+    assert "Note" in text
 
 
 def test_skips_bad_journal_lines(tmp_path: Path) -> None:
@@ -172,6 +238,7 @@ def test_write_index_snapshot(tmp_path: Path) -> None:
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data["document_count"] == index.document_count()
     assert data["token_count"] == len(index.postings)
+    assert any(doc.get("tags") for doc in data["documents"])
 
 
 def test_max_results_limit(tmp_path: Path) -> None:
