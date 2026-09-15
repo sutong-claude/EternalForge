@@ -9,6 +9,7 @@ from core.memory import Journal
 from tools.research import (
     DuckDuckGoAdapter,
     FixtureAdapter,
+    HackerNewsAdapter,
     Hit,
     MultiAdapter,
     OpenLibraryAdapter,
@@ -17,6 +18,7 @@ from tools.research import (
     get_adapter,
     merge_hits,
     parse_duckduckgo_payload,
+    parse_hackernews_payload,
     parse_openlibrary_payload,
     parse_wikipedia_payload,
     record_hits,
@@ -37,6 +39,7 @@ def test_empty_query_returns_nothing() -> None:
     assert DuckDuckGoAdapter().search("") == []
     assert WikipediaAdapter().search("") == []
     assert OpenLibraryAdapter().search("") == []
+    assert HackerNewsAdapter().search("") == []
     assert MultiAdapter(adapters=[FixtureAdapter()]).search("  ") == []
 
 
@@ -105,6 +108,9 @@ def test_get_adapter_resolves_known_backends() -> None:
     assert get_adapter("openlibrary").name == "openlibrary"
     assert get_adapter("ol").name == "openlibrary"
     assert get_adapter("books").name == "openlibrary"
+    assert get_adapter("hackernews").name == "hackernews"
+    assert get_adapter("hn").name == "hackernews"
+    assert get_adapter("algolia").name == "hackernews"
     assert get_adapter("multi").name == "multi"
     assert get_adapter("all").name == "multi"
     assert get_adapter("fixture").name == "fixture"
@@ -206,6 +212,51 @@ def test_parse_openlibrary_respects_limit() -> None:
         ]
     }
     hits = parse_openlibrary_payload(payload, limit=1)
+    assert [h.title for h in hits] == ["A"]
+
+
+def test_parse_hackernews_payload() -> None:
+    payload = {
+        "hits": [
+            {
+                "title": "Show HN: EternalForge",
+                "url": "https://github.com/sutong-claude/EternalForge",
+                "author": "alice",
+                "points": 42,
+                "num_comments": 7,
+                "objectID": "111",
+            },
+            {
+                "title": "",
+                "story_title": "Ask HN: research tools",
+                "url": "",
+                "author": "bob",
+                "comment_text": "try adapters",
+                "objectID": "222",
+            },
+            {"title": "", "url": "", "objectID": ""},
+        ]
+    }
+    hits = parse_hackernews_payload(payload, limit=5)
+    assert len(hits) == 2
+    assert hits[0].title == "Show HN: EternalForge"
+    assert hits[0].url == "https://github.com/sutong-claude/EternalForge"
+    assert hits[0].source == "hackernews"
+    assert "alice" in hits[0].snippet
+    assert "42 pts" in hits[0].snippet
+    assert hits[1].title == "Ask HN: research tools"
+    assert hits[1].url == "https://news.ycombinator.com/item?id=222"
+    assert "try adapters" in hits[1].snippet
+
+
+def test_parse_hackernews_respects_limit() -> None:
+    payload = {
+        "hits": [
+            {"title": "A", "url": "https://a.example", "objectID": "1"},
+            {"title": "B", "url": "https://b.example", "objectID": "2"},
+        ]
+    }
+    hits = parse_hackernews_payload(payload, limit=1)
     assert [h.title for h in hits] == ["A"]
 
 

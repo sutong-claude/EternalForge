@@ -22,6 +22,7 @@
 - [x] Tag or source facet on KB hits
 - [x] Surface report count in status
 - [x] Deduplicate tags when merging journal extra_tags + extracted tags
+- [x] Fourth live SearchAdapter (Hacker News Algolia)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter

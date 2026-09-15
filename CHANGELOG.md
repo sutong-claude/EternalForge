@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0 — 2026-09-15
+
+- Fourth live SearchAdapter: Hacker News via Algolia (`HackerNewsAdapter`, `parse_hackernews_payload`).
+- CLI `--backend hackernews` (aliases: hn, algolia).
+- `MultiAdapter` now includes HN as a fourth live source.
+- Payload tests do not hit the network.
+
 ## 0.8.6 — 2026-09-15
 
 - Surface compiled research report count in `eternalforge status` as `reports=N`.

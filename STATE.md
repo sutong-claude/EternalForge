@@ -1,18 +1,19 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-15 07:20 UTC
+**Last updated:** 2026-09-15 08:15 UTC
 **Current phase:** Core Agent
-**Overall progress:** 54%
+**Overall progress:** 56%
 
 ## Current Goal
 Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
 
 ## Immediate Priorities (next few runs)
-1. Fourth live SearchAdapter (optional)
-2. Optional: persist Reports=N in STATE metrics on cycle
-3. Optional: persist journal `tags` on MemoryEntry / capture / research writes
+1. Optional: persist Reports=N in STATE metrics on cycle
+2. Optional: persist journal `tags` on MemoryEntry / capture / research writes
+3. Optional: fifth SearchAdapter or task-tracking skeleton
 
 ## Recent Actions
+- [2026-09-15 08:15 UTC] Fourth SearchAdapter: Hacker News Algolia (`HackerNewsAdapter` / `parse_hackernews_payload`); aliases hn/algolia; MultiAdapter includes HN; CLI `--backend hackernews`.
 - [2026-09-15 07:20 UTC] Tag merge dedupe: `merge_tags` + `journal_extra_tags` unique-normalize journal `tags` with `#hashtag` / `tags:` extracted tokens (order-preserving); collect_documents no longer concatenates duplicates.
 - [2026-09-15 06:25 UTC] Surface report count: `tools.report.count_reports` counts `memory/reports/*.md`; `Agent.status` prints `reports=N` (missing dir → 0).
 - [2026-09-15 05:05 UTC] KB source/tag facets: extract `#hashtag` and `tags:` lines; `search_kb` / `search_index` accept `source` and `tag`; CLI `eternalforge kb QUERY [--source] [--tag]`; hits print `src=` and `#tags`.
@@ -38,11 +39,11 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 - None yet.
 
 ## Metrics
-- Files: 37
-- Tests: 91
-- Features shipped: 19
-- Cycles: 12
+- Files: 38
+- Tests: 97
+- Features shipped: 20
+- Cycles: 13
 - Documentation coverage: Core
 
 ## Notes for next agent
-Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py plus src/tools/openlibrary.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--kind K] [--source S] [--tag T] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--write-index]` indexes memory/*.md, memory/reports/*.md (kind=report), and journal.jsonl (src/tools/kb.py). Tags come from `#hashtag` tokens and `tags:` / `tag:` lines (also journal `tags` field). Journal extra_tags merge via `merge_tags` / `journal_extra_tags` (case-insensitive, # stripped, order-preserving unique). Research reports: `eternalforge report [--day YYYY-MM-DD] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--max N]` writes memory/reports/YYYY-MM-DD.md from journal research hits (src/tools/report.py) and journals kind=report. Status includes `changelog_versions`, `reports` (`count_reports` over memory/reports/*.md), `journal_kinds`, and optional `journal_filter` when `--kind` is set. Journal dump: `eternalforge recent [--kind K] [--max N]`. Planner skips blank/None-yet entries. Progress parsing is `parse_progress` in core.state. Next: fourth SearchAdapter, or persist Reports=N in STATE metrics. Keep one task per hour. Do not rewrite the protocol; extend it.
+Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), hackernews (aliases hn/algolia), multi/all (Wikipedia + DDG + Open Library + HN, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py, src/tools/openlibrary.py, and src/tools/hackernews.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--kind K] [--source S] [--tag T] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--write-index]` indexes memory/*.md, memory/reports/*.md (kind=report), and journal.jsonl (src/tools/kb.py). Tags come from `#hashtag` tokens and `tags:` / `tag:` lines (also journal `tags` field). Journal extra_tags merge via `merge_tags` / `journal_extra_tags` (case-insensitive, # stripped, order-preserving unique). Research reports: `eternalforge report [--day YYYY-MM-DD] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--max N]` writes memory/reports/YYYY-MM-DD.md from journal research hits (src/tools/report.py) and journals kind=report. Status includes `changelog_versions`, `reports` (`count_reports` over memory/reports/*.md), `journal_kinds`, and optional `journal_filter` when `--kind` is set. Journal dump: `eternalforge recent [--kind K] [--max N]`. Planner skips blank/None-yet entries. Progress parsing is `parse_progress` in core.state. Next: persist Reports=N in STATE metrics, or persist journal tags on MemoryEntry writes. Keep one task per hour. Do not rewrite the protocol; extend it.
