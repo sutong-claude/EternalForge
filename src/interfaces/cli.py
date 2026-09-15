@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY"""
+"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report"""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import sys
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
 from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
+from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
 
 BACKEND_HELP = (
@@ -89,6 +90,28 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Also persist memory/kb-index.json",
     )
+    report = sub.add_parser(
+        "report",
+        help="Compile a markdown report from journal research hits",
+    )
+    report.add_argument("--day", default=None, help="Output date key YYYY-MM-DD")
+    report.add_argument(
+        "--since",
+        default=None,
+        help="Only research entries on or after YYYY-MM-DD",
+    )
+    report.add_argument(
+        "--until",
+        default=None,
+        help="Only research entries on or before YYYY-MM-DD",
+    )
+    report.add_argument(
+        "--max",
+        type=int,
+        default=None,
+        dest="max_entries",
+        help="Keep only the last N matching research entries",
+    )
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -134,6 +157,20 @@ def main(argv: list[str] | None = None) -> int:
                 until=until,
             )
             print(format_index_hits(hits))
+        elif args.cmd == "report":
+            since = parse_day(args.since)
+            until = parse_day(args.until)
+            result = write_report(
+                args.root,
+                day=args.day,
+                since=since,
+                until=until,
+                max_entries=args.max_entries,
+            )
+            print(
+                f"wrote {result.path} "
+                f"({result.entry_count} run(s), {result.query_count} query(ies))"
+            )
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)
         return 1

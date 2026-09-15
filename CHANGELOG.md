@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.3 — 2026-09-15
+
+- Automated research report from journal `kind=research` hits (`tools.report`).
+- Groups runs by query parsed from `Research '…': N hit(s)` summaries.
+- Writes `memory/reports/YYYY-MM-DD.md` and a `kind=report` journal row.
+- CLI: `eternalforge report [--day] [--since] [--until] [--max]`.
+
 ## 0.8.2 — 2026-09-15
 
 - KB query filters: `search_kb` / `search_index` accept `kind`, `since`, `until`.
