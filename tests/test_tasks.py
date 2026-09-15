@@ -188,6 +188,26 @@ def test_update_notes_and_tags(tmp_path: Path) -> None:
     assert untouched.priority == "high"
 
 
+def test_update_title(tmp_path: Path) -> None:
+    journal = Journal(tmp_path / "memory" / "journal.jsonl")
+    task = add_task(tmp_path, "Old title", journal=journal)
+    updated = update_task(tmp_path, task.id, title="  New title  ", journal=journal)
+    assert updated.title == "New title"
+    stored = load_tasks(tmp_path)[0]
+    assert stored.title == "New title"
+    last = json.loads(journal.path.read_text(encoding="utf-8").splitlines()[-1])
+    assert "title=New title" in last["summary"]
+    leftover = update_task(tmp_path, task.id, priority="low", journal=journal)
+    assert leftover.title == "New title"
+    try:
+        update_task(tmp_path, task.id, title="   ", journal=journal)
+    except ValueError as exc:
+        assert "title" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+    assert load_tasks(tmp_path)[0].title == "New title"
+
+
 def test_set_status_and_journal(tmp_path: Path) -> None:
     journal = Journal(tmp_path / "memory" / "journal.jsonl")
     task = add_task(tmp_path, "Close me", journal=journal)
