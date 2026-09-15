@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.0 — 2026-09-15
+
+- Sixth live SearchAdapter: Crossref works API (`CrossrefAdapter`, `parse_crossref_payload`).
+- CLI `--backend crossref` (aliases: doi, works).
+- `MultiAdapter` now includes Crossref as a sixth live source.
+- Payload tests do not hit the network.
+
 ## 0.11.5 — 2026-09-15
 
 - Task list filter by tag: `list_tasks(..., tag=)` matches case-insensitively and strips `#`.

@@ -33,6 +33,7 @@
 - [x] Task list sort by due/priority; overdue flag
 - [x] Surface Reports/Tasks in CHANGELOG cycle extras
 - [x] Task list filter by tag and due-soon window
+- [x] Sixth live SearchAdapter (Crossref)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
