@@ -13,6 +13,7 @@ from tools.tasks import (
     list_tasks,
     load_tasks,
     normalize_due,
+    normalize_due_soon_days,
     normalize_priority,
     normalize_sort,
     normalize_status,
@@ -61,6 +62,19 @@ def test_normalize_sort() -> None:
         normalize_sort("alpha")
     except ValueError as exc:
         assert "sort" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+
+
+def test_normalize_due_soon_days() -> None:
+    assert normalize_due_soon_days(None) == 7
+    assert normalize_due_soon_days("soon") == 7
+    assert normalize_due_soon_days(0) == 0
+    assert normalize_due_soon_days("3") == 3
+    try:
+        normalize_due_soon_days(-1)
+    except ValueError as exc:
+        assert "due-soon" in str(exc)
     else:
         raise AssertionError("expected ValueError")
 
@@ -125,6 +139,25 @@ def test_sort_and_overdue(tmp_path: Path) -> None:
     assert late.id in text
     ranked = sort_tasks([undated, soon, late], sort="priority")
     assert [t.id for t in ranked] == [soon.id, undated.id, late.id]
+
+
+def test_list_by_tag_and_due_soon(tmp_path: Path) -> None:
+    core = add_task(tmp_path, "Core work", tags=["Core"], due="2026-09-16")
+    admin = add_task(tmp_path, "Admin", tags=["admin"], due="2026-09-30")
+    late = add_task(tmp_path, "Late core", tags=["#core"], due="2026-09-01")
+    today = "2026-09-15"
+    tagged = list_tasks(tmp_path, tag="#CORE", today=today)
+    assert {t.id for t in tagged} == {core.id, late.id}
+    any_tag = list_tasks(tmp_path, tag=["admin", "missing"], today=today)
+    assert [t.id for t in any_tag] == [admin.id]
+    soon = list_tasks(tmp_path, due_soon=7, today=today)
+    assert [t.id for t in soon] == [core.id]
+    assert not late.is_due_soon(7, today=today)
+    assert core.is_due_soon(7, today=today)
+    assert not admin.is_due_soon(7, today=today)
+    text = format_tasks([core, late], today=today)
+    assert "DUE-SOON" in text
+    assert "OVERDUE" in text
 
 
 def test_set_status_and_journal(tmp_path: Path) -> None:

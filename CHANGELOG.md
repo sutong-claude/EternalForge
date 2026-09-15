@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.5 — 2026-09-15
+
+- Task list filter by tag: `list_tasks(..., tag=)` matches case-insensitively and strips `#`.
+- Due-soon window: open tasks with due date from today through N days (default 7).
+- CLI: `task list [--tag T] [--due-soon [N]]`; format prints `DUE-SOON` (overdue still wins).
+- Repeatable `--tag` matches any listed tag.
+
 ## 0.11.4 — 2026-09-15
 
 - Cycle CHANGELOG extras now include workspace metric bullets `reports=N` and `tasks=N`.
