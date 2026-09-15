@@ -23,10 +23,10 @@
 - [x] Surface report count in status
 - [x] Deduplicate tags when merging journal extra_tags + extracted tags
 - [x] Fourth live SearchAdapter (Hacker News Algolia)
+- [x] Persist Reports=N in STATE metrics on cycle
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Optional: persist Reports=N in STATE metrics on cycle
 - Optional: persist journal tags on MemoryEntry writes
 
 ## Phase 3 – Personal Productivity Platform

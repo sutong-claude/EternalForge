@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1 — 2026-09-15
+
+- Persist compiled report count in STATE metrics on cycle (`Reports=N`).
+- `bump_metrics` recounts `memory/reports/*.md` via `count_reports` when a workspace root is given.
+- Tests cover missing reports dir, markdown-only count, and cycle write-back.
+
 ## 0.9.0 — 2026-09-15
 
 - Fourth live SearchAdapter: Hacker News via Algolia (`HackerNewsAdapter`, `parse_hackernews_payload`).

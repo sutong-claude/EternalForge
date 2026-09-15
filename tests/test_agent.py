@@ -109,6 +109,7 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "Implement CLI" in log
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
+    assert state.metrics["Reports"] == "0"
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
@@ -116,3 +117,13 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "changelog_versions=2" in status
     assert "journal_kinds=cycle" in status
     assert "reports=0" in status
+
+
+def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    folder = root / "memory" / "reports"
+    folder.mkdir(parents=True)
+    (folder / "2026-09-15.md").write_text("# report\n", encoding="utf-8")
+    Agent(root).run_once(dry_run=False)
+    state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
+    assert state.metrics["Reports"] == "1"
