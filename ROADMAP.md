@@ -31,6 +31,7 @@
 - [x] Persist Tasks=N in STATE metrics on cycle
 - [x] Task due dates / priority on the tracker
 - [x] Task list sort by due/priority; overdue flag
+- [x] Surface Reports/Tasks in CHANGELOG cycle extras
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter

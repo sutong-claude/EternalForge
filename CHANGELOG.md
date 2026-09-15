@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.4 — 2026-09-15
+
+- Cycle CHANGELOG extras now include workspace metric bullets `reports=N` and `tasks=N`.
+- `cycle_extras` helper in `core.changelog`; `Agent.reflect` appends them after the cycle result.
+- Tests cover formatting and cycle write-back when reports or open tasks exist.
+
 ## 0.11.3 — 2026-09-15
 
 - Task list sort by due (default) or priority; undated tasks sink to the end.
