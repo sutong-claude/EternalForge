@@ -1,9 +1,9 @@
 """Research tool with a pluggable SearchAdapter interface.
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
-Open Library, Hacker News Algolia, and arXiv (stdlib urllib, no API key).
-Tests inject FixtureAdapter or call parse_*_payload helpers so they
-never hit the network. Backend ``multi`` merges the live adapters.
+Open Library, Hacker News Algolia, arXiv, and Crossref (stdlib urllib,
+no API key). Tests inject FixtureAdapter or call parse_*_payload helpers
+so they never hit the network. Backend ``multi`` merges the live adapters.
 """
 
 from __future__ import annotations
@@ -234,6 +234,9 @@ _LIVE_EXTRA = {
     "arxiv",
     "papers",
     "preprint",
+    "crossref",
+    "doi",
+    "works",
     "multi",
     "all",
 }
@@ -243,6 +246,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
     key = (name or "wikipedia").strip().lower()
     if key in _LIVE_EXTRA:
         from tools import arxiv as axmod
+        from tools import crossref as xrmod
         from tools import hackernews as hnmod
         from tools import openlibrary as olmod
 
@@ -252,6 +256,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return hnmod.HackerNewsAdapter()
         if key in {"arxiv", "papers", "preprint"}:
             return axmod.ArxivAdapter()
+        if key in {"crossref", "doi", "works"}:
+            return xrmod.CrossrefAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
@@ -330,6 +336,11 @@ def parse_arxiv_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_crossref_payload(payload: dict, limit: int = 5):
+    from tools.crossref import parse_crossref_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -345,4 +356,7 @@ def __getattr__(name: str):
     if name == "ArxivAdapter":
         from tools.arxiv import ArxivAdapter
         return ArxivAdapter
+    if name == "CrossrefAdapter":
+        from tools.crossref import CrossrefAdapter
+        return CrossrefAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
