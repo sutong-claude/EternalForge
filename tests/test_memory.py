@@ -5,7 +5,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from core.memory import Journal, MemoryEntry, normalize_tags
+from core.memory import Journal, MemoryEntry, entry_has_tag, normalize_tags
 
 
 def test_journal_append_and_read(tmp_path: Path) -> None:
@@ -92,3 +92,23 @@ def test_journal_loads_legacy_rows_without_tags(tmp_path: Path) -> None:
     entry = Journal(path).load()[0]
     assert entry.tags == []
     assert entry.summary == "old"
+
+
+def test_recent_filters_by_tag(tmp_path: Path) -> None:
+    path = tmp_path / "journal.jsonl"
+    journal = Journal(path)
+    journal.append(MemoryEntry("t1", "research", "wiki", tags=["#Research", "wiki"]))
+    journal.append(MemoryEntry("t2", "capture", "notes", tags=["daily"]))
+    journal.append(MemoryEntry("t3", "research", "arxiv", tags=["research", "arxiv"]))
+    journal.append(MemoryEntry("t4", "cycle", "done"))
+    hits = journal.recent(10, tag="RESEARCH")
+    assert [h.summary for h in hits] == ["wiki", "arxiv"]
+    hashed = journal.recent(10, tag="#Wiki")
+    assert [h.summary for h in hashed] == ["wiki"]
+    combo = journal.recent(10, kind="research", tag="arxiv")
+    assert [h.summary for h in combo] == ["arxiv"]
+    assert journal.format_recent_kinds(tag="missing") == "-"
+    empty = journal.format_recent(tag="nope")
+    assert "tag=nope" in empty
+    assert entry_has_tag(hits[0], "#research")
+    assert not entry_has_tag(hits[0], "daily")

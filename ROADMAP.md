@@ -26,10 +26,11 @@
 - [x] Persist Reports=N in STATE metrics on cycle
 - [x] Persist journal tags on MemoryEntry writes
 - [x] Fifth live SearchAdapter (arXiv)
+- [x] Journal recent dump filter by persisted tag
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Optional: `recent --tag` filter
+- Task-tracking skeleton
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking

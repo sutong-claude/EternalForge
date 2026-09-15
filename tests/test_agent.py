@@ -93,6 +93,17 @@ def test_dump_recent_and_cli(tmp_path: Path) -> None:
     assert main(["--root", str(root), "status", "--kind", "capture"]) == 0
 
 
+def test_dump_recent_filters_by_tag(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    journal = Journal(root / "memory" / "journal.jsonl")
+    journal.append(MemoryEntry("t1", "research", "wiki", tags=["wiki"]))
+    journal.append(MemoryEntry("t2", "research", "arxiv", tags=["arxiv"]))
+    dump = Agent(root).dump_recent(tag="#ARXIV")
+    assert "t2\tresearch\tarxiv" in dump
+    assert "wiki" not in dump
+    assert main(["--root", str(root), "recent", "--tag", "arxiv"]) == 0
+
+
 def test_dry_run_does_not_mutate(tmp_path: Path) -> None:
     root = _seed(tmp_path)
     before = (root / "STATE.md").read_text(encoding="utf-8")

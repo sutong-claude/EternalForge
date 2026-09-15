@@ -37,6 +37,11 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Filter entries by kind (cycle, research, capture, ...)",
     )
+    recent.add_argument(
+        "--tag",
+        default=None,
+        help="Filter entries by persisted tag (case-insensitive; leading # optional)",
+    )
     recent.add_argument("--max", type=int, default=20, dest="max_results")
     research = sub.add_parser("research", help="Run a search via an adapter")
     research.add_argument("query", nargs="+", help="Search query")
@@ -151,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.cmd == "cycle":
             print(agent.run_once(dry_run=args.dry_run))
         elif args.cmd == "recent":
-            print(agent.dump_recent(n=args.max_results, kind=args.kind))
+            print(agent.dump_recent(n=args.max_results, kind=args.kind, tag=args.tag))
         elif args.cmd == "research":
             query = " ".join(args.query)
             adapter = FixtureAdapter() if args.offline else get_adapter(args.backend)

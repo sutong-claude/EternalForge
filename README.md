@@ -30,6 +30,7 @@ PYTHONPATH=src python -m interfaces.cli research eternalforge --offline --no-jou
 PYTHONPATH=src python -m interfaces.cli capture --topic eternalforge --offline
 PYTHONPATH=src python -m interfaces.cli kb "autonomous agents" --max 5
 PYTHONPATH=src python -m interfaces.cli report --since 2026-09-01
+PYTHONPATH=src python -m interfaces.cli recent --tag research
 PYTHONPATH=src python -m pytest tests -q
 ```
 

@@ -46,8 +46,13 @@ class Agent:
             lines.append(f"journal_filter={kind.strip()}")
         return "\n".join(lines)
 
-    def dump_recent(self, n: int = 20, kind: str | None = None) -> str:
-        return self.journal.format_recent(n=n, kind=kind)
+    def dump_recent(
+        self,
+        n: int = 20,
+        kind: str | None = None,
+        tag: str | None = None,
+    ) -> str:
+        return self.journal.format_recent(n=n, kind=kind, tag=tag)
 
     def act(self, task: str) -> str:
         """Local cycle records intent. Code-producing agents implement the task themselves."""

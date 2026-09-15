@@ -39,6 +39,13 @@ def normalize_tags(raw: object | None) -> list[str]:
     return list(seen)
 
 
+def entry_has_tag(entry: "MemoryEntry", tag: str | None) -> bool:
+    wanted = normalize_tag(tag)
+    if not wanted:
+        return True
+    return wanted in {normalize_tag(item) for item in entry.tags}
+
+
 @dataclass
 class MemoryEntry:
     timestamp: str
@@ -103,28 +110,51 @@ class Journal:
             )
         return out
 
-    def recent(self, n: int = 20, kind: str | None = None) -> list[MemoryEntry]:
+    def recent(
+        self,
+        n: int = 20,
+        kind: str | None = None,
+        tag: str | None = None,
+    ) -> list[MemoryEntry]:
         entries = self.load()
         wanted = normalize_kind(kind)
         if wanted:
             entries = [entry for entry in entries if normalize_kind(entry.kind) == wanted]
+        if normalize_tag(tag):
+            entries = [entry for entry in entries if entry_has_tag(entry, tag)]
         if n <= 0:
             return []
         return entries[-n:]
 
-    def recent_kinds(self, n: int = 8, kind: str | None = None) -> list[str]:
+    def recent_kinds(
+        self,
+        n: int = 8,
+        kind: str | None = None,
+        tag: str | None = None,
+    ) -> list[str]:
         """Kinds of the last n journal entries (optionally filtered)."""
-        return [entry.kind for entry in self.recent(n, kind=kind)]
+        return [entry.kind for entry in self.recent(n, kind=kind, tag=tag)]
 
-    def format_recent_kinds(self, n: int = 8, kind: str | None = None) -> str:
-        kinds = self.recent_kinds(n, kind=kind)
+    def format_recent_kinds(
+        self,
+        n: int = 8,
+        kind: str | None = None,
+        tag: str | None = None,
+    ) -> str:
+        kinds = self.recent_kinds(n, kind=kind, tag=tag)
         return ",".join(kinds) if kinds else "-"
 
-    def format_recent(self, n: int = 20, kind: str | None = None) -> str:
-        entries = self.recent(n, kind=kind)
+    def format_recent(
+        self,
+        n: int = 20,
+        kind: str | None = None,
+        tag: str | None = None,
+    ) -> str:
+        entries = self.recent(n, kind=kind, tag=tag)
         if not entries:
             label = normalize_kind(kind) or "any"
-            return f"(no journal entries kind={label})"
+            tag_label = normalize_tag(tag) or "any"
+            return f"(no journal entries kind={label} tag={tag_label})"
         lines: list[str] = []
         for entry in entries:
             tag_bit = f"\t#{',#'.join(entry.tags)}" if entry.tags else ""

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.1 — 2026-09-15
+
+- Journal dump filter by persisted tag: `Journal.recent` / `format_recent` accept `tag=`.
+- Match is case-insensitive and strips a leading `#`.
+- CLI: `eternalforge recent [--kind K] [--tag T] [--max N]`.
+- Empty dump names both filters (`kind=` and `tag=`).
+
 ## 0.10.0 — 2026-09-15
 
 - Fifth live SearchAdapter: arXiv via the export Atom API (`ArxivAdapter`, `parse_arxiv_payload`, `parse_arxiv_xml`).
