@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.1 — 2026-09-15
+
+- `update_task` can replace notes and tags (`notes=`, `tags=`; omit to leave unchanged; empty clears).
+- CLI: `task set ID [STATUS] [--notes TEXT] [--tag T]` (repeatable tags replace the list).
+- Journal `kind=task` rows record notes/tag bits when those fields change.
+- Tests cover replace, clear, and leave-unchanged paths.
+
 ## 0.12.0 — 2026-09-15
 
 - Sixth live SearchAdapter: Crossref works API (`CrossrefAdapter`, `parse_crossref_payload`).

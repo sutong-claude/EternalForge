@@ -34,6 +34,7 @@
 - [x] Surface Reports/Tasks in CHANGELOG cycle extras
 - [x] Task list filter by tag and due-soon window
 - [x] Sixth live SearchAdapter (Crossref)
+- [x] Task set notes and tags
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
