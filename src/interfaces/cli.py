@@ -200,7 +200,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     task_done = task_sub.add_parser("done", help="Mark a task done")
     task_done.add_argument("task_id", help="Task id such as T001")
-    task_set = task_sub.add_parser("set", help="Set task status / due / priority / notes / tags")
+    task_set = task_sub.add_parser("set", help="Set task status / due / priority / notes / tags / title")
     task_set.add_argument("task_id", help="Task id such as T001")
     task_set.add_argument(
         "status",
@@ -224,6 +224,11 @@ def main(argv: list[str] | None = None) -> int:
         action="append",
         dest="tags",
         help="Replace task tags (repeatable; omit to leave unchanged; pass empty to clear)",
+    )
+    task_set.add_argument(
+        "--title",
+        default=None,
+        help="Replace the task title (must be non-empty)",
     )
 
     args = parser.parse_args(argv)
@@ -328,9 +333,10 @@ def main(argv: list[str] | None = None) -> int:
                     and args.priority is None
                     and args.notes is None
                     and args.tags is None
+                    and args.title is None
                 ):
                     raise ValueError(
-                        "task set needs a status, --due, --priority, --notes, or --tag"
+                        "task set needs a status, --due, --priority, --notes, --tag, or --title"
                     )
                 task_obj = update_task(
                     args.root,
@@ -340,6 +346,7 @@ def main(argv: list[str] | None = None) -> int:
                     priority=args.priority,
                     notes=args.notes,
                     tags=args.tags,
+                    title=args.title,
                 )
                 extra = ""
                 if task_obj.priority != "medium":
