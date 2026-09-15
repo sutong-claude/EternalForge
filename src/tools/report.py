@@ -10,8 +10,9 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 import re
 from pathlib import Path
+from typing import Iterable
 
-from core.memory import Journal, MemoryEntry, normalize_kind
+from core.memory import Journal, MemoryEntry, normalize_kind, normalize_tags
 
 _QUERY_RE = re.compile(r"^Research\s+['\"](.+)['\"]\s*:", re.IGNORECASE)
 
@@ -148,7 +149,8 @@ def render_report(
         lines.append("")
         for entry in grouped[query]:
             stamp = entry.timestamp or "(no timestamp)"
-            lines.append(f"- {stamp} — {entry.summary}")
+            tag_bit = f" #{',#'.join(entry.tags)}" if entry.tags else ""
+            lines.append(f"- {stamp} — {entry.summary}{tag_bit}")
             details = (entry.details or "").strip()
             if details:
                 for dline in details.splitlines():
@@ -165,6 +167,7 @@ def write_report(
     since: date | None = None,
     until: date | None = None,
     max_entries: int | None = None,
+    tags: Iterable[str] | None = None,
 ) -> ReportResult:
     """Render a report from journal research hits and persist it."""
     day_key = day or _utc_day()
@@ -193,11 +196,13 @@ def write_report(
             seen.add(q)
             queries.append(q)
 
+    extra = list(tags) if tags is not None else []
     log.append(
         MemoryEntry.now(
             "report",
             f"Wrote research report {path.name} ({len(entries)} run(s), {len(queries)} query(ies))",
             markdown[:800],
+            tags=normalize_tags(["report", *extra]),
         )
     )
     return ReportResult(
