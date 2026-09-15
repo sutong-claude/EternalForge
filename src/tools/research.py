@@ -1,7 +1,7 @@
 """Research tool with a pluggable SearchAdapter interface.
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
-Open Library, and Hacker News Algolia (stdlib urllib, no API key).
+Open Library, Hacker News Algolia, and arXiv (stdlib urllib, no API key).
 Tests inject FixtureAdapter or call parse_*_payload helpers so they
 never hit the network. Backend ``multi`` merges the live adapters.
 """
@@ -231,6 +231,9 @@ _LIVE_EXTRA = {
     "hackernews",
     "hn",
     "algolia",
+    "arxiv",
+    "papers",
+    "preprint",
     "multi",
     "all",
 }
@@ -239,6 +242,7 @@ _LIVE_EXTRA = {
 def get_adapter(name: str | None = None) -> SearchAdapter:
     key = (name or "wikipedia").strip().lower()
     if key in _LIVE_EXTRA:
+        from tools import arxiv as axmod
         from tools import hackernews as hnmod
         from tools import openlibrary as olmod
 
@@ -246,6 +250,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return olmod.MultiAdapter()
         if key in {"hackernews", "hn", "algolia"}:
             return hnmod.HackerNewsAdapter()
+        if key in {"arxiv", "papers", "preprint"}:
+            return axmod.ArxivAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
@@ -319,6 +325,11 @@ def parse_hackernews_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_arxiv_payload(payload: dict, limit: int = 5):
+    from tools.arxiv import parse_arxiv_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -331,4 +342,7 @@ def __getattr__(name: str):
     if name == "HackerNewsAdapter":
         from tools.hackernews import HackerNewsAdapter
         return HackerNewsAdapter
+    if name == "ArxivAdapter":
+        from tools.arxiv import ArxivAdapter
+        return ArxivAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
