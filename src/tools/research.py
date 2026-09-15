@@ -1,9 +1,9 @@
 """Research tool with a pluggable SearchAdapter interface.
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
-and Open Library (stdlib urllib, no API key). Tests inject
-FixtureAdapter or call parse_*_payload helpers so they never hit
-the network. Backend ``multi`` merges those three live adapters.
+Open Library, and Hacker News Algolia (stdlib urllib, no API key).
+Tests inject FixtureAdapter or call parse_*_payload helpers so they
+never hit the network. Backend ``multi`` merges the live adapters.
 """
 
 from __future__ import annotations
@@ -225,17 +225,32 @@ ADAPTERS: dict[str, type] = {
     "fixture": FixtureAdapter,
 }
 
+_LIVE_EXTRA = {
+    "openlibrary",
+    "ol",
+    "books",
+    "hackernews",
+    "hn",
+    "algolia",
+    "multi",
+    "all",
+}
+
 
 def get_adapter(name: str | None = None) -> SearchAdapter:
     key = (name or "wikipedia").strip().lower()
-    if key in {"openlibrary", "ol", "books", "multi", "all"}:
+    if key in _LIVE_EXTRA:
+        from tools import hackernews as hnmod
         from tools import openlibrary as olmod
+
         if key in {"multi", "all"}:
             return olmod.MultiAdapter()
+        if key in {"hackernews", "hn", "algolia"}:
+            return hnmod.HackerNewsAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
-        known = ", ".join(sorted(set(ADAPTERS) | {"openlibrary", "multi"}))
+        known = ", ".join(sorted(set(ADAPTERS) | _LIVE_EXTRA))
         raise ValueError(f"Unknown search backend {name!r}. Known: {known}")
     return cls()
 
@@ -296,6 +311,11 @@ def parse_openlibrary_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_hackernews_payload(payload: dict, limit: int = 5):
+    from tools.hackernews import parse_hackernews_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -305,4 +325,7 @@ def __getattr__(name: str):
     if name in {"OpenLibraryAdapter", "MultiAdapter"}:
         from tools import openlibrary as olmod
         return getattr(olmod, name)
+    if name == "HackerNewsAdapter":
+        from tools.hackernews import HackerNewsAdapter
+        return HackerNewsAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

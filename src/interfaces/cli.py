@@ -13,8 +13,8 @@ from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
 
 BACKEND_HELP = (
-    "Search backend: wikipedia, duckduckgo, openlibrary, multi, fixture "
-    "(aliases: ddg, ol, books, all)"
+    "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, multi, fixture "
+    "(aliases: ddg, ol, books, hn, algolia, all)"
 )
 
 

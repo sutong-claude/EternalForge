@@ -7,6 +7,7 @@ from urllib.error import URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+from tools.hackernews import HackerNewsAdapter
 from tools.research import (
     USER_AGENT,
     DuckDuckGoAdapter,
@@ -152,6 +153,7 @@ class MultiAdapter:
             WikipediaAdapter(timeout=timeout),
             DuckDuckGoAdapter(timeout=timeout),
             OpenLibraryAdapter(timeout=timeout),
+            HackerNewsAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
