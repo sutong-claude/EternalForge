@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass, field
 import json
 from pathlib import Path
 import re
+from typing import Iterable
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 DAY_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
@@ -87,6 +88,19 @@ def normalize_tag(tag: str | None) -> str:
     return raw.strip()
 
 
+def merge_tags(*groups: Iterable[str] | None) -> list[str]:
+    """Order-preserving unique tags across extracted text and journal extra_tags."""
+    seen: dict[str, None] = {}
+    for group in groups:
+        if not group:
+            continue
+        for raw in group:
+            token = normalize_tag(str(raw) if raw is not None else "")
+            if token and token not in seen:
+                seen[token] = None
+    return list(seen)
+
+
 def extract_tags(*parts: str) -> list[str]:
     """Collect unique lowercase tags from #hashtags and `tags:` lines."""
     seen: dict[str, None] = {}
@@ -103,6 +117,15 @@ def extract_tags(*parts: str) -> list[str]:
             if token and token not in seen:
                 seen[token] = None
     return list(seen)
+
+
+def journal_extra_tags(raw_tags: object) -> list[str]:
+    """Normalize a journal `tags` field (string or list) into unique tags."""
+    if isinstance(raw_tags, str):
+        return extract_tags(f"tags: {raw_tags}")
+    if isinstance(raw_tags, list):
+        return merge_tags(raw_tags)
+    return []
 
 
 def document_matches(
@@ -230,12 +253,7 @@ def collect_documents(root: Path) -> list[Document]:
             timestamp = str(data.get("timestamp", "")).strip()
             if not kind and not summary and not details:
                 continue
-            raw_tags = data.get("tags", [])
-            extra_tags: list[str] = []
-            if isinstance(raw_tags, str):
-                extra_tags = extract_tags(f"tags: {raw_tags}")
-            elif isinstance(raw_tags, list):
-                extra_tags = [normalize_tag(str(t)) for t in raw_tags if normalize_tag(str(t))]
+            extra_tags = journal_extra_tags(data.get("tags", []))
             title = f"{kind or 'entry'}: {summary}".strip()
             body = " ".join(part for part in (kind, summary, details) if part)
             docs.append(
@@ -247,7 +265,7 @@ def collect_documents(root: Path) -> list[Document]:
                     text=body,
                     kind=kind or "journal",
                     timestamp=timestamp,
-                    tags=extract_tags(summary, details) + extra_tags,
+                    tags=merge_tags(extract_tags(summary, details), extra_tags),
                 )
             )
     return docs

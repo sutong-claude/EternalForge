@@ -21,10 +21,12 @@
 - [x] Index research reports in the knowledge base
 - [x] Tag or source facet on KB hits
 - [x] Surface report count in status
+- [x] Deduplicate tags when merging journal extra_tags + extracted tags
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Deduplicate tags when merging journal extra_tags + extracted tags
+- Optional: persist Reports=N in STATE metrics on cycle
+- Optional: persist journal tags on MemoryEntry writes
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking

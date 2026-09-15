@@ -15,6 +15,8 @@ from tools.kb import (
     extract_day,
     extract_tags,
     format_index_hits,
+    journal_extra_tags,
+    merge_tags,
     parse_day,
     search_index,
     search_kb,
@@ -70,6 +72,14 @@ def test_extract_tags_hashtags_and_lines() -> None:
     assert extract_tags("") == []
 
 
+def test_merge_tags_dedupes_and_preserves_order() -> None:
+    assert merge_tags(["Agents", "#pkm"], ["#agents", "notes", "PKM"]) == ["agents", "pkm", "notes"]
+    assert merge_tags(None, [], [""]) == []
+    assert journal_extra_tags("Agents, #pkm; agents") == ["agents", "pkm"]
+    assert journal_extra_tags(["#Agents", "pkm", "Agents"]) == ["agents", "pkm"]
+    assert journal_extra_tags(None) == []
+
+
 def test_extract_and_parse_day() -> None:
     assert extract_day("2026-09-14.md") == "2026-09-14"
     assert extract_day("2026-09-14T18:00:00Z") == "2026-09-14"
@@ -107,6 +117,28 @@ def test_collect_indexes_reports_subdir(tmp_path: Path) -> None:
     assert doc.timestamp == "2026-09-15"
     assert "transformer" in doc.text.lower()
     assert "transformers" in doc.tags
+
+
+def test_journal_tags_merge_dedupes_extra_and_extracted(tmp_path: Path) -> None:
+    memory = tmp_path / "memory"
+    memory.mkdir()
+    (memory / "journal.jsonl").write_text(
+        json.dumps(
+            {
+                "timestamp": "2026-09-15T07:00:00Z",
+                "kind": "research",
+                "summary": "overlap paper #Agents #notes",
+                "details": "body mentions #pkm",
+                "tags": ["Agents", "#pkm", "extra"],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    docs = collect_documents(tmp_path)
+    journal = next(d for d in docs if d.source == "journal")
+    assert journal.tags == ["agents", "notes", "pkm", "extra"]
+    assert len(journal.tags) == len(set(journal.tags))
 
 
 def test_search_ranks_matching_docs(tmp_path: Path) -> None:
