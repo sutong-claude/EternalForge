@@ -36,6 +36,7 @@
 - [x] Sixth live SearchAdapter (Crossref)
 - [x] Task set notes and tags
 - [x] Task title edit on set
+- [x] Task list text search on title + notes
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter

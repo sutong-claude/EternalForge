@@ -15,6 +15,7 @@ from tools.tasks import (
     normalize_due,
     normalize_due_soon_days,
     normalize_priority,
+    normalize_query,
     normalize_sort,
     normalize_status,
     set_task_status,
@@ -77,6 +78,11 @@ def test_normalize_due_soon_days() -> None:
         assert "due-soon" in str(exc)
     else:
         raise AssertionError("expected ValueError")
+
+
+def test_normalize_query() -> None:
+    assert normalize_query(None) == ""
+    assert normalize_query("  Write   Tests ") == "write tests"
 
 
 def test_add_and_list_tasks(tmp_path: Path) -> None:
@@ -158,6 +164,20 @@ def test_list_by_tag_and_due_soon(tmp_path: Path) -> None:
     text = format_tasks([core, late], today=today)
     assert "DUE-SOON" in text
     assert "OVERDUE" in text
+
+
+def test_list_by_query(tmp_path: Path) -> None:
+    title_hit = add_task(tmp_path, "Review arXiv hits", notes="skim abstracts")
+    notes_hit = add_task(tmp_path, "File taxes", notes="Include arXiv stipend receipt")
+    miss = add_task(tmp_path, "Water plants", notes="kitchen")
+    assert title_hit.matches_query("ARXIV")
+    assert notes_hit.matches_query("arxiv")
+    assert not miss.matches_query("arxiv")
+    assert miss.matches_query("")
+    rows = list_tasks(tmp_path, query="  ArXiv ")
+    assert [t.id for t in rows] == [title_hit.id, notes_hit.id]
+    assert list_tasks(tmp_path, query="kitchen")[0].id == miss.id
+    assert list_tasks(tmp_path, query="missing token") == []
 
 
 def test_update_notes_and_tags(tmp_path: Path) -> None:
