@@ -35,6 +35,7 @@
 - [x] Task list filter by tag and due-soon window
 - [x] Sixth live SearchAdapter (Crossref)
 - [x] Task set notes and tags
+- [x] Task title edit on set
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
