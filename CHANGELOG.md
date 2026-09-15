@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.0 — 2026-09-15
+
+- Fifth live SearchAdapter: arXiv via the export Atom API (`ArxivAdapter`, `parse_arxiv_payload`, `parse_arxiv_xml`).
+- CLI `--backend arxiv` (aliases: papers, preprint).
+- `MultiAdapter` now includes arXiv as a fifth live source.
+- Payload / Atom XML tests do not hit the network.
+
 ## 0.9.2 — 2026-09-15
 
 - Persist journal `tags` on `MemoryEntry` writes (`normalize_tags`, JSONL field).

@@ -6,7 +6,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from core.memory import Journal
+from tools.arxiv import parse_arxiv_xml
 from tools.research import (
+    ArxivAdapter,
     DuckDuckGoAdapter,
     FixtureAdapter,
     HackerNewsAdapter,
@@ -17,6 +19,7 @@ from tools.research import (
     format_hits,
     get_adapter,
     merge_hits,
+    parse_arxiv_payload,
     parse_duckduckgo_payload,
     parse_hackernews_payload,
     parse_openlibrary_payload,
@@ -40,6 +43,7 @@ def test_empty_query_returns_nothing() -> None:
     assert WikipediaAdapter().search("") == []
     assert OpenLibraryAdapter().search("") == []
     assert HackerNewsAdapter().search("") == []
+    assert ArxivAdapter().search("") == []
     assert MultiAdapter(adapters=[FixtureAdapter()]).search("  ") == []
 
 
@@ -111,6 +115,9 @@ def test_get_adapter_resolves_known_backends() -> None:
     assert get_adapter("hackernews").name == "hackernews"
     assert get_adapter("hn").name == "hackernews"
     assert get_adapter("algolia").name == "hackernews"
+    assert get_adapter("arxiv").name == "arxiv"
+    assert get_adapter("papers").name == "arxiv"
+    assert get_adapter("preprint").name == "arxiv"
     assert get_adapter("multi").name == "multi"
     assert get_adapter("all").name == "multi"
     assert get_adapter("fixture").name == "fixture"
@@ -258,6 +265,72 @@ def test_parse_hackernews_respects_limit() -> None:
     }
     hits = parse_hackernews_payload(payload, limit=1)
     assert [h.title for h in hits] == ["A"]
+
+
+def test_parse_arxiv_payload() -> None:
+    payload = {
+        "entries": [
+            {
+                "id": "http://arxiv.org/abs/1706.03762v7",
+                "title": "Attention Is All You Need",
+                "url": "http://arxiv.org/abs/1706.03762v7",
+                "authors": ["Ashish Vaswani", "Noam Shazeer"],
+                "published": "2017-06-12",
+                "summary": "The dominant sequence transduction models.",
+            },
+            {
+                "id": "http://arxiv.org/abs/1406.2661",
+                "title": "Generative Adversarial Nets",
+                "url": "http://arxiv.org/abs/1406.2661",
+                "authors": ["Ian Goodfellow"],
+                "published": "2014-06-10",
+                "summary": "",
+            },
+            {"title": "", "url": "", "id": ""},
+        ]
+    }
+    hits = parse_arxiv_payload(payload, limit=5)
+    assert len(hits) == 2
+    assert hits[0].title == "Attention Is All You Need"
+    assert hits[0].url == "http://arxiv.org/abs/1706.03762v7"
+    assert hits[0].source == "arxiv"
+    assert "Vaswani" in hits[0].snippet
+    assert "2017-06-12" in hits[0].snippet
+    assert "transduction" in hits[0].snippet
+    assert hits[1].title == "Generative Adversarial Nets"
+    assert "Goodfellow" in hits[1].snippet
+
+
+def test_parse_arxiv_respects_limit() -> None:
+    payload = {
+        "entries": [
+            {"title": "A", "url": "http://arxiv.org/abs/a"},
+            {"title": "B", "url": "http://arxiv.org/abs/b"},
+        ]
+    }
+    hits = parse_arxiv_payload(payload, limit=1)
+    assert [h.title for h in hits] == ["A"]
+
+
+def test_parse_arxiv_xml_atom() -> None:
+    raw = """<?xml version="1.0" encoding="UTF-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <entry>
+        <id>http://arxiv.org/abs/1706.03762v7</id>
+        <title>Attention Is All You Need</title>
+        <published>2017-06-12T17:57:34Z</published>
+        <summary>The dominant sequence transduction models.</summary>
+        <author><name>Ashish Vaswani</name></author>
+        <link href="http://arxiv.org/abs/1706.03762v7" rel="alternate" type="text/html"/>
+      </entry>
+    </feed>
+    """
+    payload = parse_arxiv_xml(raw)
+    hits = parse_arxiv_payload(payload, limit=5)
+    assert len(hits) == 1
+    assert hits[0].title == "Attention Is All You Need"
+    assert hits[0].source == "arxiv"
+    assert "Vaswani" in hits[0].snippet
 
 
 def test_merge_hits_round_robin_and_dedupe() -> None:
