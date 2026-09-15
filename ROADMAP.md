@@ -18,10 +18,10 @@
 - [x] Journal kind filter on status / recent dump
 - [x] Knowledge base query filters (kind / date)
 - [x] Automated report generation from journal research hits
+- [x] Index research reports in the knowledge base
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Index research reports in the knowledge base
 - Tag or source facet on KB hits
 
 ## Phase 3 – Personal Productivity Platform

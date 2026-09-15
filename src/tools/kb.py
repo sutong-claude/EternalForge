@@ -1,4 +1,4 @@
-"""Knowledge-base index over memory/ markdown and the JSONL journal.
+"""Knowledge-base index over memory/ markdown, reports, and the JSONL journal.
 
 Rebuilds in-memory from disk (no network). Optional snapshot at
 memory/kb-index.json for inspection by later tools.
@@ -125,14 +125,16 @@ def _snippet(text: str, query_tokens: list[str], width: int = 160) -> str:
     return chunk
 
 
-def collect_documents(root: Path) -> list[Document]:
-    """Load markdown notes and journal rows under memory/."""
-    memory = root / "memory"
-    docs: list[Document] = []
-    if not memory.exists():
-        return docs
+def _markdown_kind_and_source(rel: str) -> tuple[str, str]:
+    """Classify a memory-relative markdown path."""
+    posix = rel.replace("\\", "/")
+    if posix.startswith("memory/reports/") or "/reports/" in f"/{posix}":
+        return "report", "report"
+    return "markdown", "markdown"
 
-    for path in sorted(memory.glob("*.md")):
+
+def _add_markdown_docs(docs: list[Document], root: Path, paths: list[Path]) -> None:
+    for path in paths:
         if path.name in SKIP_NAMES:
             continue
         try:
@@ -140,18 +142,32 @@ def collect_documents(root: Path) -> list[Document]:
         except OSError:
             continue
         rel = path.relative_to(root).as_posix()
-        day = extract_day(path.name)
+        kind, source = _markdown_kind_and_source(rel)
+        day = extract_day(path.name) or extract_day(rel)
         docs.append(
             Document(
-                doc_id=f"md:{path.name}",
-                source="markdown",
+                doc_id=f"md:{rel}",
+                source=source,
                 path=rel,
                 title=_title_from_markdown(text, path.name),
                 text=text,
-                kind="markdown",
+                kind=kind,
                 timestamp=day or "",
             )
         )
+
+
+def collect_documents(root: Path) -> list[Document]:
+    """Load markdown notes, research reports, and journal rows under memory/."""
+    memory = root / "memory"
+    docs: list[Document] = []
+    if not memory.exists():
+        return docs
+
+    top_level = sorted(memory.glob("*.md"))
+    reports_dir = memory / "reports"
+    report_files = sorted(reports_dir.glob("*.md")) if reports_dir.is_dir() else []
+    _add_markdown_docs(docs, root, top_level + report_files)
 
     journal = memory / "journal.jsonl"
     if journal.exists():

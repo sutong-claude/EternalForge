@@ -30,6 +30,13 @@ def _seed(tmp_path: Path) -> Path:
         "Notes about autonomous software agents and personal knowledge.\n",
         encoding="utf-8",
     )
+    reports = memory / "reports"
+    reports.mkdir()
+    (reports / "2026-09-15.md").write_text(
+        "# Research report \u2014 2026-09-15\n\n"
+        "Compiled findings on transformer attention and retrieval.\n",
+        encoding="utf-8",
+    )
     journal = Journal(memory / "journal.jsonl")
     journal.append(
         MemoryEntry(
@@ -69,11 +76,25 @@ def test_collect_markdown_and_journal(tmp_path: Path) -> None:
     sources = {d.source for d in docs}
     assert "markdown" in sources
     assert "journal" in sources
+    assert "report" in sources
     titles = [d.title for d in docs]
     assert any("Knowledge capture" in t for t in titles)
     md = next(d for d in docs if d.source == "markdown")
     assert md.kind == "markdown"
     assert md.timestamp == "2026-09-14"
+    assert md.doc_id.startswith("md:")
+
+
+def test_collect_indexes_reports_subdir(tmp_path: Path) -> None:
+    docs = collect_documents(_seed(tmp_path))
+    reports = [d for d in docs if d.source == "report"]
+    assert len(reports) == 1
+    doc = reports[0]
+    assert doc.kind == "report"
+    assert doc.path == "memory/reports/2026-09-15.md"
+    assert doc.doc_id == "md:memory/reports/2026-09-15.md"
+    assert doc.timestamp == "2026-09-15"
+    assert "transformer" in doc.text.lower()
 
 
 def test_search_ranks_matching_docs(tmp_path: Path) -> None:
@@ -93,6 +114,10 @@ def test_search_filters_by_kind(tmp_path: Path) -> None:
     capture = search_kb(root, "knowledge", kind="CAPTURE")
     assert capture
     assert all(h.kind.lower() == "capture" for h in capture)
+    report = search_kb(root, "transformer retrieval", kind="report")
+    assert report
+    assert all(h.kind.lower() == "report" for h in report)
+    assert all("reports/" in h.path for h in report)
     missing = search_kb(root, "knowledge", kind="cycle")
     assert missing == []
 
@@ -156,3 +181,12 @@ def test_max_results_limit(tmp_path: Path) -> None:
         (memory / f"note-{i}.md").write_text(f"# note {i}\nshared token alpha\n", encoding="utf-8")
     hits = search_index(build_index(root=tmp_path), "alpha", max_results=2)
     assert len(hits) == 2
+
+
+def test_missing_reports_dir_is_fine(tmp_path: Path) -> None:
+    memory = tmp_path / "memory"
+    memory.mkdir()
+    (memory / "2026-09-14.md").write_text("# note\nalpha token\n", encoding="utf-8")
+    docs = collect_documents(tmp_path)
+    assert all(d.source != "report" for d in docs)
+    assert search_kb(tmp_path, "alpha")

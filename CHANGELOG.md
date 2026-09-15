@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.4 — 2026-09-15
+
+- Knowledge base indexes `memory/reports/*.md` as `kind=report` / `source=report`.
+- Document ids use the repo-relative path (`md:memory/reports/…`) so daily notes and reports do not collide.
+- `eternalforge kb QUERY --kind report` filters compiled research reports.
+- Tests cover report collection, kind filter, and a missing reports directory.
+
 ## 0.8.3 — 2026-09-15
 
 - Automated research report from journal `kind=research` hits (`tools.report`).

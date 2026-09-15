@@ -1,18 +1,19 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-15 03:05 UTC
+**Last updated:** 2026-09-15 04:10 UTC
 **Current phase:** Core Agent
-**Overall progress:** 48%
+**Overall progress:** 50%
 
 ## Current Goal
 Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
 
 ## Immediate Priorities (next few runs)
-1. Fourth live SearchAdapter (optional)
-2. Tag or source facet on KB hits beyond kind/date
-3. Include reports/ markdown in the knowledge-base index
+1. Tag or source facet on KB hits beyond kind/date
+2. Fourth live SearchAdapter (optional)
+3. Surface report count in status or metrics
 
 ## Recent Actions
+- [2026-09-15 04:10 UTC] KB indexes `memory/reports/*.md` as `kind=report` / `source=report`; doc ids are repo-relative (`md:memory/reports/…`); `kb QUERY --kind report` filters compiled reports.
 - [2026-09-15 03:05 UTC] Research report markdown: `tools.report.write_report` groups journal `kind=research` hits by query; writes `memory/reports/YYYY-MM-DD.md`; CLI `eternalforge report [--day] [--since] [--until] [--max]`; journals `kind=report`.
 - [2026-09-15 02:10 UTC] KB query filters: `search_kb` / `search_index` accept `kind`, `since`, `until`; markdown dates from `YYYY-MM-DD.md`; CLI `eternalforge kb QUERY [--kind] [--since] [--until]`.
 - [2026-09-15 01:20 UTC] Journal kind filter: `Journal.recent(kind=)` + CLI `eternalforge recent [--kind] [--max]` and `status --kind`; case-insensitive match; dump timestamp/kind/summary.
@@ -35,10 +36,10 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 
 ## Metrics
 - Files: 37
-- Tests: 78
-- Features shipped: 15
-- Cycles: 8
+- Tests: 81
+- Features shipped: 16
+- Cycles: 9
 - Documentation coverage: Core
 
 ## Notes for next agent
-Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py plus src/tools/openlibrary.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--kind K] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--write-index]` indexes memory/*.md and journal.jsonl (src/tools/kb.py). Research reports: `eternalforge report [--day YYYY-MM-DD] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--max N]` writes memory/reports/YYYY-MM-DD.md from journal research hits (src/tools/report.py) and journals kind=report. Journal dump: `eternalforge recent [--kind K] [--max N]`. Status includes `changelog_versions`, `journal_kinds`, and optional `journal_filter` when `--kind` is set. Planner skips blank/None-yet entries. Progress parsing is `parse_progress` in core.state. Next: fourth SearchAdapter or KB tag/source facet. Keep one task per hour. Do not rewrite the protocol; extend it.
+Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py plus src/tools/openlibrary.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--kind K] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--write-index]` indexes memory/*.md, memory/reports/*.md (kind=report), and journal.jsonl (src/tools/kb.py). Research reports: `eternalforge report [--day YYYY-MM-DD] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--max N]` writes memory/reports/YYYY-MM-DD.md from journal research hits (src/tools/report.py) and journals kind=report. Journal dump: `eternalforge recent [--kind K] [--max N]`. Status includes `changelog_versions`, `journal_kinds`, and optional `journal_filter` when `--kind` is set. Planner skips blank/None-yet entries. Progress parsing is `parse_progress` in core.state. Next: tag/source facet on KB hits, or a fourth SearchAdapter. Keep one task per hour. Do not rewrite the protocol; extend it.
