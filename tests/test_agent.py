@@ -8,7 +8,7 @@ from core.agent import Agent
 from core.memory import Journal, MemoryEntry
 from core.state import dump_state, ForgeState, parse_state
 from interfaces.cli import main
-from tools.tasks import add_task
+from tools.tasks import add_task, set_task_status
 
 
 def _seed(tmp: Path) -> Path:
@@ -132,6 +132,7 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
     assert state.metrics["Reports"] == "0"
+    assert state.metrics["Tasks"] == "0"
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
@@ -150,3 +151,14 @@ def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
     Agent(root).run_once(dry_run=False)
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Reports"] == "1"
+
+
+def test_cycle_persists_open_task_count_in_state(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    open_task = add_task(root, "still open")
+    closed = add_task(root, "already done")
+    set_task_status(root, closed.id, "done")
+    Agent(root).run_once(dry_run=False)
+    state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
+    assert state.metrics["Tasks"] == "1"
+    assert open_task.status == "open"

@@ -6,6 +6,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from core.metrics import bump_metrics
 from core.state import ForgeState
+from tools.tasks import add_task, set_task_status
 
 
 def _state() -> ForgeState:
@@ -23,11 +24,13 @@ def test_bump_without_root_does_not_add_reports() -> None:
     state = bump_metrics(_state(), root=None)
     assert state.metrics["Cycles"] == "4"
     assert "Reports" not in state.metrics
+    assert "Tasks" not in state.metrics
 
 
 def test_bump_with_root_sets_reports_zero(tmp_path: Path) -> None:
     state = bump_metrics(_state(), root=tmp_path)
     assert state.metrics["Reports"] == "0"
+    assert state.metrics["Tasks"] == "0"
     assert state.metrics["Cycles"] == "4"
 
 
@@ -39,3 +42,11 @@ def test_bump_with_root_counts_report_markdown(tmp_path: Path) -> None:
     (folder / "skip.txt").write_text("no\n", encoding="utf-8")
     state = bump_metrics(_state(), root=tmp_path)
     assert state.metrics["Reports"] == "2"
+
+
+def test_bump_with_root_counts_open_tasks(tmp_path: Path) -> None:
+    add_task(tmp_path, "keep open")
+    closed = add_task(tmp_path, "close me")
+    set_task_status(tmp_path, closed.id, "done")
+    state = bump_metrics(_state(), root=tmp_path)
+    assert state.metrics["Tasks"] == "1"

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.1 — 2026-09-15
+
+- Persist open task count in STATE metrics on cycle (`Tasks=N`).
+- `bump_metrics` recounts `memory/tasks.jsonl` via `count_open_tasks` when a workspace root is given.
+- Done / cancelled tasks are excluded; missing store → 0.
+- Tests cover no-root skip, empty store, open-only count, and cycle write-back.
+
 ## 0.11.0 — 2026-09-15
 
 - Task-tracking skeleton: JSONL store at `memory/tasks.jsonl` (`tools.tasks`).

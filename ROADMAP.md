@@ -28,6 +28,7 @@
 - [x] Fifth live SearchAdapter (arXiv)
 - [x] Journal recent dump filter by persisted tag
 - [x] Task-tracking skeleton
+- [x] Persist Tasks=N in STATE metrics on cycle
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
