@@ -382,6 +382,7 @@ def update_task(
     priority: str | None = None,
     notes: str | None = None,
     tags: Iterable[str] | None = None,
+    title: str | None = None,
     journal: Journal | None = None,
 ) -> Task:
     wanted = (task_id or "").strip()
@@ -405,6 +406,11 @@ def update_task(
         found.notes = str(notes).strip()
     if tags is not None:
         found.tags = normalize_tags(list(tags))
+    if title is not None:
+        cleaned = str(title).strip()
+        if not cleaned:
+            raise ValueError("task title must not be empty")
+        found.title = cleaned
     found.updated = _utc_now()
     save_tasks(root, tasks)
     log = journal or Journal(root / "memory" / "journal.jsonl")
@@ -419,6 +425,8 @@ def update_task(
         parts.append("notes" if found.notes else "notes=-")
     if tags is not None:
         parts.append("#" + ",#".join(found.tags) if found.tags else "tags=-")
+    if title is not None:
+        parts.append(f"title={found.title}")
     parts.append(f": {found.title}")
     log.append(
         MemoryEntry.now(
