@@ -319,15 +319,15 @@ def test_parse_arxiv_respects_limit() -> None:
 
 
 def test_parse_arxiv_xml_atom() -> None:
-    raw = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-    <feed xmlns=\"http://www.w3.org/2005/Atom\">
+    raw = """<?xml version="1.0" encoding="UTF-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom">
       <entry>
         <id>http://arxiv.org/abs/1706.03762v7</id>
         <title>Attention Is All You Need</title>
         <published>2017-06-12T17:57:34Z</published>
         <summary>The dominant sequence transduction models.</summary>
         <author><name>Ashish Vaswani</name></author>
-        <link href=\"http://arxiv.org/abs/1706.03762v7\" rel=\"alternate\" type=\"text/html\"/>
+        <link href="http://arxiv.org/abs/1706.03762v7" rel="alternate" type="text/html"/>
       </entry>
     </feed>
     """
