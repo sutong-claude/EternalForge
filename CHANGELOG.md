@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.2 — 2026-09-15
+
+- `update_task` can replace the title (`title=`; omit to leave unchanged).
+- Empty / whitespace-only titles are rejected (same rule as `add_task`).
+- CLI: `task set ID [--title TEXT]`.
+- Journal `kind=task` rows record `title=` when the name changes.
+
 ## 0.12.1 — 2026-09-15
 
 - `update_task` can replace notes and tags (`notes=`, `tags=`; omit to leave unchanged; empty clears).
