@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.2 — 2026-09-15
+
+- Task due dates and priority on `memory/tasks.jsonl`.
+- `normalize_due` (YYYY-MM-DD) and `normalize_priority` (low/medium/high/urgent; aliases p0–p3).
+- `update_task` sets status / due / priority; `set_task_status` remains a thin wrapper.
+- CLI: `task add --due --priority`, `task list --priority`, `task set ID [STATUS] [--due] [--priority]`.
+- List formatting shows `p=` when not medium and `due=` when set; legacy rows default to medium / no due.
+
 ## 0.11.1 — 2026-09-15
 
 - Persist open task count in STATE metrics on cycle (`Tasks=N`).
