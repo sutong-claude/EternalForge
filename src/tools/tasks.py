@@ -16,6 +16,8 @@ from core.memory import Journal, MemoryEntry, normalize_tags
 
 STATUSES = ("open", "done", "cancelled")
 PRIORITIES = ("low", "medium", "high", "urgent")
+PRIORITY_RANK = {"urgent": 0, "high": 1, "medium": 2, "low": 3}
+SORTS = ("due", "priority")
 
 
 def tasks_path(root: Path) -> Path:
@@ -76,8 +78,25 @@ def normalize_due(due: str | None) -> str:
     return parsed.isoformat()
 
 
+def normalize_sort(sort: str | None) -> str:
+    raw = (sort or "due").strip().lower()
+    aliases = {"date": "due", "deadline": "due", "pri": "priority", "p": "priority"}
+    raw = aliases.get(raw, raw)
+    if raw not in SORTS:
+        raise ValueError(f"sort must be one of {', '.join(SORTS)}, got {sort!r}")
+    return raw
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _today(today: date | str | None = None) -> date:
+    if today is None:
+        return datetime.now(timezone.utc).date()
+    if isinstance(today, date):
+        return today
+    return date.fromisoformat(str(today))
 
 
 @dataclass
@@ -101,6 +120,20 @@ class Task:
         if not priority or not str(priority).strip():
             return True
         return self.priority == normalize_priority(priority)
+
+    def is_overdue(self, today: date | str | None = None) -> bool:
+        if self.status != "open" or not self.due:
+            return False
+        return date.fromisoformat(self.due) < _today(today)
+
+    def sort_key(self, sort: str | None = None) -> tuple:
+        mode = normalize_sort(sort)
+        rank = PRIORITY_RANK.get(self.priority, 2)
+        undated = 1 if not self.due else 0
+        due = self.due or "9999-12-31"
+        if mode == "priority":
+            return (rank, undated, due, self.id)
+        return (undated, due, rank, self.id)
 
 
 def _next_id(existing: list[Task]) -> str:
@@ -179,21 +212,32 @@ def count_open_tasks(root: Path) -> int:
     return sum(1 for task in load_tasks(root) if task.status == "open")
 
 
+def sort_tasks(tasks: Iterable[Task], sort: str | None = "due") -> list[Task]:
+    return sorted(tasks, key=lambda task: task.sort_key(sort))
+
+
 def list_tasks(
     root: Path,
     status: str | None = None,
     priority: str | None = None,
+    *,
+    overdue: bool = False,
+    sort: str | None = "due",
+    today: date | str | None = None,
 ) -> list[Task]:
     wanted = status.strip() if status and status.strip() else None
     wanted_pri = priority.strip() if priority and priority.strip() else None
-    return [
+    rows = [
         task
         for task in load_tasks(root)
         if task.matches_status(wanted) and task.matches_priority(wanted_pri)
     ]
+    if overdue:
+        rows = [task for task in rows if task.is_overdue(today)]
+    return sort_tasks(rows, sort=sort)
 
 
-def format_tasks(tasks: list[Task]) -> str:
+def format_tasks(tasks: list[Task], today: date | str | None = None) -> str:
     if not tasks:
         return "(no tasks)"
     lines: list[str] = []
@@ -201,7 +245,10 @@ def format_tasks(tasks: list[Task]) -> str:
         tag_bit = f" #{',#'.join(task.tags)}" if task.tags else ""
         due_bit = f" due={task.due}" if task.due else ""
         pri_bit = f" p={task.priority}" if task.priority != "medium" else ""
-        lines.append(f"{task.id}\t{task.status}\t{task.title}{pri_bit}{due_bit}{tag_bit}")
+        overdue_bit = " OVERDUE" if task.is_overdue(today) else ""
+        lines.append(
+            f"{task.id}\t{task.status}{overdue_bit}\t{task.title}{pri_bit}{due_bit}{tag_bit}"
+        )
         if task.notes:
             lines.append(f"\t{task.notes}")
     return "\n".join(lines)

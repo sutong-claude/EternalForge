@@ -174,6 +174,16 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Filter by priority: low, medium, high, urgent",
     )
+    task_list.add_argument(
+        "--overdue",
+        action="store_true",
+        help="Only open tasks whose due date is before today",
+    )
+    task_list.add_argument(
+        "--sort",
+        default="due",
+        help="Sort by due (default) or priority",
+    )
     task_done = task_sub.add_parser("done", help="Mark a task done")
     task_done.add_argument("task_id", help="Task id such as T001")
     task_set = task_sub.add_parser("set", help="Set task status / due / priority")
@@ -276,6 +286,8 @@ def main(argv: list[str] | None = None) -> int:
                             args.root,
                             status=args.status,
                             priority=args.priority,
+                            overdue=args.overdue,
+                            sort=args.sort,
                         )
                     )
                 )
