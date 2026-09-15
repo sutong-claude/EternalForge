@@ -21,6 +21,25 @@ def _utc_day(when: datetime | None = None) -> str:
     return stamp.strftime("%Y-%m-%d")
 
 
+def reports_dir(root: Path) -> Path:
+    return root / "memory" / "reports"
+
+
+def count_reports(root: Path) -> int:
+    """Count compiled research reports under memory/reports/*.md."""
+    folder = reports_dir(root)
+    if not folder.is_dir():
+        return 0
+    n = 0
+    try:
+        for path in folder.iterdir():
+            if path.is_file() and path.suffix.lower() == ".md":
+                n += 1
+    except OSError:
+        return 0
+    return n
+
+
 def parse_day(value: str | None) -> date | None:
     if value is None or not str(value).strip():
         return None
@@ -161,9 +180,9 @@ def write_report(
     )
     markdown = render_report(day_key, entries, since=since, until=until)
 
-    reports_dir = memory_dir / "reports"
-    reports_dir.mkdir(parents=True, exist_ok=True)
-    path = reports_dir / f"{day_key}.md"
+    folder = reports_dir(root)
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / f"{day_key}.md"
     path.write_text(markdown, encoding="utf-8")
 
     queries: list[str] = []

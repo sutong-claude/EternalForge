@@ -37,6 +37,7 @@ def test_status_includes_changelog_versions(tmp_path: Path) -> None:
     agent = Agent(_seed(tmp_path))
     text = agent.status()
     assert "changelog_versions=1" in text
+    assert "reports=0" in text
     assert "phase=Core Agent" in text
     assert "progress=18%" in text
     assert "journal_kinds=-" in text
@@ -47,6 +48,17 @@ def test_status_zero_versions_when_changelog_missing(tmp_path: Path) -> None:
     (root / "CHANGELOG.md").unlink()
     text = Agent(root).status()
     assert "changelog_versions=0" in text
+    assert "reports=0" in text
+
+
+def test_status_includes_report_count(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    folder = root / "memory" / "reports"
+    folder.mkdir(parents=True)
+    (folder / "2026-09-14.md").write_text("# r1\n", encoding="utf-8")
+    (folder / "2026-09-15.md").write_text("# r2\n", encoding="utf-8")
+    text = Agent(root).status()
+    assert "reports=2" in text
 
 
 def test_status_includes_recent_journal_kinds(tmp_path: Path) -> None:
@@ -103,3 +115,4 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     status = Agent(root).status()
     assert "changelog_versions=2" in status
     assert "journal_kinds=cycle" in status
+    assert "reports=0" in status

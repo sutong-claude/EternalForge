@@ -2,7 +2,7 @@
 
 from tools.capture import CaptureResult, capture
 from tools.kb import IndexHit, KnowledgeIndex, build_index, search_kb
-from tools.report import ReportResult, write_report
+from tools.report import ReportResult, count_reports, write_report
 from tools.research import Hit, SearchAdapter, get_adapter, record_hits, search, summarize
 
 __all__ = [
@@ -19,5 +19,6 @@ __all__ = [
     "build_index",
     "search_kb",
     "write_report",
+    "count_reports",
     "ReportResult",
 ]

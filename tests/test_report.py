@@ -8,6 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from core.memory import Journal, MemoryEntry
 from tools.report import (
+    count_reports,
     parse_research_query,
     render_report,
     research_entries,
@@ -113,6 +114,21 @@ def test_write_report_persists_markdown_and_journal(tmp_path: Path) -> None:
     row = json.loads(journal.path.read_text(encoding="utf-8").splitlines()[-1])
     assert row["kind"] == "report"
     assert "2026-09-15.md" in row["summary"]
+    assert count_reports(tmp_path) == 1
+
+
+def test_count_reports_missing_dir_is_zero(tmp_path: Path) -> None:
+    assert count_reports(tmp_path) == 0
+
+
+def test_count_reports_counts_markdown_only(tmp_path: Path) -> None:
+    folder = tmp_path / "memory" / "reports"
+    folder.mkdir(parents=True)
+    (folder / "2026-09-14.md").write_text("# a\n", encoding="utf-8")
+    (folder / "2026-09-15.md").write_text("# b\n", encoding="utf-8")
+    (folder / "notes.txt").write_text("ignore\n", encoding="utf-8")
+    (folder / "nested").mkdir()
+    assert count_reports(tmp_path) == 2
 
 
 def test_invalid_day_raises(tmp_path: Path) -> None:

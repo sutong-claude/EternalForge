@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.6 — 2026-09-15
+
+- Surface compiled research report count in `eternalforge status` as `reports=N`.
+- `tools.report.count_reports` counts `memory/reports/*.md` (missing dir → 0; ignore non-markdown).
+- Tests for missing directory, markdown-only counting, and status wiring.
+
 ## 0.8.5 — 2026-09-15
 
 - Knowledge-base source and tag facets on hits.

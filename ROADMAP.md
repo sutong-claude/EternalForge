@@ -20,10 +20,11 @@
 - [x] Automated report generation from journal research hits
 - [x] Index research reports in the knowledge base
 - [x] Tag or source facet on KB hits
+- [x] Surface report count in status
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Surface report count in status / metrics
+- Deduplicate tags when merging journal extra_tags + extracted tags
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking
