@@ -52,6 +52,12 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Skip writing hits to memory/journal.jsonl",
     )
+    research.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Tag to persist on the journal row (repeatable)",
+    )
     cap = sub.add_parser("capture", help="Research topics and write memory/YYYY-MM-DD.md")
     cap.add_argument(
         "--topic",
@@ -66,6 +72,12 @@ def main(argv: list[str] | None = None) -> int:
         "--offline",
         action="store_true",
         help="Use FixtureAdapter instead of a live backend",
+    )
+    cap.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Tag to persist on the journal row (repeatable)",
     )
     kb = sub.add_parser("kb", help="Search memory markdown + journal")
     kb.add_argument("query", nargs="+", help="Knowledge-base query")
@@ -122,6 +134,12 @@ def main(argv: list[str] | None = None) -> int:
         dest="max_entries",
         help="Keep only the last N matching research entries",
     )
+    report.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Tag to persist on the report journal row (repeatable)",
+    )
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -139,7 +157,7 @@ def main(argv: list[str] | None = None) -> int:
             adapter = FixtureAdapter() if args.offline else get_adapter(args.backend)
             hits = search(query, max_results=args.max_results, adapter=adapter)
             if not args.no_journal:
-                record_hits(query, hits, root=args.root)
+                record_hits(query, hits, root=args.root, tags=args.tags)
             print(format_hits(hits))
         elif args.cmd == "capture":
             adapter = FixtureAdapter() if args.offline else get_adapter(args.backend)
@@ -150,6 +168,7 @@ def main(argv: list[str] | None = None) -> int:
                 adapter=adapter,
                 max_results=args.max_results,
                 day=args.day,
+                tags=args.tags,
             )
             print(f"wrote {result.path} ({result.hit_count} hits, {len(result.topics)} topics)")
         elif args.cmd == "kb":
@@ -178,6 +197,7 @@ def main(argv: list[str] | None = None) -> int:
                 since=since,
                 until=until,
                 max_entries=args.max_entries,
+                tags=args.tags,
             )
             print(
                 f"wrote {result.path} "
