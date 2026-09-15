@@ -175,9 +175,23 @@ def main(argv: list[str] | None = None) -> int:
         help="Filter by priority: low, medium, high, urgent",
     )
     task_list.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Filter by tag (repeatable; match any; leading # optional)",
+    )
+    task_list.add_argument(
         "--overdue",
         action="store_true",
         help="Only open tasks whose due date is before today",
+    )
+    task_list.add_argument(
+        "--due-soon",
+        nargs="?",
+        const=7,
+        default=None,
+        dest="due_soon",
+        help="Only open tasks due today through N days (default 7)",
     )
     task_list.add_argument(
         "--sort",
@@ -286,7 +300,9 @@ def main(argv: list[str] | None = None) -> int:
                             args.root,
                             status=args.status,
                             priority=args.priority,
+                            tag=args.tags,
                             overdue=args.overdue,
+                            due_soon=args.due_soon if args.due_soon is not None else False,
                             sort=args.sort,
                         )
                     )

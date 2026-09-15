@@ -7,7 +7,7 @@ Phase 3 productivity: add, list, and close tasks without a database.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 import json
 from pathlib import Path
 from typing import Iterable
@@ -18,6 +18,7 @@ STATUSES = ("open", "done", "cancelled")
 PRIORITIES = ("low", "medium", "high", "urgent")
 PRIORITY_RANK = {"urgent": 0, "high": 1, "medium": 2, "low": 3}
 SORTS = ("due", "priority")
+DEFAULT_DUE_SOON_DAYS = 7
 
 
 def tasks_path(root: Path) -> Path:
@@ -87,6 +88,25 @@ def normalize_sort(sort: str | None) -> str:
     return raw
 
 
+def normalize_tag_token(tag: str | None) -> str:
+    return (tag or "").strip().lstrip("#").lower()
+
+
+def normalize_due_soon_days(days: int | str | None) -> int:
+    if days is None or days is False:
+        return DEFAULT_DUE_SOON_DAYS
+    raw = str(days).strip().lower()
+    if raw in ("", "true", "yes", "soon"):
+        return DEFAULT_DUE_SOON_DAYS
+    try:
+        value = int(raw)
+    except ValueError as exc:
+        raise ValueError(f"due-soon days must be an integer >= 0, got {days!r}") from exc
+    if value < 0:
+        raise ValueError(f"due-soon days must be an integer >= 0, got {days!r}")
+    return value
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -121,10 +141,36 @@ class Task:
             return True
         return self.priority == normalize_priority(priority)
 
+    def matches_tag(self, tag: str | None) -> bool:
+        wanted = normalize_tag_token(tag)
+        if not wanted:
+            return True
+        have = {normalize_tag_token(item) for item in self.tags}
+        return wanted in have
+
+    def matches_tags(self, tags: Iterable[str] | None) -> bool:
+        wanted = [item for item in (tags or []) if normalize_tag_token(item)]
+        if not wanted:
+            return True
+        return any(self.matches_tag(item) for item in wanted)
+
     def is_overdue(self, today: date | str | None = None) -> bool:
         if self.status != "open" or not self.due:
             return False
         return date.fromisoformat(self.due) < _today(today)
+
+    def is_due_soon(
+        self,
+        days: int | str | None = DEFAULT_DUE_SOON_DAYS,
+        today: date | str | None = None,
+    ) -> bool:
+        if self.status != "open" or not self.due:
+            return False
+        window = normalize_due_soon_days(days)
+        due = date.fromisoformat(self.due)
+        start = _today(today)
+        end = start + timedelta(days=window)
+        return start <= due <= end
 
     def sort_key(self, sort: str | None = None) -> tuple:
         mode = normalize_sort(sort)
@@ -221,19 +267,32 @@ def list_tasks(
     status: str | None = None,
     priority: str | None = None,
     *,
+    tag: str | Iterable[str] | None = None,
     overdue: bool = False,
+    due_soon: bool | int | str | None = False,
     sort: str | None = "due",
     today: date | str | None = None,
 ) -> list[Task]:
     wanted = status.strip() if status and status.strip() else None
     wanted_pri = priority.strip() if priority and priority.strip() else None
+    if isinstance(tag, str) or tag is None:
+        tag_filter: list[str] = [tag] if tag and str(tag).strip() else []
+    else:
+        tag_filter = [item for item in tag if item and str(item).strip()]
     rows = [
         task
         for task in load_tasks(root)
-        if task.matches_status(wanted) and task.matches_priority(wanted_pri)
+        if task.matches_status(wanted)
+        and task.matches_priority(wanted_pri)
+        and task.matches_tags(tag_filter)
     ]
     if overdue:
         rows = [task for task in rows if task.is_overdue(today)]
+    if due_soon not in (False, None):
+        window = normalize_due_soon_days(
+            DEFAULT_DUE_SOON_DAYS if due_soon is True else due_soon
+        )
+        rows = [task for task in rows if task.is_due_soon(window, today=today)]
     return sort_tasks(rows, sort=sort)
 
 
@@ -245,9 +304,13 @@ def format_tasks(tasks: list[Task], today: date | str | None = None) -> str:
         tag_bit = f" #{',#'.join(task.tags)}" if task.tags else ""
         due_bit = f" due={task.due}" if task.due else ""
         pri_bit = f" p={task.priority}" if task.priority != "medium" else ""
-        overdue_bit = " OVERDUE" if task.is_overdue(today) else ""
+        flag = ""
+        if task.is_overdue(today):
+            flag = " OVERDUE"
+        elif task.is_due_soon(today=today):
+            flag = " DUE-SOON"
         lines.append(
-            f"{task.id}\t{task.status}{overdue_bit}\t{task.title}{pri_bit}{due_bit}{tag_bit}"
+            f"{task.id}\t{task.status}{flag}\t{task.title}{pri_bit}{due_bit}{tag_bit}"
         )
         if task.notes:
             lines.append(f"\t{task.notes}")
