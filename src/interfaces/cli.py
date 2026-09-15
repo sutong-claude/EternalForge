@@ -200,7 +200,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     task_done = task_sub.add_parser("done", help="Mark a task done")
     task_done.add_argument("task_id", help="Task id such as T001")
-    task_set = task_sub.add_parser("set", help="Set task status / due / priority")
+    task_set = task_sub.add_parser("set", help="Set task status / due / priority / notes / tags")
     task_set.add_argument("task_id", help="Task id such as T001")
     task_set.add_argument(
         "status",
@@ -213,6 +213,17 @@ def main(argv: list[str] | None = None) -> int:
         "--priority",
         default=None,
         help="Priority: low, medium, high, urgent",
+    )
+    task_set.add_argument(
+        "--notes",
+        default=None,
+        help="Replace notes (empty string clears)",
+    )
+    task_set.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Replace task tags (repeatable; omit to leave unchanged; pass empty to clear)",
     )
 
     args = parser.parse_args(argv)
@@ -311,20 +322,32 @@ def main(argv: list[str] | None = None) -> int:
                 task_obj = update_task(args.root, args.task_id, status="done")
                 print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}")
             elif args.task_cmd == "set":
-                if args.status is None and args.due is None and args.priority is None:
-                    raise ValueError("task set needs a status, --due, or --priority")
+                if (
+                    args.status is None
+                    and args.due is None
+                    and args.priority is None
+                    and args.notes is None
+                    and args.tags is None
+                ):
+                    raise ValueError(
+                        "task set needs a status, --due, --priority, --notes, or --tag"
+                    )
                 task_obj = update_task(
                     args.root,
                     args.task_id,
                     status=args.status,
                     due=args.due,
                     priority=args.priority,
+                    notes=args.notes,
+                    tags=args.tags,
                 )
                 extra = ""
                 if task_obj.priority != "medium":
                     extra += f"\tp={task_obj.priority}"
                 if task_obj.due:
                     extra += f"\tdue={task_obj.due}"
+                if task_obj.tags:
+                    extra += f"\t#{',#'.join(task_obj.tags)}"
                 print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}{extra}")
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)

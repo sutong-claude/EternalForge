@@ -380,6 +380,8 @@ def update_task(
     status: str | None = None,
     due: str | None = None,
     priority: str | None = None,
+    notes: str | None = None,
+    tags: Iterable[str] | None = None,
     journal: Journal | None = None,
 ) -> Task:
     wanted = (task_id or "").strip()
@@ -399,6 +401,10 @@ def update_task(
         found.due = normalize_due(due)
     if priority is not None:
         found.priority = normalize_priority(priority)
+    if notes is not None:
+        found.notes = str(notes).strip()
+    if tags is not None:
+        found.tags = normalize_tags(list(tags))
     found.updated = _utc_now()
     save_tasks(root, tasks)
     log = journal or Journal(root / "memory" / "journal.jsonl")
@@ -409,12 +415,16 @@ def update_task(
         parts.append(f"due={found.due or '-'}")
     if priority is not None:
         parts.append(f"p={found.priority}")
+    if notes is not None:
+        parts.append("notes" if found.notes else "notes=-")
+    if tags is not None:
+        parts.append("#" + ",#".join(found.tags) if found.tags else "tags=-")
     parts.append(f": {found.title}")
     log.append(
         MemoryEntry.now(
             "task",
             " ".join(parts),
-            "",
+            found.notes if notes is not None else "",
             tags=normalize_tags(["task", found.status, found.priority, *found.tags]),
         )
     )
