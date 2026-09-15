@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-15 15:35 UTC
+**Last updated:** 2026-09-15 16:10 UTC
 **Current phase:** Core Agent
-**Overall progress:** 65%
+**Overall progress:** 67%
 
 ## Current Goal
 Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
@@ -10,9 +10,10 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 ## Immediate Priorities (next few runs)
 1. Optional: surface Reports metric in status notes or CHANGELOG extras
 2. Optional: sixth SearchAdapter or daily/weekly review sketch
-3. Optional: task due dates / priority fields
+3. Optional: task list sort by due/priority; overdue flag
 
 ## Recent Actions
+- [2026-09-15 16:10 UTC] Task due dates + priority: `due` (YYYY-MM-DD) and `priority` (low/medium/high/urgent) on Task JSONL; `normalize_due` / `normalize_priority`; `update_task`; CLI `--due` / `--priority` on add/list/set.
 - [2026-09-15 15:35 UTC] Persist Tasks=N in STATE metrics: `bump_metrics` recounts open tasks via `count_open_tasks` when a workspace root is given; cycle write-back + tests.
 - [2026-09-15 15:20 UTC] Task-tracking skeleton: `memory/tasks.jsonl` via `tools.tasks` (add/list/set status, T00N ids); CLI `eternalforge task add|list|done|set`; journal `kind=task`; status prints `tasks=N` open count.
 - [2026-09-15 13:20 UTC] Journal recent `--tag` filter: `Journal.recent` / `format_recent` / `dump_recent` accept `tag=`; CLI `eternalforge recent [--tag T]`; case-insensitive, strips `#`.
@@ -35,12 +36,12 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 
 ## Metrics
 - Files: 43
-- Tests: 123
-- Features shipped: 26
-- Cycles: 18
+- Tests: 125
+- Features shipped: 27
+- Cycles: 19
 - Reports: 0
 - Tasks: 0
 - Documentation coverage: Core
 
 ## Notes for next agent
-Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), hackernews (aliases hn/algolia), arxiv (aliases papers/preprint), multi/all (Wikipedia + DDG + Open Library + HN + arXiv, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py, src/tools/openlibrary.py, src/tools/hackernews.py, and src/tools/arxiv.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--kind K] [--source S] [--tag T] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--write-index]` indexes memory/*.md, memory/reports/*.md (kind=report), and journal.jsonl (src/tools/kb.py). Tags come from `#hashtag` tokens and `tags:` / `tag:` lines (also journal `tags` field). Journal extra_tags merge via `merge_tags` / `journal_extra_tags` (case-insensitive, # stripped, order-preserving unique). MemoryEntry now has a `tags` list persisted in JSONL (`normalize_tags` in core.memory). Writers: `record_hits` stores research + hit sources + extras; `capture` stores capture + extras; `write_report` stores report + extras; cycle rows store cycle. CLI: `research|capture|report --tag T` (repeatable). `Journal.format_recent` appends `#tag` tokens. Journal dump: `eternalforge recent [--kind K] [--tag T] [--max N]` (tag match is case-insensitive and strips `#`). Research reports: `eternalforge report [--day] [--since] [--until] [--max]` writes memory/reports/YYYY-MM-DD.md from journal research hits (src/tools/report.py) and journals kind=report. Status includes `changelog_versions`, `reports` (`count_reports` over memory/reports/*.md), `tasks` (`count_open_tasks` over memory/tasks.jsonl), `journal_kinds`, and optional `journal_filter` when `--kind` is set. Planner skips blank/None-yet entries. Progress parsing is `parse_progress` in core.state. Cycle metrics: `bump_metrics` writes `Reports=N` and `Tasks=N` (open tasks only). Task tracker: `src/tools/tasks.py` stores memory/tasks.jsonl; CLI `eternalforge task add TITLE [--notes] [--tag T]`, `task list [--status]`, `task done ID`, `task set ID STATUS`; journals kind=task. Next: surface Reports in CHANGELOG extras, a sixth SearchAdapter, daily/weekly review sketch, or task due dates / priority. Keep one task per hour. Do not rewrite the protocol; extend it.
+Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), hackernews (aliases hn/algolia), arxiv (aliases papers/preprint), multi/all (Wikipedia + DDG + Open Library + HN + arXiv, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py, src/tools/openlibrary.py, src/tools/hackernews.py, and src/tools/arxiv.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--kind K] [--source S] [--tag T] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--write-index]` indexes memory/*.md, memory/reports/*.md (kind=report), and journal.jsonl (src/tools/kb.py). Tags come from `#hashtag` tokens and `tags:` / `tag:` lines (also journal `tags` field). Journal extra_tags merge via `merge_tags` / `journal_extra_tags` (case-insensitive, # stripped, order-preserving unique). MemoryEntry now has a `tags` list persisted in JSONL (`normalize_tags` in core.memory). Writers: `record_hits` stores research + hit sources + extras; `capture` stores capture + extras; `write_report` stores report + extras; cycle rows store cycle. CLI: `research|capture|report --tag T` (repeatable). `Journal.format_recent` appends `#tag` tokens. Journal dump: `eternalforge recent [--kind K] [--tag T] [--max N]` (tag match is case-insensitive and strips `#`). Research reports: `eternalforge report [--day] [--since] [--until] [--max]` writes memory/reports/YYYY-MM-DD.md from journal research hits (src/tools/report.py) and journals kind=report. Status includes `changelog_versions`, `reports` (`count_reports` over memory/reports/*.md), `tasks` (`count_open_tasks` over memory/tasks.jsonl), `journal_kinds`, and optional `journal_filter` when `--kind` is set. Planner skips blank/None-yet entries. Progress parsing is `parse_progress` in core.state. Cycle metrics: `bump_metrics` writes `Reports=N` and `Tasks=N` (open tasks only). Task tracker: `src/tools/tasks.py` stores memory/tasks.jsonl; fields include status, notes, tags, due (YYYY-MM-DD), priority (low/medium/high/urgent, default medium). CLI `eternalforge task add TITLE [--notes] [--tag T] [--due YYYY-MM-DD] [--priority P]`, `task list [--status] [--priority]`, `task done ID`, `task set ID [STATUS] [--due] [--priority]`; journals kind=task. Next: surface Reports in CHANGELOG extras, a sixth SearchAdapter, daily/weekly review sketch, or sort/overdue on tasks. Keep one task per hour. Do not rewrite the protocol; extend it.

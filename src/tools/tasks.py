@@ -7,7 +7,7 @@ Phase 3 productivity: add, list, and close tasks without a database.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import json
 from pathlib import Path
 from typing import Iterable
@@ -15,6 +15,7 @@ from typing import Iterable
 from core.memory import Journal, MemoryEntry, normalize_tags
 
 STATUSES = ("open", "done", "cancelled")
+PRIORITIES = ("low", "medium", "high", "urgent")
 
 
 def tasks_path(root: Path) -> Path:
@@ -40,6 +41,41 @@ def normalize_status(status: str | None) -> str:
     return raw
 
 
+def normalize_priority(priority: str | None) -> str:
+    raw = (priority or "medium").strip().lower()
+    aliases = {
+        "lo": "low",
+        "med": "medium",
+        "normal": "medium",
+        "default": "medium",
+        "hi": "high",
+        "important": "high",
+        "p0": "urgent",
+        "p1": "high",
+        "p2": "medium",
+        "p3": "low",
+        "crit": "urgent",
+        "critical": "urgent",
+    }
+    raw = aliases.get(raw, raw)
+    if raw not in PRIORITIES:
+        raise ValueError(
+            f"priority must be one of {', '.join(PRIORITIES)}, got {priority!r}"
+        )
+    return raw
+
+
+def normalize_due(due: str | None) -> str:
+    raw = (due or "").strip()
+    if not raw:
+        return ""
+    try:
+        parsed = date.fromisoformat(raw)
+    except ValueError as exc:
+        raise ValueError(f"due must be YYYY-MM-DD, got {due!r}") from exc
+    return parsed.isoformat()
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -53,11 +89,18 @@ class Task:
     tags: list[str] = field(default_factory=list)
     created: str = ""
     updated: str = ""
+    due: str = ""
+    priority: str = "medium"
 
     def matches_status(self, status: str | None) -> bool:
         if not status or not str(status).strip():
             return True
         return self.status == normalize_status(status)
+
+    def matches_priority(self, priority: str | None) -> bool:
+        if not priority or not str(priority).strip():
+            return True
+        return self.priority == normalize_priority(priority)
 
 
 def _next_id(existing: list[Task]) -> str:
@@ -93,6 +136,14 @@ def load_tasks(root: Path) -> list[Task]:
             status = normalize_status(str(data.get("status", "open")))
         except ValueError:
             status = "open"
+        try:
+            priority = normalize_priority(str(data.get("priority", "medium") or "medium"))
+        except ValueError:
+            priority = "medium"
+        try:
+            due = normalize_due(str(data.get("due", "") or ""))
+        except ValueError:
+            due = ""
         out.append(
             Task(
                 id=tid,
@@ -102,6 +153,8 @@ def load_tasks(root: Path) -> list[Task]:
                 tags=normalize_tags(data.get("tags", [])),
                 created=str(data.get("created", "")),
                 updated=str(data.get("updated", "")),
+                due=due,
+                priority=priority,
             )
         )
     return out
@@ -115,6 +168,8 @@ def save_tasks(root: Path, tasks: list[Task]) -> Path:
         payload = asdict(task)
         payload["tags"] = normalize_tags(task.tags)
         payload["status"] = normalize_status(task.status)
+        payload["priority"] = normalize_priority(task.priority)
+        payload["due"] = normalize_due(task.due)
         lines.append(json.dumps(payload, ensure_ascii=False))
     path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
     return path
@@ -124,9 +179,18 @@ def count_open_tasks(root: Path) -> int:
     return sum(1 for task in load_tasks(root) if task.status == "open")
 
 
-def list_tasks(root: Path, status: str | None = None) -> list[Task]:
+def list_tasks(
+    root: Path,
+    status: str | None = None,
+    priority: str | None = None,
+) -> list[Task]:
     wanted = status.strip() if status and status.strip() else None
-    return [task for task in load_tasks(root) if task.matches_status(wanted)]
+    wanted_pri = priority.strip() if priority and priority.strip() else None
+    return [
+        task
+        for task in load_tasks(root)
+        if task.matches_status(wanted) and task.matches_priority(wanted_pri)
+    ]
 
 
 def format_tasks(tasks: list[Task]) -> str:
@@ -135,7 +199,9 @@ def format_tasks(tasks: list[Task]) -> str:
     lines: list[str] = []
     for task in tasks:
         tag_bit = f" #{',#'.join(task.tags)}" if task.tags else ""
-        lines.append(f"{task.id}\t{task.status}\t{task.title}{tag_bit}")
+        due_bit = f" due={task.due}" if task.due else ""
+        pri_bit = f" p={task.priority}" if task.priority != "medium" else ""
+        lines.append(f"{task.id}\t{task.status}\t{task.title}{pri_bit}{due_bit}{tag_bit}")
         if task.notes:
             lines.append(f"\t{task.notes}")
     return "\n".join(lines)
@@ -147,6 +213,8 @@ def add_task(
     *,
     notes: str = "",
     tags: Iterable[str] | None = None,
+    due: str | None = None,
+    priority: str | None = None,
     journal: Journal | None = None,
 ) -> Task:
     cleaned = (title or "").strip()
@@ -162,17 +230,24 @@ def add_task(
         tags=normalize_tags(list(tags) if tags is not None else []),
         created=stamp,
         updated=stamp,
+        due=normalize_due(due),
+        priority=normalize_priority(priority),
     )
     existing.append(task)
     save_tasks(root, existing)
     log = journal or Journal(root / "memory" / "journal.jsonl")
     extra = list(task.tags)
+    bits = [f"Added {task.id}: {task.title}"]
+    if task.due:
+        bits.append(f"due {task.due}")
+    if task.priority != "medium":
+        bits.append(f"p={task.priority}")
     log.append(
         MemoryEntry.now(
             "task",
-            f"Added {task.id}: {task.title}",
+            "; ".join(bits),
             task.notes,
-            tags=normalize_tags(["task", "open", *extra]),
+            tags=normalize_tags(["task", "open", task.priority, *extra]),
         )
     )
     return task
@@ -185,28 +260,52 @@ def set_task_status(
     *,
     journal: Journal | None = None,
 ) -> Task:
+    return update_task(root, task_id, status=status, journal=journal)
+
+
+def update_task(
+    root: Path,
+    task_id: str,
+    *,
+    status: str | None = None,
+    due: str | None = None,
+    priority: str | None = None,
+    journal: Journal | None = None,
+) -> Task:
     wanted = (task_id or "").strip()
     if not wanted:
         raise ValueError("task id is required")
-    new_status = normalize_status(status)
     tasks = load_tasks(root)
     found: Task | None = None
     for task in tasks:
         if task.id.lower() == wanted.lower():
-            task.status = new_status
-            task.updated = _utc_now()
             found = task
             break
     if found is None:
         raise ValueError(f"unknown task id {wanted!r}")
+    if status is not None:
+        found.status = normalize_status(status)
+    if due is not None:
+        found.due = normalize_due(due)
+    if priority is not None:
+        found.priority = normalize_priority(priority)
+    found.updated = _utc_now()
     save_tasks(root, tasks)
     log = journal or Journal(root / "memory" / "journal.jsonl")
+    parts = [f"Set {found.id}"]
+    if status is not None:
+        parts.append(found.status)
+    if due is not None:
+        parts.append(f"due={found.due or '-'}")
+    if priority is not None:
+        parts.append(f"p={found.priority}")
+    parts.append(f": {found.title}")
     log.append(
         MemoryEntry.now(
             "task",
-            f"Set {found.id} {new_status}: {found.title}",
+            " ".join(parts),
             "",
-            tags=normalize_tags(["task", new_status, *found.tags]),
+            tags=normalize_tags(["task", found.status, found.priority, *found.tags]),
         )
     )
     return found
