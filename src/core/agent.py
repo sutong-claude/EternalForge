@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from core.changelog import append_entry, count_versions_file
+from core.changelog import append_entry, count_versions_file, cycle_extras
 from core.memory import Journal, MemoryEntry
 from core.metrics import bump_metrics
 from core.planner import select_task
@@ -65,10 +65,14 @@ class Agent:
         state.complete_current(f"Cycled task: {task} ({result})")
         bump_metrics(state, self.root)
         save_state_file(self.state_path, state)
+        extras = [result, *cycle_extras(
+            reports=count_reports(self.root),
+            tasks=count_open_tasks(self.root),
+        )]
         version = append_entry(
             self.changelog_path,
             f"Cycle: {task}",
-            extra=[result],
+            extra=extras,
         )
         self.journal.append(
             MemoryEntry.now(

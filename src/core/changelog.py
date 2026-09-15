@@ -45,6 +45,11 @@ def next_version(existing: str) -> str:
     return "0.1.0"
 
 
+def cycle_extras(*, reports: int, tasks: int) -> list[str]:
+    """Metric bullets appended to each cycle CHANGELOG section."""
+    return [f"reports={int(reports)}", f"tasks={int(tasks)}"]
+
+
 def render_section(version: str, day: str, bullets: list[str]) -> str:
     items = "\n".join(f"- {b}" for b in bullets) or "- Cycle completed."
     return f"## {version} — {day}\n\n{items}\n"

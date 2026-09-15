@@ -4,7 +4,13 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from core.changelog import append_entry, count_versions, count_versions_file, next_version
+from core.changelog import (
+    append_entry,
+    count_versions,
+    count_versions_file,
+    cycle_extras,
+    next_version,
+)
 from core.metrics import bump_metrics, count_tests
 from core.state import ForgeState
 
@@ -30,6 +36,11 @@ def test_count_versions_file_missing(tmp_path: Path) -> None:
     path = tmp_path / "CHANGELOG.md"
     path.write_text("# Changelog\n\n## 1.0.0 — today\n\n- x\n", encoding="utf-8")
     assert count_versions_file(path) == 1
+
+
+def test_cycle_extras_formats_counts() -> None:
+    assert cycle_extras(reports=0, tasks=0) == ["reports=0", "tasks=0"]
+    assert cycle_extras(reports=3, tasks=1) == ["reports=3", "tasks=1"]
 
 
 def test_append_entry_prepends_section(tmp_path: Path) -> None:

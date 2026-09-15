@@ -129,6 +129,8 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
     assert "## 0.1.1" in log
     assert "Implement CLI" in log
+    assert "reports=0" in log
+    assert "tasks=0" in log
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
     assert state.metrics["Reports"] == "0"
@@ -151,6 +153,8 @@ def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
     Agent(root).run_once(dry_run=False)
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Reports"] == "1"
+    log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "reports=1" in log
 
 
 def test_cycle_persists_open_task_count_in_state(tmp_path: Path) -> None:
@@ -162,3 +166,5 @@ def test_cycle_persists_open_task_count_in_state(tmp_path: Path) -> None:
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Tasks"] == "1"
     assert open_task.status == "open"
+    log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "tasks=1" in log
