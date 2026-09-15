@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 — 2026-09-15
+
+- Task-tracking skeleton: JSONL store at `memory/tasks.jsonl` (`tools.tasks`).
+- Add / list / set status helpers; ids increment as T001, T002, …
+- Status aliases: todo→open, completed→done, canceled→cancelled.
+- CLI: `eternalforge task add TITLE [--tag] [--notes]`, `task list [--status]`, `task done ID`, `task set ID STATUS`.
+- Journal rows with `kind=task`; `eternalforge status` prints `tasks=N` (open count).
+
 ## 0.10.1 — 2026-09-15
 
 - Journal dump filter by persisted tag: `Journal.recent` / `format_recent` accept `tag=`.

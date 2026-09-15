@@ -31,6 +31,8 @@ PYTHONPATH=src python -m interfaces.cli capture --topic eternalforge --offline
 PYTHONPATH=src python -m interfaces.cli kb "autonomous agents" --max 5
 PYTHONPATH=src python -m interfaces.cli report --since 2026-09-01
 PYTHONPATH=src python -m interfaces.cli recent --tag research
+PYTHONPATH=src python -m interfaces.cli task add "review arXiv hits" --tag papers
+PYTHONPATH=src python -m interfaces.cli task list --status open
 PYTHONPATH=src python -m pytest tests -q
 ```
 
@@ -40,9 +42,10 @@ PYTHONPATH=src python -m pytest tests -q
 STATE.md                 living context
 AGENTS.md                hourly operator manual
 src/core/                agent, state, memory, planner
-src/tools/               research adapters + daily capture + kb index + reports + files
-src/interfaces/cli.py    status / next / cycle / research / capture / kb / report
-memory/journal.jsonl     structured history (cycle / capture / research / report)
+src/tools/               research adapters + daily capture + kb index + reports + tasks + files
+src/interfaces/cli.py    status / next / cycle / research / capture / kb / report / task
+memory/journal.jsonl     structured history (cycle / capture / research / report / task)
+memory/tasks.jsonl       personal task tracker
 memory/YYYY-MM-DD.md     daily knowledge digests
 memory/reports/          compiled research reports
 memory/kb-index.json     optional persisted kb snapshot

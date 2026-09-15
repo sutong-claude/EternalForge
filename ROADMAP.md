@@ -27,13 +27,14 @@
 - [x] Persist journal tags on MemoryEntry writes
 - [x] Fifth live SearchAdapter (arXiv)
 - [x] Journal recent dump filter by persisted tag
+- [x] Task-tracking skeleton
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Task-tracking skeleton
+- Task due dates / priority on the tracker
 
 ## Phase 3 – Personal Productivity Platform
-- Task tracking
+- Task tracking (due dates, reviews)
 - Daily/weekly review
 - Gmail / Drive integration
 
