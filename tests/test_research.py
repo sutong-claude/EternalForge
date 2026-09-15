@@ -9,6 +9,7 @@ from core.memory import Journal
 from tools.arxiv import parse_arxiv_xml
 from tools.research import (
     ArxivAdapter,
+    CrossrefAdapter,
     DuckDuckGoAdapter,
     FixtureAdapter,
     HackerNewsAdapter,
@@ -20,6 +21,7 @@ from tools.research import (
     get_adapter,
     merge_hits,
     parse_arxiv_payload,
+    parse_crossref_payload,
     parse_duckduckgo_payload,
     parse_hackernews_payload,
     parse_openlibrary_payload,
@@ -44,6 +46,7 @@ def test_empty_query_returns_nothing() -> None:
     assert OpenLibraryAdapter().search("") == []
     assert HackerNewsAdapter().search("") == []
     assert ArxivAdapter().search("") == []
+    assert CrossrefAdapter().search("") == []
     assert MultiAdapter(adapters=[FixtureAdapter()]).search("  ") == []
 
 
@@ -118,6 +121,9 @@ def test_get_adapter_resolves_known_backends() -> None:
     assert get_adapter("arxiv").name == "arxiv"
     assert get_adapter("papers").name == "arxiv"
     assert get_adapter("preprint").name == "arxiv"
+    assert get_adapter("crossref").name == "crossref"
+    assert get_adapter("doi").name == "crossref"
+    assert get_adapter("works").name == "crossref"
     assert get_adapter("multi").name == "multi"
     assert get_adapter("all").name == "multi"
     assert get_adapter("fixture").name == "fixture"
@@ -313,15 +319,15 @@ def test_parse_arxiv_respects_limit() -> None:
 
 
 def test_parse_arxiv_xml_atom() -> None:
-    raw = """<?xml version="1.0" encoding="UTF-8"?>
-    <feed xmlns="http://www.w3.org/2005/Atom">
+    raw = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    <feed xmlns=\"http://www.w3.org/2005/Atom\">
       <entry>
         <id>http://arxiv.org/abs/1706.03762v7</id>
         <title>Attention Is All You Need</title>
         <published>2017-06-12T17:57:34Z</published>
         <summary>The dominant sequence transduction models.</summary>
         <author><name>Ashish Vaswani</name></author>
-        <link href="http://arxiv.org/abs/1706.03762v7" rel="alternate" type="text/html"/>
+        <link href=\"http://arxiv.org/abs/1706.03762v7\" rel=\"alternate\" type=\"text/html\"/>
       </entry>
     </feed>
     """
@@ -331,6 +337,57 @@ def test_parse_arxiv_xml_atom() -> None:
     assert hits[0].title == "Attention Is All You Need"
     assert hits[0].source == "arxiv"
     assert "Vaswani" in hits[0].snippet
+
+
+def test_parse_crossref_payload() -> None:
+    payload = {
+        "message": {
+            "items": [
+                {
+                    "title": ["Attention Is All You Need"],
+                    "DOI": "10.5555/3295222.3295349",
+                    "URL": "https://doi.org/10.5555/3295222.3295349",
+                    "author": [
+                        {"given": "Ashish", "family": "Vaswani"},
+                        {"given": "Noam", "family": "Shazeer"},
+                    ],
+                    "issued": {"date-parts": [[2017, 6, 12]]},
+                    "container-title": ["NeurIPS"],
+                },
+                {
+                    "title": ["Generative Adversarial Nets"],
+                    "DOI": "10.5555/2969033.2969125",
+                    "author": [{"given": "Ian", "family": "Goodfellow"}],
+                    "issued": {"date-parts": [[2014]]},
+                },
+                {"title": [], "DOI": "", "URL": ""},
+            ]
+        }
+    }
+    hits = parse_crossref_payload(payload, limit=5)
+    assert len(hits) == 2
+    assert hits[0].title == "Attention Is All You Need"
+    assert hits[0].url == "https://doi.org/10.5555/3295222.3295349"
+    assert hits[0].source == "crossref"
+    assert "Vaswani" in hits[0].snippet
+    assert "2017" in hits[0].snippet
+    assert "NeurIPS" in hits[0].snippet
+    assert hits[1].title == "Generative Adversarial Nets"
+    assert hits[1].url == "https://doi.org/10.5555/2969033.2969125"
+    assert "Goodfellow" in hits[1].snippet
+
+
+def test_parse_crossref_respects_limit() -> None:
+    payload = {
+        "message": {
+            "items": [
+                {"title": ["A"], "URL": "https://doi.org/a"},
+                {"title": ["B"], "URL": "https://doi.org/b"},
+            ]
+        }
+    }
+    hits = parse_crossref_payload(payload, limit=1)
+    assert [h.title for h in hits] == ["A"]
 
 
 def test_merge_hits_round_robin_and_dedupe() -> None:
