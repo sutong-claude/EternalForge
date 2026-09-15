@@ -30,10 +30,11 @@
 - [x] Task-tracking skeleton
 - [x] Persist Tasks=N in STATE metrics on cycle
 - [x] Task due dates / priority on the tracker
+- [x] Task list sort by due/priority; overdue flag
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Task list sort by due/priority; overdue flag
+- Daily/weekly review sketch
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking (reviews)

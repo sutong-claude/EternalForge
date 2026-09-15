@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.3 — 2026-09-15
+
+- Task list sort by due (default) or priority; undated tasks sink to the end.
+- Overdue flag: open tasks with `due` before today; `list_tasks(..., overdue=True)`.
+- CLI: `task list [--overdue] [--sort due|priority]`.
+- `format_tasks` prints `OVERDUE` after status when the due date has passed.
+
 ## 0.11.2 — 2026-09-15
 
 - Task due dates and priority on `memory/tasks.jsonl`.

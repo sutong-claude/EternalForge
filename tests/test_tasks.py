@@ -14,8 +14,10 @@ from tools.tasks import (
     load_tasks,
     normalize_due,
     normalize_priority,
+    normalize_sort,
     normalize_status,
     set_task_status,
+    sort_tasks,
     update_task,
 )
 
@@ -52,6 +54,17 @@ def test_normalize_priority_and_due() -> None:
         raise AssertionError("expected ValueError")
 
 
+def test_normalize_sort() -> None:
+    assert normalize_sort(None) == "due"
+    assert normalize_sort("PRI") == "priority"
+    try:
+        normalize_sort("alpha")
+    except ValueError as exc:
+        assert "sort" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+
+
 def test_add_and_list_tasks(tmp_path: Path) -> None:
     first = add_task(tmp_path, "Write tests", tags=["core"])
     second = add_task(tmp_path, "Ship CLI", notes="after tests")
@@ -80,7 +93,7 @@ def test_due_and_priority_roundtrip(tmp_path: Path) -> None:
     listed = list_tasks(tmp_path, priority="high")
     assert [t.id for t in listed] == [task.id]
     assert list_tasks(tmp_path, priority="low") == []
-    text = format_tasks(listed)
+    text = format_tasks(listed, today="2026-01-01")
     assert "p=high" in text
     assert "due=2026-04-15" in text
     updated = update_task(tmp_path, task.id, due="2026-04-30", priority="urgent")
@@ -89,6 +102,29 @@ def test_due_and_priority_roundtrip(tmp_path: Path) -> None:
     stored = load_tasks(tmp_path)[0]
     assert stored.due == "2026-04-30"
     assert stored.priority == "urgent"
+
+
+def test_sort_and_overdue(tmp_path: Path) -> None:
+    late = add_task(tmp_path, "Late", due="2026-09-01", priority="low")
+    soon = add_task(tmp_path, "Soon", due="2026-09-20", priority="urgent")
+    undated = add_task(tmp_path, "Someday", priority="high")
+    done = add_task(tmp_path, "Finished", due="2026-08-01", priority="urgent")
+    set_task_status(tmp_path, done.id, "done")
+    today = "2026-09-15"
+    by_due = list_tasks(tmp_path, sort="due", today=today)
+    assert [t.id for t in by_due] == [done.id, late.id, soon.id, undated.id]
+    by_pri = list_tasks(tmp_path, sort="priority", today=today)
+    assert [t.id for t in by_pri] == [done.id, soon.id, undated.id, late.id]
+    overdue = list_tasks(tmp_path, overdue=True, today=today)
+    assert [t.id for t in overdue] == [late.id]
+    assert late.is_overdue(today)
+    assert not soon.is_overdue(today)
+    assert not done.is_overdue(today)
+    text = format_tasks(overdue, today=today)
+    assert "OVERDUE" in text
+    assert late.id in text
+    ranked = sort_tasks([undated, soon, late], sort="priority")
+    assert [t.id for t in ranked] == [soon.id, undated.id, late.id]
 
 
 def test_set_status_and_journal(tmp_path: Path) -> None:
