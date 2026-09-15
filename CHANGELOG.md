@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.2 — 2026-09-15
+
+- KB query filters: `search_kb` / `search_index` accept `kind`, `since`, `until`.
+- Markdown notes dated from `YYYY-MM-DD.md`; journal rows use entry timestamps.
+- CLI: `eternalforge kb QUERY [--kind K] [--since YYYY-MM-DD] [--until YYYY-MM-DD]`.
+- Undated documents are excluded when a date range is set; invalid dates raise ValueError.
+
 ## 0.8.1 — 2026-09-15
 
 - Journal kind filter: `Journal.recent` / `recent_kinds` accept `kind=` (case-insensitive).

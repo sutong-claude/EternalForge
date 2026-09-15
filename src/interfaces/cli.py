@@ -8,7 +8,7 @@ import sys
 
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
-from tools.kb import format_index_hits, search_kb, write_index, build_index
+from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
 
 BACKEND_HELP = (
@@ -70,6 +70,21 @@ def main(argv: list[str] | None = None) -> int:
     kb.add_argument("query", nargs="+", help="Knowledge-base query")
     kb.add_argument("--max", type=int, default=8, dest="max_results")
     kb.add_argument(
+        "--kind",
+        default=None,
+        help="Filter by document kind (research, capture, markdown, journal, ...)",
+    )
+    kb.add_argument(
+        "--since",
+        default=None,
+        help="Only documents on or after YYYY-MM-DD",
+    )
+    kb.add_argument(
+        "--until",
+        default=None,
+        help="Only documents on or before YYYY-MM-DD",
+    )
+    kb.add_argument(
         "--write-index",
         action="store_true",
         help="Also persist memory/kb-index.json",
@@ -106,9 +121,18 @@ def main(argv: list[str] | None = None) -> int:
             print(f"wrote {result.path} ({result.hit_count} hits, {len(result.topics)} topics)")
         elif args.cmd == "kb":
             query = " ".join(args.query)
+            since = parse_day(args.since)
+            until = parse_day(args.until)
             if args.write_index:
                 write_index(build_index(root=args.root), args.root)
-            hits = search_kb(args.root, query, max_results=args.max_results)
+            hits = search_kb(
+                args.root,
+                query,
+                max_results=args.max_results,
+                kind=args.kind,
+                since=since,
+                until=until,
+            )
             print(format_index_hits(hits))
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)

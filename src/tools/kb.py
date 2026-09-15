@@ -12,6 +12,7 @@ from pathlib import Path
 import re
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
+DAY_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 SKIP_NAMES = {"kb-index.json"}
 
 
@@ -22,6 +23,8 @@ class Document:
     path: str
     title: str
     text: str
+    kind: str = ""
+    timestamp: str = ""
 
 
 @dataclass
@@ -32,6 +35,8 @@ class IndexHit:
     title: str
     score: int
     snippet: str
+    kind: str = ""
+    timestamp: str = ""
 
 
 @dataclass
@@ -46,6 +51,51 @@ class KnowledgeIndex:
 
 def tokenize(text: str) -> list[str]:
     return TOKEN_RE.findall((text or "").lower())
+
+
+def extract_day(value: str | None) -> str | None:
+    """Return YYYY-MM-DD if present anywhere in value, else None."""
+    if not value:
+        return None
+    match = DAY_RE.search(str(value))
+    return match.group(1) if match else None
+
+
+def parse_day(value: str | None) -> str | None:
+    """Parse a user-supplied date filter. Empty is None; garbage raises."""
+    raw = (value or "").strip()
+    if not raw:
+        return None
+    day = extract_day(raw)
+    if day is None or not raw.startswith(day):
+        raise ValueError(f"invalid date {value!r} (expected YYYY-MM-DD)")
+    return day
+
+
+def normalize_kind(kind: str | None) -> str:
+    return (kind or "").strip().lower()
+
+
+def document_matches(
+    doc: Document,
+    kind: str | None = None,
+    since: str | None = None,
+    until: str | None = None,
+) -> bool:
+    wanted = normalize_kind(kind)
+    if wanted and normalize_kind(doc.kind) != wanted and normalize_kind(doc.source) != wanted:
+        return False
+    since_day = extract_day(since) if since else None
+    until_day = extract_day(until) if until else None
+    if since_day or until_day:
+        day = extract_day(doc.timestamp)
+        if day is None:
+            return False
+        if since_day and day < since_day:
+            return False
+        if until_day and day > until_day:
+            return False
+    return True
 
 
 def _title_from_markdown(text: str, fallback: str) -> str:
@@ -90,6 +140,7 @@ def collect_documents(root: Path) -> list[Document]:
         except OSError:
             continue
         rel = path.relative_to(root).as_posix()
+        day = extract_day(path.name)
         docs.append(
             Document(
                 doc_id=f"md:{path.name}",
@@ -97,6 +148,8 @@ def collect_documents(root: Path) -> list[Document]:
                 path=rel,
                 title=_title_from_markdown(text, path.name),
                 text=text,
+                kind="markdown",
+                timestamp=day or "",
             )
         )
 
@@ -118,6 +171,7 @@ def collect_documents(root: Path) -> list[Document]:
             kind = str(data.get("kind", "")).strip()
             summary = str(data.get("summary", ""))
             details = str(data.get("details", ""))
+            timestamp = str(data.get("timestamp", "")).strip()
             if not kind and not summary and not details:
                 continue
             title = f"{kind or 'entry'}: {summary}".strip()
@@ -129,6 +183,8 @@ def collect_documents(root: Path) -> list[Document]:
                     path="memory/journal.jsonl",
                     title=title[:120],
                     text=body,
+                    kind=kind or "journal",
+                    timestamp=timestamp,
                 )
             )
     return docs
@@ -150,14 +206,26 @@ def search_index(
     index: KnowledgeIndex,
     query: str,
     max_results: int = 8,
+    kind: str | None = None,
+    since: str | None = None,
+    until: str | None = None,
 ) -> list[IndexHit]:
     tokens = tokenize(query)
     if not tokens or not index.documents:
+        return []
+    allowed = {
+        doc.doc_id
+        for doc in index.documents
+        if document_matches(doc, kind=kind, since=since, until=until)
+    }
+    if not allowed:
         return []
     by_id = {doc.doc_id: doc for doc in index.documents}
     scores: dict[str, int] = {}
     for tok in tokens:
         for doc_id, tf in index.postings.get(tok, ()):
+            if doc_id not in allowed:
+                continue
             scores[doc_id] = scores.get(doc_id, 0) + tf
     ranked = sorted(scores.items(), key=lambda item: (-item[1], item[0]))
     hits: list[IndexHit] = []
@@ -171,13 +239,29 @@ def search_index(
                 title=doc.title,
                 score=score,
                 snippet=_snippet(doc.text, tokens),
+                kind=doc.kind,
+                timestamp=doc.timestamp,
             )
         )
     return hits
 
 
-def search_kb(root: Path, query: str, max_results: int = 8) -> list[IndexHit]:
-    return search_index(build_index(root=root), query, max_results=max_results)
+def search_kb(
+    root: Path,
+    query: str,
+    max_results: int = 8,
+    kind: str | None = None,
+    since: str | None = None,
+    until: str | None = None,
+) -> list[IndexHit]:
+    return search_index(
+        build_index(root=root),
+        query,
+        max_results=max_results,
+        kind=kind,
+        since=since,
+        until=until,
+    )
 
 
 def format_index_hits(hits: list[IndexHit]) -> str:
@@ -185,7 +269,9 @@ def format_index_hits(hits: list[IndexHit]) -> str:
         return "(no matches)"
     lines: list[str] = []
     for hit in hits:
-        lines.append(f"[{hit.score}] {hit.title} ({hit.source} {hit.path})")
+        meta = hit.kind or hit.source
+        stamp = f" {hit.timestamp}" if hit.timestamp else ""
+        lines.append(f"[{hit.score}] {hit.title} ({meta}{stamp} {hit.path})")
         if hit.snippet:
             lines.append(f"    {hit.snippet}")
     return "\n".join(lines)

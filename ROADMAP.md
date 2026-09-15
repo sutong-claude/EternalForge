@@ -16,11 +16,11 @@
 - [x] Third live SearchAdapter (Open Library) + merge-hits MultiAdapter
 - [x] Knowledge-base index over memory/ markdown + journal
 - [x] Journal kind filter on status / recent dump
+- [x] Knowledge base query filters (kind / date)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Knowledge base query filters (kind / date)
-- Automated report generation
+- Automated report generation from journal research hits
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking
