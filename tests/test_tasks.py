@@ -160,6 +160,34 @@ def test_list_by_tag_and_due_soon(tmp_path: Path) -> None:
     assert "OVERDUE" in text
 
 
+def test_update_notes_and_tags(tmp_path: Path) -> None:
+    journal = Journal(tmp_path / "memory" / "journal.jsonl")
+    task = add_task(tmp_path, "Annotate me", notes="old", tags=["alpha"], journal=journal)
+    updated = update_task(
+        tmp_path,
+        task.id,
+        notes="new note",
+        tags=["#Beta", "gamma"],
+        journal=journal,
+    )
+    assert updated.notes == "new note"
+    assert updated.tags == ["beta", "gamma"]
+    stored = load_tasks(tmp_path)[0]
+    assert stored.notes == "new note"
+    assert stored.tags == ["beta", "gamma"]
+    last = json.loads(journal.path.read_text(encoding="utf-8").splitlines()[-1])
+    assert "notes" in last["summary"]
+    assert "#beta" in last["summary"]
+    assert last["details"] == "new note"
+    cleared = update_task(tmp_path, task.id, notes="", tags=[], journal=journal)
+    assert cleared.notes == ""
+    assert cleared.tags == []
+    untouched = update_task(tmp_path, task.id, priority="high", journal=journal)
+    assert untouched.notes == ""
+    assert untouched.tags == []
+    assert untouched.priority == "high"
+
+
 def test_set_status_and_journal(tmp_path: Path) -> None:
     journal = Journal(tmp_path / "memory" / "journal.jsonl")
     task = add_task(tmp_path, "Close me", journal=journal)
