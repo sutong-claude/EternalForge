@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report"""
+"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report | task"""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from tools.capture import DEFAULT_TOPICS, capture
 from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
 from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
+from tools.tasks import add_task, format_tasks, list_tasks, set_task_status
 
 BACKEND_HELP = (
     "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, arxiv, multi, fixture "
@@ -145,6 +146,28 @@ def main(argv: list[str] | None = None) -> int:
         dest="tags",
         help="Tag to persist on the report journal row (repeatable)",
     )
+    task = sub.add_parser("task", help="Track personal tasks (add / list / done)")
+    task_sub = task.add_subparsers(dest="task_cmd", required=True)
+    task_add = task_sub.add_parser("add", help="Create an open task")
+    task_add.add_argument("title", nargs="+", help="Task title")
+    task_add.add_argument("--notes", default="", help="Optional notes")
+    task_add.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Tag to persist on the task (repeatable)",
+    )
+    task_list = task_sub.add_parser("list", help="List tasks")
+    task_list.add_argument(
+        "--status",
+        default=None,
+        help="Filter by status: open, done, cancelled",
+    )
+    task_done = task_sub.add_parser("done", help="Mark a task done")
+    task_done.add_argument("task_id", help="Task id such as T001")
+    task_set = task_sub.add_parser("set", help="Set task status")
+    task_set.add_argument("task_id", help="Task id such as T001")
+    task_set.add_argument("status", help="open, done, or cancelled")
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -208,6 +231,23 @@ def main(argv: list[str] | None = None) -> int:
                 f"wrote {result.path} "
                 f"({result.entry_count} run(s), {result.query_count} query(ies))"
             )
+        elif args.cmd == "task":
+            if args.task_cmd == "add":
+                task_obj = add_task(
+                    args.root,
+                    " ".join(args.title),
+                    notes=args.notes,
+                    tags=args.tags,
+                )
+                print(f"added {task_obj.id}\t{task_obj.status}\t{task_obj.title}")
+            elif args.task_cmd == "list":
+                print(format_tasks(list_tasks(args.root, status=args.status)))
+            elif args.task_cmd == "done":
+                task_obj = set_task_status(args.root, args.task_id, "done")
+                print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}")
+            elif args.task_cmd == "set":
+                task_obj = set_task_status(args.root, args.task_id, args.status)
+                print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}")
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)
         return 1

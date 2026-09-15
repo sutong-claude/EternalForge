@@ -10,6 +10,7 @@ from core.metrics import bump_metrics
 from core.planner import select_task
 from core.state import ForgeState, load_state_file, save_state_file
 from tools.report import count_reports
+from tools.tasks import count_open_tasks
 
 
 class Agent:
@@ -33,12 +34,14 @@ class Agent:
         nxt = state.next_task() or "(none)"
         versions = count_versions_file(self.changelog_path)
         reports = count_reports(self.root)
+        open_tasks = count_open_tasks(self.root)
         kinds = self.journal.format_recent_kinds(kind=kind)
         lines = [
             f"phase={state.phase} progress={pct}%",
             f"next={nxt}",
             f"changelog_versions={versions}",
             f"reports={reports}",
+            f"tasks={open_tasks}",
             f"journal_kinds={kinds}",
             f"updated={state.last_updated}",
         ]
