@@ -24,10 +24,11 @@
 - [x] Deduplicate tags when merging journal extra_tags + extracted tags
 - [x] Fourth live SearchAdapter (Hacker News Algolia)
 - [x] Persist Reports=N in STATE metrics on cycle
+- [x] Persist journal tags on MemoryEntry writes
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Optional: persist journal tags on MemoryEntry writes
+- Optional: `recent --tag` filter
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking

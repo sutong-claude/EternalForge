@@ -63,7 +63,12 @@ class Agent:
             extra=[result],
         )
         self.journal.append(
-            MemoryEntry.now("cycle", task, f"{result} changelog={version}"),
+            MemoryEntry.now(
+                "cycle",
+                task,
+                f"{result} changelog={version}",
+                tags=["cycle"],
+            ),
         )
 
     def run_once(self, dry_run: bool = False) -> str:
