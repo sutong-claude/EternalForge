@@ -12,8 +12,11 @@ from tools.tasks import (
     format_tasks,
     list_tasks,
     load_tasks,
+    normalize_due,
+    normalize_priority,
     normalize_status,
     set_task_status,
+    update_task,
 )
 
 
@@ -29,17 +32,63 @@ def test_normalize_status_aliases() -> None:
         raise AssertionError("expected ValueError")
 
 
+def test_normalize_priority_and_due() -> None:
+    assert normalize_priority(None) == "medium"
+    assert normalize_priority("HI") == "high"
+    assert normalize_priority("p0") == "urgent"
+    assert normalize_due("") == ""
+    assert normalize_due("2026-09-20") == "2026-09-20"
+    try:
+        normalize_priority("banana")
+    except ValueError as exc:
+        assert "priority" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+    try:
+        normalize_due("09/20/2026")
+    except ValueError as exc:
+        assert "YYYY-MM-DD" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+
+
 def test_add_and_list_tasks(tmp_path: Path) -> None:
     first = add_task(tmp_path, "Write tests", tags=["core"])
     second = add_task(tmp_path, "Ship CLI", notes="after tests")
     assert first.id == "T001"
     assert second.id == "T002"
     assert first.status == "open"
+    assert first.priority == "medium"
+    assert first.due == ""
     rows = list_tasks(tmp_path)
     assert [t.id for t in rows] == ["T001", "T002"]
     assert count_open_tasks(tmp_path) == 2
     text = format_tasks(rows)
-    assert "T001\topen\tWrite tests\t#core" in text or "T001\topen\tWrite tests #core" in text
+    assert "T001\topen\tWrite tests #core" in text
+
+
+def test_due_and_priority_roundtrip(tmp_path: Path) -> None:
+    task = add_task(
+        tmp_path,
+        "File taxes",
+        due="2026-04-15",
+        priority="high",
+        tags=["admin"],
+    )
+    assert task.due == "2026-04-15"
+    assert task.priority == "high"
+    listed = list_tasks(tmp_path, priority="high")
+    assert [t.id for t in listed] == [task.id]
+    assert list_tasks(tmp_path, priority="low") == []
+    text = format_tasks(listed)
+    assert "p=high" in text
+    assert "due=2026-04-15" in text
+    updated = update_task(tmp_path, task.id, due="2026-04-30", priority="urgent")
+    assert updated.due == "2026-04-30"
+    assert updated.priority == "urgent"
+    stored = load_tasks(tmp_path)[0]
+    assert stored.due == "2026-04-30"
+    assert stored.priority == "urgent"
 
 
 def test_set_status_and_journal(tmp_path: Path) -> None:
@@ -88,6 +137,7 @@ def test_load_skips_bad_lines(tmp_path: Path) -> None:
     rows = load_tasks(tmp_path)
     assert len(rows) == 1
     assert rows[0].title == "ok"
+    assert rows[0].priority == "medium"
 
 
 def test_missing_file_is_empty(tmp_path: Path) -> None:

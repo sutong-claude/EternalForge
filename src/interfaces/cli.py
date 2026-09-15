@@ -11,7 +11,7 @@ from tools.capture import DEFAULT_TOPICS, capture
 from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
 from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
-from tools.tasks import add_task, format_tasks, list_tasks, set_task_status
+from tools.tasks import add_task, format_tasks, list_tasks, update_task
 
 BACKEND_HELP = (
     "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, arxiv, multi, fixture "
@@ -157,17 +157,39 @@ def main(argv: list[str] | None = None) -> int:
         dest="tags",
         help="Tag to persist on the task (repeatable)",
     )
+    task_add.add_argument("--due", default=None, help="Due date YYYY-MM-DD")
+    task_add.add_argument(
+        "--priority",
+        default=None,
+        help="Priority: low, medium, high, urgent (default medium)",
+    )
     task_list = task_sub.add_parser("list", help="List tasks")
     task_list.add_argument(
         "--status",
         default=None,
         help="Filter by status: open, done, cancelled",
     )
+    task_list.add_argument(
+        "--priority",
+        default=None,
+        help="Filter by priority: low, medium, high, urgent",
+    )
     task_done = task_sub.add_parser("done", help="Mark a task done")
     task_done.add_argument("task_id", help="Task id such as T001")
-    task_set = task_sub.add_parser("set", help="Set task status")
+    task_set = task_sub.add_parser("set", help="Set task status / due / priority")
     task_set.add_argument("task_id", help="Task id such as T001")
-    task_set.add_argument("status", help="open, done, or cancelled")
+    task_set.add_argument(
+        "status",
+        nargs="?",
+        default=None,
+        help="open, done, or cancelled",
+    )
+    task_set.add_argument("--due", default=None, help="Due date YYYY-MM-DD (empty to clear)")
+    task_set.add_argument(
+        "--priority",
+        default=None,
+        help="Priority: low, medium, high, urgent",
+    )
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -238,16 +260,44 @@ def main(argv: list[str] | None = None) -> int:
                     " ".join(args.title),
                     notes=args.notes,
                     tags=args.tags,
+                    due=args.due,
+                    priority=args.priority,
                 )
-                print(f"added {task_obj.id}\t{task_obj.status}\t{task_obj.title}")
+                extra = ""
+                if task_obj.priority != "medium":
+                    extra += f"\tp={task_obj.priority}"
+                if task_obj.due:
+                    extra += f"\tdue={task_obj.due}"
+                print(f"added {task_obj.id}\t{task_obj.status}\t{task_obj.title}{extra}")
             elif args.task_cmd == "list":
-                print(format_tasks(list_tasks(args.root, status=args.status)))
+                print(
+                    format_tasks(
+                        list_tasks(
+                            args.root,
+                            status=args.status,
+                            priority=args.priority,
+                        )
+                    )
+                )
             elif args.task_cmd == "done":
-                task_obj = set_task_status(args.root, args.task_id, "done")
+                task_obj = update_task(args.root, args.task_id, status="done")
                 print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}")
             elif args.task_cmd == "set":
-                task_obj = set_task_status(args.root, args.task_id, args.status)
-                print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}")
+                if args.status is None and args.due is None and args.priority is None:
+                    raise ValueError("task set needs a status, --due, or --priority")
+                task_obj = update_task(
+                    args.root,
+                    args.task_id,
+                    status=args.status,
+                    due=args.due,
+                    priority=args.priority,
+                )
+                extra = ""
+                if task_obj.priority != "medium":
+                    extra += f"\tp={task_obj.priority}"
+                if task_obj.due:
+                    extra += f"\tdue={task_obj.due}"
+                print(f"{task_obj.id}\t{task_obj.status}\t{task_obj.title}{extra}")
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)
         return 1
