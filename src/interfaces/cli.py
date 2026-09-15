@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | research QUERY | capture"""
+"""eternalforge status | next | cycle [--dry-run] | research QUERY | capture | kb QUERY"""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import sys
 
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
+from tools.kb import format_index_hits, search_kb, write_index, build_index
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
 
 BACKEND_HELP = (
@@ -53,6 +54,14 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Use FixtureAdapter instead of a live backend",
     )
+    kb = sub.add_parser("kb", help="Search memory markdown + journal")
+    kb.add_argument("query", nargs="+", help="Knowledge-base query")
+    kb.add_argument("--max", type=int, default=8, dest="max_results")
+    kb.add_argument(
+        "--write-index",
+        action="store_true",
+        help="Also persist memory/kb-index.json",
+    )
 
     args = parser.parse_args(argv)
     agent = Agent(args.root)
@@ -81,6 +90,12 @@ def main(argv: list[str] | None = None) -> int:
                 day=args.day,
             )
             print(f"wrote {result.path} ({result.hit_count} hits, {len(result.topics)} topics)")
+        elif args.cmd == "kb":
+            query = " ".join(args.query)
+            if args.write_index:
+                write_index(build_index(root=args.root), args.root)
+            hits = search_kb(args.root, query, max_results=args.max_results)
+            print(format_index_hits(hits))
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)
         return 1

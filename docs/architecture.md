@@ -18,6 +18,7 @@
 - `src/interfaces/cli.py` — local operator surface
 - `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends + journaled hits
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
+- `src/tools/kb.py` — inverted index over memory markdown + journal
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
 - Gmail — significant-progress signal

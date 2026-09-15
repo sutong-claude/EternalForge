@@ -1,6 +1,7 @@
 """Tools for the EternalForge agent."""
 
 from tools.capture import CaptureResult, capture
+from tools.kb import IndexHit, KnowledgeIndex, build_index, search_kb
 from tools.research import Hit, SearchAdapter, get_adapter, record_hits, search, summarize
 
 __all__ = [
@@ -12,4 +13,8 @@ __all__ = [
     "get_adapter",
     "capture",
     "CaptureResult",
+    "IndexHit",
+    "KnowledgeIndex",
+    "build_index",
+    "search_kb",
 ]

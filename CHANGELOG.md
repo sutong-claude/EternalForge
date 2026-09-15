@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0 — 2026-09-15
+
+- Knowledge-base index over `memory/*.md` and `memory/journal.jsonl`.
+- `tools.kb`: `collect_documents`, `build_index`, `search_kb`, optional `memory/kb-index.json`.
+- CLI: `eternalforge kb QUERY [--max N] [--write-index]`.
+- Tests cover tokenize, mixed sources, bad JSONL, ranking, and snapshot write.
+
 ## 0.7.0 — 2026-09-14
 
 - Third live SearchAdapter: Open Library (`OpenLibraryAdapter`, `parse_openlibrary_payload`).

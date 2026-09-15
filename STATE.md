@@ -1,18 +1,19 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-14 23:20 UTC
+**Last updated:** 2026-09-15 00:10 UTC
 **Current phase:** Core Agent
-**Overall progress:** 38%
+**Overall progress:** 41%
 
 ## Current Goal
 Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
 
 ## Immediate Priorities (next few runs)
-1. Knowledge-base index over memory/ markdown + journal
-2. Journal kind filter on `eternalforge status` / recent dump command
-3. Fourth live SearchAdapter (optional) or automated research report markdown
+1. Journal kind filter on `eternalforge status` / recent dump command
+2. Fourth live SearchAdapter (optional) or automated research report markdown
+3. KB query filters (kind / date range) on `eternalforge kb`
 
 ## Recent Actions
+- [2026-09-15 00:10 UTC] Knowledge-base index: `tools.kb` inverted index over `memory/*.md` + journal; CLI `kb QUERY`; optional `memory/kb-index.json`.
 - [2026-09-14 23:15 UTC] Third SearchAdapter + merge-hits: `OpenLibraryAdapter` / `parse_openlibrary_payload`; `merge_hits` round-robin + URL dedupe; `MultiAdapter` (`--backend multi|all|openlibrary|ol|books`).
 - [2026-09-14 22:15 UTC] Surface recent journal kinds in status: `Journal.recent_kinds` / `format_recent_kinds`; `Agent.status` prints `journal_kinds=...` (or `-` if empty).
 - [2026-09-14 21:15 UTC] Harden STATE progress parser: `parse_progress` helper; percent/fraction/invalid/clamp; no duplicate try-blocks.
@@ -30,11 +31,11 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 - None yet.
 
 ## Metrics
-- Files: 33
-- Tests: 54
-- Features shipped: 11
+- Files: 35
+- Tests: 61
+- Features shipped: 12
 - Cycles: 5
 - Documentation coverage: Core
 
 ## Notes for next agent
-Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py plus src/tools/openlibrary.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Planner skips blank/None-yet entries. Status includes `changelog_versions` and `journal_kinds` (comma-separated last 8 kinds, or `-`). Progress parsing is `parse_progress` in core.state. Next: knowledge-base index over memory/ markdown + journal. Keep one task per hour. Do not rewrite the protocol; extend it.
+Python package is installable from pyproject.toml (package-dir = src). Run tests with: PYTHONPATH=src python -m pytest tests -q. Research/capture backends: wikipedia (default), duckduckgo, openlibrary (aliases ol/books), multi/all (Wikipedia + DDG + Open Library, merged), fixture. Tests must inject FixtureAdapter / MultiAdapter(adapters=...) or call parse_*_payload helpers (no network). Implementation lives in src/tools/research.py plus src/tools/openlibrary.py. Daily capture: `eternalforge capture --topic X --offline`. CLI research journals hits (`kind=research`); pass `--no-journal` to skip. Knowledge base: `eternalforge kb QUERY [--max N] [--write-index]` indexes memory/*.md and journal.jsonl (src/tools/kb.py). Planner skips blank/None-yet entries. Status includes `changelog_versions` and `journal_kinds` (comma-separated last 8 kinds, or `-`). Progress parsing is `parse_progress` in core.state. Next: journal kind filter on status / recent dump. Keep one task per hour. Do not rewrite the protocol; extend it.

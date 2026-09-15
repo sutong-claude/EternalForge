@@ -14,10 +14,11 @@
 - [x] Persist research hits into the JSONL journal
 - [x] Second live SearchAdapter (DuckDuckGo Instant Answer)
 - [x] Third live SearchAdapter (Open Library) + merge-hits MultiAdapter
+- [x] Knowledge-base index over memory/ markdown + journal
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Knowledge base
+- Knowledge base query filters (kind / date)
 - Automated report generation
 
 ## Phase 3 – Personal Productivity Platform
