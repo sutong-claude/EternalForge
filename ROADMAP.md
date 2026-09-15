@@ -29,13 +29,14 @@
 - [x] Journal recent dump filter by persisted tag
 - [x] Task-tracking skeleton
 - [x] Persist Tasks=N in STATE metrics on cycle
+- [x] Task due dates / priority on the tracker
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Task due dates / priority on the tracker
+- Task list sort by due/priority; overdue flag
 
 ## Phase 3 – Personal Productivity Platform
-- Task tracking (due dates, reviews)
+- Task tracking (reviews)
 - Daily/weekly review
 - Gmail / Drive integration
 
