@@ -7,6 +7,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from core.agent import Agent
 from core.memory import Journal, MemoryEntry
 from core.state import dump_state, ForgeState, parse_state
+from interfaces.cli import main
 
 
 def _seed(tmp: Path) -> Path:
@@ -55,6 +56,29 @@ def test_status_includes_recent_journal_kinds(tmp_path: Path) -> None:
     journal.append(MemoryEntry.now("research", "query"))
     text = Agent(root).status()
     assert "journal_kinds=capture,research" in text
+
+
+def test_status_kind_filter(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    journal = Journal(root / "memory" / "journal.jsonl")
+    journal.append(MemoryEntry.now("capture", "notes"))
+    journal.append(MemoryEntry.now("research", "query"))
+    journal.append(MemoryEntry.now("research", "followup"))
+    text = Agent(root).status(kind="research")
+    assert "journal_kinds=research,research" in text
+    assert "journal_filter=research" in text
+
+
+def test_dump_recent_and_cli(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    journal = Journal(root / "memory" / "journal.jsonl")
+    journal.append(MemoryEntry("t1", "capture", "notes"))
+    journal.append(MemoryEntry("t2", "research", "query"))
+    dump = Agent(root).dump_recent(kind="research")
+    assert "t2\tresearch\tquery" in dump
+    assert "capture" not in dump
+    assert main(["--root", str(root), "recent", "--kind", "research"]) == 0
+    assert main(["--root", str(root), "status", "--kind", "capture"]) == 0
 
 
 def test_dry_run_does_not_mutate(tmp_path: Path) -> None:

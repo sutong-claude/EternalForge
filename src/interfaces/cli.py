@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | research QUERY | capture | kb QUERY"""
+"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY"""
 
 from __future__ import annotations
 
@@ -21,10 +21,22 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="eternalforge")
     parser.add_argument("--root", type=Path, default=Path.cwd())
     sub = parser.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("status", help="Print phase, progress, next task")
+    status = sub.add_parser("status", help="Print phase, progress, next task")
+    status.add_argument(
+        "--kind",
+        default=None,
+        help="Only include this journal kind in journal_kinds",
+    )
     sub.add_parser("next", help="Print the planned next task")
     cycle = sub.add_parser("cycle", help="Run one plan-act-reflect loop")
     cycle.add_argument("--dry-run", action="store_true")
+    recent = sub.add_parser("recent", help="Dump recent journal entries")
+    recent.add_argument(
+        "--kind",
+        default=None,
+        help="Filter entries by kind (cycle, research, capture, ...)",
+    )
+    recent.add_argument("--max", type=int, default=20, dest="max_results")
     research = sub.add_parser("research", help="Run a search via an adapter")
     research.add_argument("query", nargs="+", help="Search query")
     research.add_argument("--max", type=int, default=5, dest="max_results")
@@ -67,11 +79,13 @@ def main(argv: list[str] | None = None) -> int:
     agent = Agent(args.root)
     try:
         if args.cmd == "status":
-            print(agent.status())
+            print(agent.status(kind=args.kind))
         elif args.cmd == "next":
             print(agent.plan())
         elif args.cmd == "cycle":
             print(agent.run_once(dry_run=args.dry_run))
+        elif args.cmd == "recent":
+            print(agent.dump_recent(n=args.max_results, kind=args.kind))
         elif args.cmd == "research":
             query = " ".join(args.query)
             adapter = FixtureAdapter() if args.offline else get_adapter(args.backend)

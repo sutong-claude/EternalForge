@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.1 — 2026-09-15
+
+- Journal kind filter: `Journal.recent` / `recent_kinds` accept `kind=` (case-insensitive).
+- `Journal.format_recent` dumps timestamp/kind/summary[/details].
+- CLI: `eternalforge recent [--kind K] [--max N]` and `eternalforge status --kind K`.
+- Status prints `journal_filter=` when a kind is requested.
+
 ## 0.8.0 — 2026-09-15
 
 - Knowledge-base index over `memory/*.md` and `memory/journal.jsonl`.

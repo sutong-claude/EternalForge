@@ -26,19 +26,25 @@ class Agent:
     def plan(self) -> str:
         return select_task(self.load_state())
 
-    def status(self) -> str:
+    def status(self, kind: str | None = None) -> str:
         state = self.load_state()
         pct = int(round(state.progress * 100))
         nxt = state.next_task() or "(none)"
         versions = count_versions_file(self.changelog_path)
-        kinds = self.journal.format_recent_kinds()
-        return (
-            f"phase={state.phase} progress={pct}%\n"
-            f"next={nxt}\n"
-            f"changelog_versions={versions}\n"
-            f"journal_kinds={kinds}\n"
-            f"updated={state.last_updated}"
-        )
+        kinds = self.journal.format_recent_kinds(kind=kind)
+        lines = [
+            f"phase={state.phase} progress={pct}%",
+            f"next={nxt}",
+            f"changelog_versions={versions}",
+            f"journal_kinds={kinds}",
+            f"updated={state.last_updated}",
+        ]
+        if kind and kind.strip():
+            lines.append(f"journal_filter={kind.strip()}")
+        return "\n".join(lines)
+
+    def dump_recent(self, n: int = 20, kind: str | None = None) -> str:
+        return self.journal.format_recent(n=n, kind=kind)
 
     def act(self, task: str) -> str:
         """Local cycle records intent. Code-producing agents implement the task themselves."""
