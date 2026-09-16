@@ -40,6 +40,7 @@
 - [x] Task list filter by id prefix or created window
 - [x] Seventh live SearchAdapter (Semantic Scholar)
 - [x] Eighth live SearchAdapter (PubMed)
+- [x] Ninth live SearchAdapter (Europe PMC)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter

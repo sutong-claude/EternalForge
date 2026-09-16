@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.14.0 — 2026-09-16
+
+- Ninth live SearchAdapter: Europe PMC REST search (`EuropePMCAdapter`, `parse_europepmc_payload`).
+- CLI `--backend europepmc` (aliases: epmc, europe).
+- `MultiAdapter` now includes Europe PMC as a ninth live source.
+- Payload tests do not hit the network.
+
 ## 0.13.0 — 2026-09-16
 
 - Seventh live SearchAdapter: Semantic Scholar graph paper search (`SemanticScholarAdapter`, `parse_semanticscholar_payload`).
