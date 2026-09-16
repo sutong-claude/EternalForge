@@ -15,6 +15,8 @@ from tools.tasks import (
     normalize_due,
     normalize_due_soon_days,
     normalize_priority,
+    normalize_created_day,
+    normalize_id_prefix,
     normalize_query,
     normalize_sort,
     normalize_status,
@@ -129,7 +131,7 @@ def test_sort_and_overdue(tmp_path: Path) -> None:
     soon = add_task(tmp_path, "Soon", due="2026-09-20", priority="urgent")
     undated = add_task(tmp_path, "Someday", priority="high")
     done = add_task(tmp_path, "Finished", due="2026-08-01", priority="urgent")
-    set_task_status(tmp_path, done.id, "done")
+    done = set_task_status(tmp_path, done.id, "done")
     today = "2026-09-15"
     by_due = list_tasks(tmp_path, sort="due", today=today)
     assert [t.id for t in by_due] == [done.id, late.id, soon.id, undated.id]
@@ -178,6 +180,38 @@ def test_list_by_query(tmp_path: Path) -> None:
     assert [t.id for t in rows] == [title_hit.id, notes_hit.id]
     assert list_tasks(tmp_path, query="kitchen")[0].id == miss.id
     assert list_tasks(tmp_path, query="missing token") == []
+
+
+def test_list_by_id_and_created(tmp_path: Path) -> None:
+    from tools.tasks import save_tasks
+    early = add_task(tmp_path, "Early")
+    late = add_task(tmp_path, "Late")
+    early.created = "2026-09-10T12:00:00Z"
+    late.created = "2026-09-15T08:00:00Z"
+    save_tasks(tmp_path, [early, late])
+    assert normalize_id_prefix(" T00 ") == "t00"
+    assert normalize_created_day("2026-09-10") == "2026-09-10"
+    try:
+        normalize_created_day("10/09/2026")
+    except ValueError as exc:
+        assert "YYYY-MM-DD" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+    by_id = list_tasks(tmp_path, task_id="t001")
+    assert [t.id for t in by_id] == ["T001"]
+    by_prefix = list_tasks(tmp_path, task_id="T00")
+    assert [t.id for t in by_prefix] == ["T001", "T002"]
+    assert list_tasks(tmp_path, task_id="T9") == []
+    window = list_tasks(tmp_path, since="2026-09-10", until="2026-09-12")
+    assert [t.id for t in window] == ["T001"]
+    later = list_tasks(tmp_path, since="2026-09-15")
+    assert [t.id for t in later] == ["T002"]
+    until = list_tasks(tmp_path, until="2026-09-10")
+    assert [t.id for t in until] == ["T001"]
+    empty_created = list_tasks(tmp_path)[0]
+    empty_created.created = ""
+    assert not empty_created.matches_created(since="2026-09-01")
+    assert empty_created.matches_created()
 
 
 def test_update_notes_and_tags(tmp_path: Path) -> None:
