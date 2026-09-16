@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.11 — 2026-09-16
+
+- Agent cycle writes today's reviews digest (`write_cycle_digest` → `memory/reviews/digest-YYYY-MM-DD.md`).
+- Journal row is tagged `review`, `digest`, and `cycle`. Dry-run does not write a digest.
+- Cycle metrics / CHANGELOG extras include the new digest in `Reviews=N` and `Digests=N`.
+- Tests cover helper tags, cycle write-back, and dry-run skip.
+
 ## 0.16.10 — 2026-09-16
 
 - Knowledge base indexes `memory/reviews/digest-*.md` as `kind=digest` / `source=digest` (daily/weekly sketches stay `review`).

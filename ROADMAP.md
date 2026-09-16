@@ -47,6 +47,7 @@
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
 - [x] Index digest files distinctly in the KB; surface `digests=N` on status
+- [x] Write reviews digest automatically on each agent cycle
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
@@ -55,6 +56,7 @@
 ## Phase 3 – Personal Productivity Platform
 - Task tracking (reviews)
 - Daily/weekly review
+- [x] Cycle writes a reviews digest
 - Gmail / Drive integration
 
 ## Phase 4 – Self-Improvement & Scale
