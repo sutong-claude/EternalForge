@@ -96,6 +96,31 @@ def normalize_query(query: str | None) -> str:
     return " ".join((query or "").strip().lower().split())
 
 
+def normalize_id_prefix(prefix: str | None) -> str:
+    raw = (prefix or "").strip().lower()
+    return raw
+
+
+def normalize_created_day(value: str | None) -> str:
+    raw = (value or "").strip()
+    if not raw:
+        return ""
+    try:
+        return date.fromisoformat(raw[:10]).isoformat()
+    except ValueError as exc:
+        raise ValueError(f"created day must be YYYY-MM-DD, got {value!r}") from exc
+
+
+def created_day(stamp: str | None) -> str:
+    raw = (stamp or "").strip()
+    if len(raw) >= 10:
+        try:
+            return date.fromisoformat(raw[:10]).isoformat()
+        except ValueError:
+            return ""
+    return ""
+
+
 def normalize_due_soon_days(days: int | str | None) -> int:
     if days is None or days is False:
         return DEFAULT_DUE_SOON_DAYS
@@ -164,6 +189,30 @@ class Task:
             return True
         haystack = f"{self.title} {self.notes}".lower()
         return needle in haystack
+
+    def matches_id(self, prefix: str | None) -> bool:
+        needle = normalize_id_prefix(prefix)
+        if not needle:
+            return True
+        return self.id.lower().startswith(needle)
+
+    def matches_created(
+        self,
+        since: str | None = None,
+        until: str | None = None,
+    ) -> bool:
+        start = normalize_created_day(since) if since else ""
+        end = normalize_created_day(until) if until else ""
+        if not start and not end:
+            return True
+        day = created_day(self.created)
+        if not day:
+            return False
+        if start and day < start:
+            return False
+        if end and day > end:
+            return False
+        return True
 
     def is_overdue(self, today: date | str | None = None) -> bool:
         if self.status != "open" or not self.due:
@@ -280,6 +329,9 @@ def list_tasks(
     *,
     tag: str | Iterable[str] | None = None,
     query: str | None = None,
+    task_id: str | None = None,
+    since: str | None = None,
+    until: str | None = None,
     overdue: bool = False,
     due_soon: bool | int | str | None = False,
     sort: str | None = "due",
@@ -298,6 +350,8 @@ def list_tasks(
         and task.matches_priority(wanted_pri)
         and task.matches_tags(tag_filter)
         and task.matches_query(query)
+        and task.matches_id(task_id)
+        and task.matches_created(since=since, until=until)
     ]
     if overdue:
         rows = [task for task in rows if task.is_overdue(today)]
