@@ -38,6 +38,7 @@
 - [x] Task title edit on set
 - [x] Task list text search on title + notes
 - [x] Task list filter by id prefix or created window
+- [x] Task list filter by updated window or exact id
 - [x] Seventh live SearchAdapter (Semantic Scholar)
 - [x] Eighth live SearchAdapter (PubMed)
 - [x] Ninth live SearchAdapter (Europe PMC)
