@@ -15,9 +15,9 @@ from tools.tasks import add_task, format_tasks, list_tasks, update_task
 
 BACKEND_HELP = (
     "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, arxiv, crossref, "
-    "semanticscholar, pubmed, europepmc, multi, fixture "
+    "semanticscholar, pubmed, europepmc, openalex, multi, fixture "
     "(aliases: ddg, ol, books, hn, algolia, papers, preprint, doi, works, s2, scholar, "
-    "ncbi, medline, epmc, europe, all)"
+    "ncbi, medline, epmc, europe, oa, works-oa, all)"
 )
 
 
