@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.5 — 2026-09-16
+
+- Surface review sketch count in `eternalforge status` as `reviews=N`.
+- Persist `Reviews=N` in STATE metrics on cycle via `count_reviews` (`memory/reviews/*.md`).
+- Cycle CHANGELOG extras now include `reviews=N` next to reports and tasks.
+- Tests cover missing dir, markdown-only count, status wiring, and cycle write-back.
+
 ## 0.16.4 — 2026-09-16
 
 - Wire CLI `task list --exact-id` / `--updated-since` / `--updated-until` to `list_tasks`.
