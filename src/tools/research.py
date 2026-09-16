@@ -1,8 +1,8 @@
 """Research tool with a pluggable SearchAdapter interface.
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
-Open Library, Hacker News Algolia, arXiv, Crossref, and Semantic Scholar
-(stdlib urllib, no API key). Tests inject FixtureAdapter or call
+Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
+and PubMed (stdlib urllib, no API key). Tests inject FixtureAdapter or call
 parse_*_payload helpers so they never hit the network. Backend ``multi``
 merges the live adapters.
 """
@@ -241,6 +241,9 @@ _LIVE_EXTRA = {
     "semanticscholar",
     "s2",
     "scholar",
+    "pubmed",
+    "ncbi",
+    "medline",
     "multi",
     "all",
 }
@@ -253,6 +256,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import crossref as xrmod
         from tools import hackernews as hnmod
         from tools import openlibrary as olmod
+        from tools import pubmed as pmmod
         from tools import semanticscholar as s2mod
 
         if key in {"multi", "all"}:
@@ -265,6 +269,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return xrmod.CrossrefAdapter()
         if key in {"semanticscholar", "s2", "scholar"}:
             return s2mod.SemanticScholarAdapter()
+        if key in {"pubmed", "ncbi", "medline"}:
+            return pmmod.PubMedAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
@@ -353,6 +359,11 @@ def parse_semanticscholar_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_pubmed_payload(payload: dict, limit: int = 5):
+    from tools.pubmed import parse_pubmed_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -374,4 +385,7 @@ def __getattr__(name: str):
     if name == "SemanticScholarAdapter":
         from tools.semanticscholar import SemanticScholarAdapter
         return SemanticScholarAdapter
+    if name == "PubMedAdapter":
+        from tools.pubmed import PubMedAdapter
+        return PubMedAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
