@@ -143,3 +143,18 @@ def created_day(stamp: str | None) -> str:
 
 def updated_day(stamp: str | None) -> str:
     return created_day(stamp)
+
+
+def normalize_due_soon_days(days: int | str | None) -> int:
+    if days is None or days is False:
+        return DEFAULT_DUE_SOON_DAYS
+    raw = str(days).strip().lower()
+    if raw in ("", "true", "yes", "soon"):
+        return DEFAULT_DUE_SOON_DAYS
+    try:
+        value = int(raw)
+    except ValueError as exc:
+        raise ValueError(f"due-soon days must be an integer >= 0, got {days!r}") from exc
+    if value < 0:
+        raise ValueError(f"due-soon days must be an integer >= 0, got {days!r}")
+    return value
