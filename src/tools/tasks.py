@@ -1,1 +1,1 @@
-placeholder-will-replace
+"""Lightweight personal task tracker.\n\nPersists tasks as JSONL under memory/tasks.jsonl. This is a skeleton for\nPhase 3 productivity: add, list, and close tasks without a database.\n"""\n
