@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.15.0 — 2026-09-16
+
+- Tenth live SearchAdapter: OpenAlex works API (`OpenAlexAdapter`, `parse_openalex_payload`).
+- CLI `--backend openalex` (aliases: oa, works-oa).
+- `MultiAdapter` now includes OpenAlex as a tenth live source.
+- Payload tests do not hit the network.
+
 ## 0.14.0 — 2026-09-16
 
 - Ninth live SearchAdapter: Europe PMC REST search (`EuropePMCAdapter`, `parse_europepmc_payload`).

@@ -41,6 +41,7 @@
 - [x] Seventh live SearchAdapter (Semantic Scholar)
 - [x] Eighth live SearchAdapter (PubMed)
 - [x] Ninth live SearchAdapter (Europe PMC)
+- [x] Tenth live SearchAdapter (OpenAlex)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
