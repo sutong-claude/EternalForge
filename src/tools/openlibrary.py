@@ -18,6 +18,7 @@ from tools.research import (
     WikipediaAdapter,
     _unavailable,
 )
+from tools.semanticscholar import SemanticScholarAdapter
 
 
 def _is_unavailable(hit: Hit) -> bool:
@@ -158,6 +159,7 @@ class MultiAdapter:
             HackerNewsAdapter(timeout=timeout),
             ArxivAdapter(timeout=timeout),
             CrossrefAdapter(timeout=timeout),
+            SemanticScholarAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
