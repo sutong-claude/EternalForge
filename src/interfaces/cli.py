@@ -32,6 +32,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Only include this journal kind in journal_kinds",
     )
+    status.add_argument(
+        "--digest",
+        action="store_true",
+        help="List digest-*.md filenames after the status block",
+    )
     sub.add_parser("next", help="Print the planned next task")
     cycle = sub.add_parser("cycle", help="Run one plan-act-reflect loop")
     cycle.add_argument("--dry-run", action="store_true")
@@ -307,7 +312,7 @@ def main(argv: list[str] | None = None) -> int:
     agent = Agent(args.root)
     try:
         if args.cmd == "status":
-            print(agent.status(kind=args.kind))
+            print(agent.status(kind=args.kind, digest=args.digest))
         elif args.cmd == "next":
             print(agent.plan())
         elif args.cmd == "cycle":
