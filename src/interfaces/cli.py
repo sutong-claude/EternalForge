@@ -14,8 +14,9 @@ from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits
 from tools.tasks import add_task, format_tasks, list_tasks, update_task
 
 BACKEND_HELP = (
-    "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, arxiv, crossref, multi, fixture "
-    "(aliases: ddg, ol, books, hn, algolia, papers, preprint, doi, works, all)"
+    "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, arxiv, crossref, "
+    "semanticscholar, multi, fixture "
+    "(aliases: ddg, ol, books, hn, algolia, papers, preprint, doi, works, s2, scholar, all)"
 )
 
 
