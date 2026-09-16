@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.13 — 2026-09-16
+
+- Knowledge base indexes `kind=inbox` journal rows as `source=inbox` (other journal kinds stay `source=journal`).
+- Inbox documents always carry an `inbox` tag so `kb QUERY --kind inbox` / `--source inbox` / `--tag inbox` work.
+- Tests cover collect + kind/source/tag filters against mixed inbox and research rows.
+- No PubMed heading invented.
+
 ## 0.16.12 — 2026-09-16
 
 - Gmail / Drive listing sketch (`tools.inbox`): `InboxItem`, fixture + live-stub adapters.

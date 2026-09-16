@@ -122,6 +122,19 @@ def journal_extra_tags(raw_tags: object) -> list[str]:
     return []
 
 
+def journal_source(kind: str | None) -> str:
+    """Facet for a journal row. Inbox captures are source=inbox, not generic journal."""
+    if normalize_kind(kind) == "inbox":
+        return "inbox"
+    return "journal"
+
+
+def journal_kind_tags(kind: str | None) -> list[str]:
+    if normalize_kind(kind) == "inbox":
+        return ["inbox"]
+    return []
+
+
 def document_matches(
     doc: Document,
     kind: str | None = None,
@@ -257,13 +270,17 @@ def collect_documents(root: Path) -> list[Document]:
             docs.append(
                 Document(
                     doc_id=f"journal:{idx}",
-                    source="journal",
+                    source=journal_source(kind),
                     path="memory/journal.jsonl",
                     title=title[:120],
                     text=body,
                     kind=kind or "journal",
                     timestamp=timestamp,
-                    tags=merge_tags(extract_tags(summary, details), extra_tags),
+                    tags=merge_tags(
+                        extract_tags(summary, details),
+                        extra_tags,
+                        journal_kind_tags(kind),
+                    ),
                 )
             )
     return docs

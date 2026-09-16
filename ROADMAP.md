@@ -49,6 +49,7 @@
 - [x] Index digest files distinctly in the KB; surface `digests=N` on status
 - [x] Write reviews digest automatically on each agent cycle
 - [x] Gmail / Drive listing sketch (fixture + capture-to-journal)
+- [x] Index inbox journal rows as source=inbox in the KB
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
@@ -60,6 +61,7 @@
 - [x] Cycle writes a reviews digest
 - [x] Gmail / Drive listing sketch
 - Live Gmail / Drive OAuth (read-only)
+- [x] Index inbox captures in the knowledge base
 
 ## Phase 4 – Self-Improvement & Scale
 - Automated testing gates

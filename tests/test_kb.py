@@ -16,6 +16,8 @@ from tools.kb import (
     extract_tags,
     format_index_hits,
     journal_extra_tags,
+    journal_kind_tags,
+    journal_source,
     merge_tags,
     parse_day,
     search_index,
@@ -88,6 +90,15 @@ def test_merge_tags_dedupes_and_preserves_order() -> None:
     assert journal_extra_tags(None) == []
 
 
+def test_journal_source_inbox_facet() -> None:
+    assert journal_source("inbox") == "inbox"
+    assert journal_source("INBOX") == "inbox"
+    assert journal_source("research") == "journal"
+    assert journal_source("") == "journal"
+    assert journal_kind_tags("inbox") == ["inbox"]
+    assert journal_kind_tags("research") == []
+
+
 def test_extract_and_parse_day() -> None:
     assert extract_day("2026-09-14.md") == "2026-09-14"
     assert extract_day("2026-09-14T18:00:00Z") == "2026-09-14"
@@ -140,6 +151,54 @@ def test_collect_indexes_reviews_subdir(tmp_path: Path) -> None:
     assert "standup" in doc.tags
     assert "review" in doc.tags
     assert "journal rows" in doc.text.lower()
+
+
+def test_collect_indexes_inbox_journal_rows(tmp_path: Path) -> None:
+    memory = tmp_path / "memory"
+    memory.mkdir()
+    (memory / "journal.jsonl").write_text(
+        json.dumps(
+            {
+                "timestamp": "2026-09-16T09:00:00Z",
+                "kind": "inbox",
+                "summary": "Captured 1 inbox item(s) source=gmail",
+                "details": "gmail\tm001\tWeekly research digest",
+                "tags": ["gmail"],
+            }
+        )
+        + "\n"
+        + json.dumps(
+            {
+                "timestamp": "2026-09-16T10:00:00Z",
+                "kind": "research",
+                "summary": "unrelated agents paper",
+                "details": "",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    docs = collect_documents(tmp_path)
+    inbox = next(d for d in docs if d.kind == "inbox")
+    assert inbox.source == "inbox"
+    assert inbox.path == "memory/journal.jsonl"
+    assert "inbox" in inbox.tags
+    assert "gmail" in inbox.tags
+    assert "digest" in inbox.text.lower()
+    other = next(d for d in docs if d.kind == "research")
+    assert other.source == "journal"
+    hits = search_kb(tmp_path, "digest", kind="inbox")
+    assert hits
+    assert all(h.kind == "inbox" and h.source == "inbox" for h in hits)
+    by_source = search_kb(tmp_path, "digest", source="inbox")
+    assert by_source
+    assert all(h.source == "inbox" for h in by_source)
+    tagged = search_kb(tmp_path, "gmail", tag="inbox")
+    assert tagged
+    assert all("inbox" in h.tags for h in tagged)
+    journal_only = search_kb(tmp_path, "agents", source="journal")
+    assert journal_only
+    assert all(h.source == "journal" for h in journal_only)
 
 
 def test_journal_tags_merge_dedupes_extra_and_extracted(tmp_path: Path) -> None:
