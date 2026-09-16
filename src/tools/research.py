@@ -2,9 +2,9 @@
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
-and PubMed (stdlib urllib, no API key). Tests inject FixtureAdapter or call
-parse_*_payload helpers so they never hit the network. Backend ``multi``
-merges the live adapters.
+PubMed, and Europe PMC (stdlib urllib, no API key). Tests inject
+FixtureAdapter or call parse_*_payload helpers so they never hit the
+network. Backend ``multi`` merges the live adapters.
 """
 
 from __future__ import annotations
@@ -244,6 +244,9 @@ _LIVE_EXTRA = {
     "pubmed",
     "ncbi",
     "medline",
+    "europepmc",
+    "epmc",
+    "europe",
     "multi",
     "all",
 }
@@ -254,6 +257,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
     if key in _LIVE_EXTRA:
         from tools import arxiv as axmod
         from tools import crossref as xrmod
+        from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
         from tools import openlibrary as olmod
         from tools import pubmed as pmmod
@@ -271,6 +275,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return s2mod.SemanticScholarAdapter()
         if key in {"pubmed", "ncbi", "medline"}:
             return pmmod.PubMedAdapter()
+        if key in {"europepmc", "epmc", "europe"}:
+            return epmcmod.EuropePMCAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
@@ -364,6 +370,11 @@ def parse_pubmed_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_europepmc_payload(payload: dict, limit: int = 5):
+    from tools.europepmc import parse_europepmc_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -388,4 +399,7 @@ def __getattr__(name: str):
     if name == "PubMedAdapter":
         from tools.pubmed import PubMedAdapter
         return PubMedAdapter
+    if name == "EuropePMCAdapter":
+        from tools.europepmc import EuropePMCAdapter
+        return EuropePMCAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 
 from tools.arxiv import ArxivAdapter
 from tools.crossref import CrossrefAdapter
+from tools.europepmc import EuropePMCAdapter
 from tools.hackernews import HackerNewsAdapter
 from tools.pubmed import PubMedAdapter
 from tools.research import (
@@ -162,6 +163,7 @@ class MultiAdapter:
             CrossrefAdapter(timeout=timeout),
             SemanticScholarAdapter(timeout=timeout),
             PubMedAdapter(timeout=timeout),
+            EuropePMCAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
