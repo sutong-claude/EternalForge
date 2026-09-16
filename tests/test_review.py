@@ -8,6 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from core.memory import Journal, MemoryEntry
 from tools.review import (
+    count_reviews,
     journal_in_window,
     normalize_period,
     render_review,
@@ -112,6 +113,7 @@ def test_write_review_persists_markdown_and_journal(tmp_path: Path) -> None:
     assert result.open_count == 1
     assert result.overdue_count == 1
     assert result.done_count == 1
+    assert count_reviews(tmp_path) == 1
     row = json.loads(journal.path.read_text(encoding="utf-8").splitlines()[-1])
     assert row["kind"] == "review"
     assert "daily-2026-09-16.md" in row["summary"]
@@ -131,3 +133,17 @@ def test_write_review_weekly_window(tmp_path: Path) -> None:
     assert result.until == "2026-09-16"
     assert result.journal_count == 1
     assert "Window: 2026-09-10 → 2026-09-16" in result.markdown
+
+
+def test_count_reviews_missing_dir_is_zero(tmp_path: Path) -> None:
+    assert count_reviews(tmp_path) == 0
+
+
+def test_count_reviews_counts_markdown_only(tmp_path: Path) -> None:
+    folder = tmp_path / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-14.md").write_text("# a\n", encoding="utf-8")
+    (folder / "weekly-2026-09-16.md").write_text("# b\n", encoding="utf-8")
+    (folder / "notes.txt").write_text("ignore\n", encoding="utf-8")
+    (folder / "nested").mkdir()
+    assert count_reviews(tmp_path) == 2
