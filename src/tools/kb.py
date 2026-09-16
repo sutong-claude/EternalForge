@@ -47,7 +47,6 @@ class IndexHit:
 @dataclass
 class KnowledgeIndex:
     documents: list[Document] = field(default_factory=list)
-    # token -> list of (doc_id, term_frequency)
     postings: dict[str, list[tuple[str, int]]] = field(default_factory=dict)
 
     def document_count(self) -> int:
@@ -59,7 +58,6 @@ def tokenize(text: str) -> list[str]:
 
 
 def extract_day(value: str | None) -> str | None:
-    """Return YYYY-MM-DD if present anywhere in value, else None."""
     if not value:
         return None
     match = DAY_RE.search(str(value))
@@ -67,7 +65,6 @@ def extract_day(value: str | None) -> str | None:
 
 
 def parse_day(value: str | None) -> str | None:
-    """Parse a user-supplied date filter. Empty is None; garbage raises."""
     raw = (value or "").strip()
     if not raw:
         return None
@@ -89,7 +86,6 @@ def normalize_tag(tag: str | None) -> str:
 
 
 def merge_tags(*groups: Iterable[str] | None) -> list[str]:
-    """Order-preserving unique tags across extracted text and journal extra_tags."""
     seen: dict[str, None] = {}
     for group in groups:
         if not group:
@@ -102,7 +98,6 @@ def merge_tags(*groups: Iterable[str] | None) -> list[str]:
 
 
 def extract_tags(*parts: str) -> list[str]:
-    """Collect unique lowercase tags from #hashtags and `tags:` lines."""
     seen: dict[str, None] = {}
     for part in parts:
         text = part or ""
@@ -120,7 +115,6 @@ def extract_tags(*parts: str) -> list[str]:
 
 
 def journal_extra_tags(raw_tags: object) -> list[str]:
-    """Normalize a journal `tags` field (string or list) into unique tags."""
     if isinstance(raw_tags, str):
         return extract_tags(f"tags: {raw_tags}")
     if isinstance(raw_tags, list):
@@ -226,19 +220,16 @@ def _add_markdown_docs(docs: list[Document], root: Path, paths: list[Path]) -> N
 
 
 def collect_documents(root: Path) -> list[Document]:
-    """Load markdown notes, research reports, reviews, and journal rows under memory/."""
     memory = root / "memory"
     docs: list[Document] = []
     if not memory.exists():
         return docs
-
     top_level = sorted(memory.glob("*.md"))
     reports_dir = memory / "reports"
     report_files = sorted(reports_dir.glob("*.md")) if reports_dir.is_dir() else []
     reviews_dir = memory / "reviews"
     review_files = sorted(reviews_dir.glob("*.md")) if reviews_dir.is_dir() else []
     _add_markdown_docs(docs, root, top_level + report_files + review_files)
-
     journal = memory / "journal.jsonl"
     if journal.exists():
         try:
@@ -315,7 +306,7 @@ def search_index(
     by_id = {doc.doc_id: doc for doc in index.documents}
     scores: dict[str, int] = {}
     for tok in tokens:
-        for doc_id, tf in index.postings.get(tok, ())):
+        for doc_id, tf in index.postings.get(tok, ()):
             if doc_id not in allowed:
                 continue
             scores[doc_id] = scores.get(doc_id, 0) + tf
@@ -377,7 +368,6 @@ def format_index_hits(hits: list[IndexHit]) -> str:
 
 
 def write_index(index: KnowledgeIndex, root: Path) -> Path:
-    """Persist a compact snapshot for later agents to inspect."""
     memory = root / "memory"
     memory.mkdir(parents=True, exist_ok=True)
     path = memory / "kb-index.json"
