@@ -16,6 +16,7 @@ from tools.research import (
     Hit,
     MultiAdapter,
     OpenLibraryAdapter,
+    SemanticScholarAdapter,
     WikipediaAdapter,
     format_hits,
     get_adapter,
@@ -25,6 +26,7 @@ from tools.research import (
     parse_duckduckgo_payload,
     parse_hackernews_payload,
     parse_openlibrary_payload,
+    parse_semanticscholar_payload,
     parse_wikipedia_payload,
     record_hits,
     search,
@@ -47,6 +49,7 @@ def test_empty_query_returns_nothing() -> None:
     assert HackerNewsAdapter().search("") == []
     assert ArxivAdapter().search("") == []
     assert CrossrefAdapter().search("") == []
+    assert SemanticScholarAdapter().search("") == []
     assert MultiAdapter(adapters=[FixtureAdapter()]).search("  ") == []
 
 
@@ -124,6 +127,9 @@ def test_get_adapter_resolves_known_backends() -> None:
     assert get_adapter("crossref").name == "crossref"
     assert get_adapter("doi").name == "crossref"
     assert get_adapter("works").name == "crossref"
+    assert get_adapter("semanticscholar").name == "semanticscholar"
+    assert get_adapter("s2").name == "semanticscholar"
+    assert get_adapter("scholar").name == "semanticscholar"
     assert get_adapter("multi").name == "multi"
     assert get_adapter("all").name == "multi"
     assert get_adapter("fixture").name == "fixture"
@@ -319,15 +325,15 @@ def test_parse_arxiv_respects_limit() -> None:
 
 
 def test_parse_arxiv_xml_atom() -> None:
-    raw = """<?xml version="1.0" encoding="UTF-8"?>
-    <feed xmlns="http://www.w3.org/2005/Atom">
+    raw = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    <feed xmlns=\"http://www.w3.org/2005/Atom\">
       <entry>
         <id>http://arxiv.org/abs/1706.03762v7</id>
         <title>Attention Is All You Need</title>
         <published>2017-06-12T17:57:34Z</published>
         <summary>The dominant sequence transduction models.</summary>
         <author><name>Ashish Vaswani</name></author>
-        <link href="http://arxiv.org/abs/1706.03762v7" rel="alternate" type="text/html"/>
+        <link href=\"http://arxiv.org/abs/1706.03762v7\" rel=\"alternate\" type=\"text/html\"/>
       </entry>
     </feed>
     """
@@ -387,6 +393,53 @@ def test_parse_crossref_respects_limit() -> None:
         }
     }
     hits = parse_crossref_payload(payload, limit=1)
+    assert [h.title for h in hits] == ["A"]
+
+
+def test_parse_semanticscholar_payload() -> None:
+    payload = {
+        "data": [
+            {
+                "paperId": "abc123",
+                "title": "Attention Is All You Need",
+                "url": "https://www.semanticscholar.org/paper/abc123",
+                "abstract": "The dominant sequence transduction models.",
+                "year": 2017,
+                "venue": "NeurIPS",
+                "authors": [{"name": "Ashish Vaswani"}, {"name": "Noam Shazeer"}],
+            },
+            {
+                "paperId": "def456",
+                "title": "Generative Adversarial Nets",
+                "authors": [{"name": "Ian Goodfellow"}],
+                "year": 2014,
+                "externalIds": {"DOI": "10.5555/2969033.2969125"},
+            },
+            {"title": "", "url": "", "paperId": ""},
+        ]
+    }
+    hits = parse_semanticscholar_payload(payload, limit=5)
+    assert len(hits) == 2
+    assert hits[0].title == "Attention Is All You Need"
+    assert hits[0].url == "https://www.semanticscholar.org/paper/abc123"
+    assert hits[0].source == "semanticscholar"
+    assert "Vaswani" in hits[0].snippet
+    assert "2017" in hits[0].snippet
+    assert "NeurIPS" in hits[0].snippet
+    assert "transduction" in hits[0].snippet
+    assert hits[1].title == "Generative Adversarial Nets"
+    assert hits[1].url == "https://www.semanticscholar.org/paper/def456"
+    assert "Goodfellow" in hits[1].snippet
+
+
+def test_parse_semanticscholar_respects_limit() -> None:
+    payload = {
+        "data": [
+            {"title": "A", "url": "https://www.semanticscholar.org/paper/a"},
+            {"title": "B", "url": "https://www.semanticscholar.org/paper/b"},
+        ]
+    }
+    hits = parse_semanticscholar_payload(payload, limit=1)
     assert [h.title for h in hits] == ["A"]
 
 
