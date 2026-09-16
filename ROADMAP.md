@@ -50,6 +50,7 @@
 - [x] Write reviews digest automatically on each agent cycle
 - [x] Gmail / Drive listing sketch (fixture + capture-to-journal)
 - [x] Index inbox journal rows as source=inbox in the KB
+- [x] Surface inbox count in status / STATE metrics
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
@@ -62,6 +63,7 @@
 - [x] Gmail / Drive listing sketch
 - Live Gmail / Drive OAuth (read-only)
 - [x] Index inbox captures in the knowledge base
+- [x] Surface inbox count on status
 
 ## Phase 4 – Self-Improvement & Scale
 - Automated testing gates

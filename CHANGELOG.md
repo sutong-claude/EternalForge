@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.14 — 2026-09-16
+
+- Surface inbox capture count as `inbox=N` on `eternalforge status`.
+- Persist `Inbox=N` in STATE metrics on cycle via `count_inbox_entries` (journal `kind=inbox`).
+- Cycle CHANGELOG extras include `inbox=N`.
+- Tests cover zero journal, mixed kinds, status wiring, and cycle write-back.
+- No PubMed heading invented.
+
 ## 0.16.13 — 2026-09-16
 
 - Knowledge base indexes `kind=inbox` journal rows as `source=inbox` (other journal kinds stay `source=journal`).

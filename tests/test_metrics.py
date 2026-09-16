@@ -6,6 +6,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from core.metrics import bump_metrics
 from core.state import ForgeState
+from tools.inbox import capture_inbox
 from tools.tasks import add_task, set_task_status
 
 
@@ -27,6 +28,7 @@ def test_bump_without_root_does_not_add_reports() -> None:
     assert "Tasks" not in state.metrics
     assert "Reviews" not in state.metrics
     assert "Digests" not in state.metrics
+    assert "Inbox" not in state.metrics
 
 
 def test_bump_with_root_sets_reports_zero(tmp_path: Path) -> None:
@@ -35,6 +37,7 @@ def test_bump_with_root_sets_reports_zero(tmp_path: Path) -> None:
     assert state.metrics["Tasks"] == "0"
     assert state.metrics["Reviews"] == "0"
     assert state.metrics["Digests"] == "0"
+    assert state.metrics["Inbox"] == "0"
     assert state.metrics["Cycles"] == "4"
 
 
@@ -77,3 +80,10 @@ def test_bump_with_root_counts_open_tasks(tmp_path: Path) -> None:
     set_task_status(tmp_path, closed.id, "done")
     state = bump_metrics(_state(), root=tmp_path)
     assert state.metrics["Tasks"] == "1"
+
+
+def test_bump_with_root_counts_inbox_entries(tmp_path: Path) -> None:
+    capture_inbox(tmp_path, source="gmail", query="invoice")
+    capture_inbox(tmp_path, source="drive")
+    state = bump_metrics(_state(), root=tmp_path)
+    assert state.metrics["Inbox"] == "2"

@@ -9,6 +9,7 @@ from core.agent import Agent
 from core.memory import Journal, MemoryEntry
 from core.state import dump_state, ForgeState, parse_state
 from interfaces.cli import main
+from tools.inbox import capture_inbox
 from tools.tasks import add_task, set_task_status
 
 
@@ -42,6 +43,7 @@ def test_status_includes_changelog_versions(tmp_path: Path) -> None:
     assert "reports=0" in text
     assert "tasks=0" in text
     assert "reviews=0" in text
+    assert "inbox=0" in text
     assert "phase=Core Agent" in text
     assert "progress=18%" in text
     assert "journal_kinds=-" in text
@@ -55,6 +57,7 @@ def test_status_zero_versions_when_changelog_missing(tmp_path: Path) -> None:
     assert "reports=0" in text
     assert "tasks=0" in text
     assert "reviews=0" in text
+    assert "inbox=0" in text
 
 
 def test_status_includes_report_count(tmp_path: Path) -> None:
@@ -83,6 +86,13 @@ def test_status_includes_open_task_count(tmp_path: Path) -> None:
     add_task(root, "second")
     text = Agent(root).status()
     assert "tasks=2" in text
+
+
+def test_status_includes_inbox_count(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    capture_inbox(root, source="gmail", query="invoice")
+    text = Agent(root).status()
+    assert "inbox=1" in text
 
 
 def test_status_includes_recent_journal_kinds(tmp_path: Path) -> None:
@@ -146,12 +156,14 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "tasks=0" in log
     assert "reviews=1" in log
     assert "digests=1" in log
+    assert "inbox=0" in log
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
     assert state.metrics["Reports"] == "0"
     assert state.metrics["Tasks"] == "0"
     assert state.metrics["Reviews"] == "1"
     assert state.metrics["Digests"] == "1"
+    assert state.metrics["Inbox"] == "0"
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
@@ -164,6 +176,7 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "tasks=0" in status
     assert "reviews=1" in status
     assert "digests=1" in status
+    assert "inbox=0" in status
 
 
 def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
@@ -203,3 +216,13 @@ def test_cycle_persists_open_task_count_in_state(tmp_path: Path) -> None:
     assert open_task.status == "open"
     log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
     assert "tasks=1" in log
+
+
+def test_cycle_persists_inbox_count_in_state(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    capture_inbox(root, source="drive")
+    Agent(root).run_once(dry_run=False)
+    state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
+    assert state.metrics["Inbox"] == "1"
+    log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "inbox=1" in log

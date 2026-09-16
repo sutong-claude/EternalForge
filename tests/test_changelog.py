@@ -44,12 +44,14 @@ def test_cycle_extras_formats_counts() -> None:
         "tasks=0",
         "reviews=0",
         "digests=0",
+        "inbox=0",
     ]
-    assert cycle_extras(reports=3, tasks=1, reviews=2, digests=1) == [
+    assert cycle_extras(reports=3, tasks=1, reviews=2, digests=1, inbox=4) == [
         "reports=3",
         "tasks=1",
         "reviews=2",
         "digests=1",
+        "inbox=4",
     ]
 
 

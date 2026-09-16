@@ -5,12 +5,14 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from core.memory import Journal, MemoryEntry
 from interfaces.cli import build_parser, main
 from tools.inbox import (
     FixtureInboxAdapter,
     InboxItem,
     LiveInboxAdapter,
     capture_inbox,
+    count_inbox_entries,
     format_items,
     get_inbox_adapter,
     list_inbox,
@@ -52,6 +54,16 @@ def test_capture_writes_journal(tmp_path: Path) -> None:
     assert "drive" in row["summary"]
     assert "inbox" in row["tags"]
     assert "EternalForge notes" in row["details"]
+
+
+def test_count_inbox_entries(tmp_path: Path) -> None:
+    assert count_inbox_entries(tmp_path) == 0
+    capture_inbox(tmp_path, source="gmail", query="invoice")
+    capture_inbox(tmp_path, source="drive")
+    journal = Journal(tmp_path / "memory" / "journal.jsonl")
+    journal.append(MemoryEntry.now("research", "not inbox"))
+    assert count_inbox_entries(tmp_path) == 2
+    assert count_inbox_entries(tmp_path, journal=journal) == 2
 
 
 def test_cli_inbox_list_offline(capsys) -> None:
