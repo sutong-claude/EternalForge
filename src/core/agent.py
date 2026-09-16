@@ -10,7 +10,7 @@ from core.metrics import bump_metrics
 from core.planner import select_task
 from core.state import ForgeState, load_state_file, save_state_file
 from tools.report import count_reports
-from tools.review import count_reviews
+from tools.review import count_digests, count_reviews, format_digest_listing
 from tools.tasks import count_open_tasks
 
 
@@ -29,7 +29,7 @@ class Agent:
     def plan(self) -> str:
         return select_task(self.load_state())
 
-    def status(self, kind: str | None = None) -> str:
+    def status(self, kind: str | None = None, digest: bool = False) -> str:
         state = self.load_state()
         pct = int(round(state.progress * 100))
         nxt = state.next_task() or "(none)"
@@ -37,6 +37,7 @@ class Agent:
         reports = count_reports(self.root)
         open_tasks = count_open_tasks(self.root)
         reviews = count_reviews(self.root)
+        digests = count_digests(self.root)
         kinds = self.journal.format_recent_kinds(kind=kind)
         lines = [
             f"phase={state.phase} progress={pct}%",
@@ -45,11 +46,16 @@ class Agent:
             f"reports={reports}",
             f"tasks={open_tasks}",
             f"reviews={reviews}",
+            f"digests={digests}",
             f"journal_kinds={kinds}",
             f"updated={state.last_updated}",
         ]
         if kind and kind.strip():
             lines.append(f"journal_filter={kind.strip()}")
+        if digest:
+            listing = format_digest_listing(self.root)
+            extra = listing.splitlines()[1:]
+            lines.extend(extra)
         return "\n".join(lines)
 
     def dump_recent(
@@ -72,6 +78,7 @@ class Agent:
             reports=count_reports(self.root),
             tasks=count_open_tasks(self.root),
             reviews=count_reviews(self.root),
+            digests=count_digests(self.root),
         )]
         version = append_entry(
             self.changelog_path,

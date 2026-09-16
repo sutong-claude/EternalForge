@@ -26,6 +26,7 @@ def test_bump_without_root_does_not_add_reports() -> None:
     assert "Reports" not in state.metrics
     assert "Tasks" not in state.metrics
     assert "Reviews" not in state.metrics
+    assert "Digests" not in state.metrics
 
 
 def test_bump_with_root_sets_reports_zero(tmp_path: Path) -> None:
@@ -33,6 +34,7 @@ def test_bump_with_root_sets_reports_zero(tmp_path: Path) -> None:
     assert state.metrics["Reports"] == "0"
     assert state.metrics["Tasks"] == "0"
     assert state.metrics["Reviews"] == "0"
+    assert state.metrics["Digests"] == "0"
     assert state.metrics["Cycles"] == "4"
 
 
@@ -54,6 +56,19 @@ def test_bump_with_root_counts_review_markdown(tmp_path: Path) -> None:
     (folder / "skip.txt").write_text("no\n", encoding="utf-8")
     state = bump_metrics(_state(), root=tmp_path)
     assert state.metrics["Reviews"] == "2"
+    assert state.metrics["Digests"] == "0"
+
+
+def test_bump_with_root_counts_digest_markdown(tmp_path: Path) -> None:
+    folder = tmp_path / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-14.md").write_text("# a\n", encoding="utf-8")
+    (folder / "digest-2026-09-16.md").write_text("# d\n", encoding="utf-8")
+    (folder / "digest-2026-09-15.md").write_text("# d2\n", encoding="utf-8")
+    (folder / "skip.txt").write_text("no\n", encoding="utf-8")
+    state = bump_metrics(_state(), root=tmp_path)
+    assert state.metrics["Reviews"] == "3"
+    assert state.metrics["Digests"] == "2"
 
 
 def test_bump_with_root_counts_open_tasks(tmp_path: Path) -> None:
