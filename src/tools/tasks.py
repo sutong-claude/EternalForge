@@ -97,3 +97,49 @@ def normalize_sort(sort: str | None) -> str:
     if raw not in SORTS:
         raise ValueError(f"sort must be one of {', '.join(SORTS)}, got {sort!r}")
     return raw
+
+
+def normalize_tag_token(tag: str | None) -> str:
+    return (tag or "").strip().lstrip("#").lower()
+
+
+def normalize_query(query: str | None) -> str:
+    return " ".join((query or "").strip().lower().split())
+
+
+def normalize_id_prefix(prefix: str | None) -> str:
+    return (prefix or "").strip().lower()
+
+
+def normalize_created_day(value: str | None) -> str:
+    raw = (value or "").strip()
+    if not raw:
+        return ""
+    try:
+        return date.fromisoformat(raw[:10]).isoformat()
+    except ValueError as exc:
+        raise ValueError(f"created day must be YYYY-MM-DD, got {value!r}") from exc
+
+
+def normalize_updated_day(value: str | None) -> str:
+    raw = (value or "").strip()
+    if not raw:
+        return ""
+    try:
+        return date.fromisoformat(raw[:10]).isoformat()
+    except ValueError as exc:
+        raise ValueError(f"updated day must be YYYY-MM-DD, got {value!r}") from exc
+
+
+def created_day(stamp: str | None) -> str:
+    raw = (stamp or "").strip()
+    if len(raw) >= 10:
+        try:
+            return date.fromisoformat(raw[:10]).isoformat()
+        except ValueError:
+            return ""
+    return ""
+
+
+def updated_day(stamp: str | None) -> str:
+    return created_day(stamp)
