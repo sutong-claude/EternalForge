@@ -193,6 +193,9 @@ def _markdown_kind_and_source(rel: str) -> tuple[str, str]:
     if posix.startswith("memory/reports/") or "/reports/" in f"/{posix}":
         return "report", "report"
     if posix.startswith("memory/reviews/") or "/reviews/" in f"/{posix}":
+        name = posix.rsplit("/", 1)[-1].lower()
+        if name.startswith("digest-"):
+            return "digest", "digest"
         return "review", "review"
     return "markdown", "markdown"
 
@@ -312,7 +315,7 @@ def search_index(
     by_id = {doc.doc_id: doc for doc in index.documents}
     scores: dict[str, int] = {}
     for tok in tokens:
-        for doc_id, tf in index.postings.get(tok, ()):
+        for doc_id, tf in index.postings.get(tok, ())):
             if doc_id not in allowed:
                 continue
             scores[doc_id] = scores.get(doc_id, 0) + tf
