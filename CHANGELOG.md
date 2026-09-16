@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.4 — 2026-09-16
+
+- Wire CLI `task list --exact-id` / `--updated-since` / `--updated-until` to `list_tasks`.
+- `--sort` accepts `created` and `updated` (aliases: age, recent/newest/new) in addition to due and priority.
+- Tests cover exact-id vs prefix, updated window inclusive bounds, empty updated stamp, and created/updated sort order.
+
 ## 0.16.3 — 2026-09-16
 
 - Knowledge base indexes `memory/reviews/*.md` as `kind=review` / `source=review`.
