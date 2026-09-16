@@ -21,6 +21,21 @@ def reviews_dir(root: Path) -> Path:
     return root / "memory" / "reviews"
 
 
+def count_reviews(root: Path) -> int:
+    """Count daily/weekly review sketches under memory/reviews/*.md."""
+    folder = reviews_dir(root)
+    if not folder.is_dir():
+        return 0
+    n = 0
+    try:
+        for path in folder.iterdir():
+            if path.is_file() and path.suffix.lower() == ".md":
+                n += 1
+    except OSError:
+        return 0
+    return n
+
+
 def normalize_period(period: str | None) -> str:
     raw = (period or "daily").strip().lower()
     aliases = {
