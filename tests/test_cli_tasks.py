@@ -5,7 +5,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from interfaces.cli import build_parser, main
-from tools.tasks import add_task, save_tasks
+from tools.tasks import add_task, save_tasks, set_task_status
 
 
 def test_cli_parses_task_list_exact_id_updated_since_sort_created() -> None:
@@ -40,6 +40,21 @@ def test_cli_task_list_defaults_omit_exact_id_and_updated_window() -> None:
     assert ns.updated_since is None
     assert ns.updated_until is None
     assert ns.sort == "due"
+    assert ns.overdue is False
+    assert ns.due_soon is None
+    assert ns.query is None
+
+
+def test_cli_parses_task_list_due_soon_overdue_query() -> None:
+    ns = build_parser().parse_args(
+        ["task", "list", "--overdue", "--due-soon", "3", "--query", "arxiv"]
+    )
+    assert ns.overdue is True
+    assert ns.due_soon == "3"
+    assert ns.query == "arxiv"
+
+    bare = build_parser().parse_args(["task", "list", "--due-soon"])
+    assert bare.due_soon == 7
 
 
 def test_cli_task_list_exact_id_updated_since_sort_created(tmp_path: Path, capsys) -> None:
@@ -102,3 +117,35 @@ def test_cli_task_list_exact_id_updated_since_sort_created(tmp_path: Path, capsy
     out = capsys.readouterr().out
     assert "T002" in out
     assert "T001" not in out
+
+
+def test_cli_task_list_due_soon_overdue_query(tmp_path: Path, capsys) -> None:
+    late = add_task(tmp_path, "Late arXiv follow-up", due="2026-09-01")
+    soon = add_task(tmp_path, "Soon taxes", notes="arxiv stipend", due="2026-09-18")
+    far = add_task(tmp_path, "Far planning", notes="next quarter", due="2026-12-01")
+    done_late = add_task(tmp_path, "Finished late arXiv", due="2026-08-01")
+    set_task_status(tmp_path, done_late.id, "done")
+
+    rc = main(["--root", str(tmp_path), "task", "list", "--overdue"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert late.id in out
+    assert "OVERDUE" in out
+    assert soon.id not in out
+    assert done_late.id not in out
+
+    rc = main(["--root", str(tmp_path), "task", "list", "--due-soon", "7"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert soon.id in out
+    assert "DUE-SOON" in out
+    assert late.id not in out
+    assert far.id not in out
+
+    rc = main(["--root", str(tmp_path), "task", "list", "--query", "ARXIV"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert late.id in out
+    assert soon.id in out
+    assert done_late.id in out
+    assert far.id not in out

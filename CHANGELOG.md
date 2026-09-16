@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.8 — 2026-09-16
+
+- CLI tests for `task list --due-soon --overdue --query`.
+- Parser coverage: bare `--due-soon` defaults to 7 days; `--due-soon N` is passed through.
+- Integration coverage: overdue vs due-soon vs text query against a small fixture store.
+
 ## 0.16.7 — 2026-09-16
 
 - Reviews digest: `write_digest` / `render_digest` / `list_review_files` / `classify_review_name`.

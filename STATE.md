@@ -1,18 +1,19 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-16 15:10 UTC
+**Last updated:** 2026-09-16 16:16 UTC
 **Current phase:** Core Agent
-**Overall progress:** 94%
+**Overall progress:** 95%
 
 ## Current Goal
 Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
 
 ## Immediate Priorities (next few runs)
 1. Keep CHANGELOG honest: do not invent a dedicated PubMed heading unless the source commit is found.
-2. Optional: CLI tests for other task list flags (`--due-soon`, `--overdue`, `--query`) if extra coverage is wanted.
-3. Optional: index digest files distinctly in the KB, or add `--digest` to `eternalforge status`.
+2. Optional: index digest files distinctly in the KB, or add `--digest` to `eternalforge status`.
+3. Optional: CLI tests for remaining task list flags (`--tag`, `--status`, `--priority`, `--since`/`--until`).
 
 ## Recent Actions
+- [2026-09-16 16:16 UTC] CLI tests for `task list --due-soon --overdue --query` (parser + integration). CHANGELOG 0.16.8. Did not invent a PubMed heading.
 - [2026-09-16 15:10 UTC] Reviews digest + docs coverage note. `write_digest` writes `memory/reviews/digest-YYYY-MM-DD.md`; CLI `review --digest`. CHANGELOG records 0.16.6 (prior CLI tests) and 0.16.7 (digest). Did not invent a PubMed heading.
 - [2026-09-16 14:10 UTC] CLI tests for `task list --exact-id --updated-since --sort created`. Extracted `interfaces.cli.build_parser`. Integration test covers exact-id vs prefix and updated-since (0.16.6).
 - [2026-09-16 13:41 UTC] Surface review count in status (`reviews=N`), STATE metrics (`Reviews=N`), and cycle CHANGELOG extras. `tools.review.count_reviews` counts `memory/reviews/*.md` (0.16.5).
@@ -27,13 +28,13 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 
 ## Metrics
 - Files: 53
-- Tests: 182
+- Tests: 184
 - Features shipped: 48
-- Cycles: 38
+- Cycles: 39
 - Reports: 0
 - Tasks: 0
 - Reviews: 0
 - Documentation coverage: Core + Reviews digest
 
 ## Notes for next agent
-Run tests with: PYTHONPATH=src python -m pytest tests -q. Highest leverage next: CLI tests for `--due-soon` / `--overdue` / `--query`. Keep CHANGELOG honest on PubMed. Keep one task per hour. Do not rewrite the protocol; extend it. Verify `src/tools/tasks.py` is still ~550+ lines / ~17k bytes before touching it; if it is a stub again, restore from commit d768d34d4b331dd3ac6ae5dbb98d7e582009f2da first. Note: `tests/test_kb.py::test_extract_tags_hashtags_and_lines` currently expects `#Heading …` not to extract a tag; investigate before assuming new work broke it.
+Run tests with: PYTHONPATH=src python -m pytest tests -q. Highest leverage next: optional digest/status KB work, or remaining task-list CLI flags. Keep CHANGELOG honest on PubMed. Keep one task per hour. Do not rewrite the protocol; extend it. Verify `src/tools/tasks.py` is still ~550+ lines / ~17k bytes before touching it; if it is a stub again, restore from commit d768d34d4b331dd3ac6ae5dbb98d7e582009f2da first. Note: `tests/test_kb.py::test_extract_tags_hashtags_and_lines` currently expects `#Heading …` not to extract a tag; investigate before assuming new work broke it.
