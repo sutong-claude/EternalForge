@@ -241,9 +241,25 @@ def main(argv: list[str] | None = None) -> int:
         help="Only open tasks due today through N days (default 7)",
     )
     task_list.add_argument(
+        "--exact-id",
+        action="store_true",
+        dest="exact_id",
+        help="Require --id to match the full task id (not a prefix)",
+    )
+    task_list.add_argument(
+        "--updated-since",
+        default=None,
+        help="Only tasks updated on or after YYYY-MM-DD",
+    )
+    task_list.add_argument(
+        "--updated-until",
+        default=None,
+        help="Only tasks updated on or before YYYY-MM-DD",
+    )
+    task_list.add_argument(
         "--sort",
         default="due",
-        help="Sort by due (default) or priority",
+        help="Sort by due (default), priority, created, or updated",
     )
     task_done = task_sub.add_parser("done", help="Mark a task done")
     task_done.add_argument("task_id", help="Task id such as T001")
@@ -379,8 +395,11 @@ def main(argv: list[str] | None = None) -> int:
                             tag=args.tags,
                             query=args.query,
                             task_id=args.task_id_prefix,
+                            exact_id=args.exact_id,
                             since=args.since,
                             until=args.until,
+                            updated_since=args.updated_since,
+                            updated_until=args.updated_until,
                             overdue=args.overdue,
                             due_soon=args.due_soon if args.due_soon is not None else False,
                             sort=args.sort,
