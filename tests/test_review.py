@@ -10,8 +10,11 @@ from core.memory import Journal, MemoryEntry
 from interfaces.cli import build_parser, main
 from tools.review import (
     classify_review_name,
+    count_digests,
     count_reviews,
+    format_digest_listing,
     journal_in_window,
+    list_digest_files,
     list_review_files,
     normalize_period,
     render_digest,
@@ -211,3 +214,19 @@ def test_count_reviews_counts_markdown_only(tmp_path: Path) -> None:
     (folder / "notes.txt").write_text("ignore\n", encoding="utf-8")
     (folder / "nested").mkdir()
     assert count_reviews(tmp_path) == 2
+
+
+def test_count_and_list_digests(tmp_path: Path) -> None:
+    assert count_digests(tmp_path) == 0
+    assert list_digest_files(tmp_path) == []
+    folder = tmp_path / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-14.md").write_text("# d\n", encoding="utf-8")
+    (folder / "digest-2026-09-16.md").write_text("# g\n", encoding="utf-8")
+    (folder / "digest-2026-09-15.md").write_text("# g2\n", encoding="utf-8")
+    assert count_digests(tmp_path) == 2
+    names = [p.name for p in list_digest_files(tmp_path)]
+    assert names == ["digest-2026-09-15.md", "digest-2026-09-16.md"]
+    listing = format_digest_listing(tmp_path)
+    assert listing.splitlines()[0] == "digests=2"
+    assert "digest-2026-09-15.md" in listing
