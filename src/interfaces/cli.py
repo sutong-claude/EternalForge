@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report | task"""
+"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report | review | task"""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from tools.capture import DEFAULT_TOPICS, capture
 from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
 from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
+from tools.review import write_review
 from tools.tasks import add_task, format_tasks, list_tasks, update_task
 
 BACKEND_HELP = (
@@ -147,6 +148,29 @@ def main(argv: list[str] | None = None) -> int:
         action="append",
         dest="tags",
         help="Tag to persist on the report journal row (repeatable)",
+    )
+    review = sub.add_parser(
+        "review",
+        help="Write a daily or weekly review sketch from journal + tasks",
+    )
+    review.add_argument("--day", default=None, help="Anchor date YYYY-MM-DD (default today UTC)")
+    review.add_argument(
+        "--period",
+        default="daily",
+        help="daily (default) or weekly (7 days ending on --day)",
+    )
+    review.add_argument(
+        "--max",
+        type=int,
+        default=None,
+        dest="max_entries",
+        help="Keep only the last N journal rows in the window",
+    )
+    review.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Tag to persist on the review journal row (repeatable)",
     )
     task = sub.add_parser("task", help="Track personal tasks (add / list / done)")
     task_sub = task.add_subparsers(dest="task_cmd", required=True)
@@ -315,6 +339,19 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 f"wrote {result.path} "
                 f"({result.entry_count} run(s), {result.query_count} query(ies))"
+            )
+        elif args.cmd == "review":
+            result = write_review(
+                args.root,
+                day=args.day,
+                period=args.period,
+                max_entries=args.max_entries,
+                tags=args.tags,
+            )
+            print(
+                f"wrote {result.path} "
+                f"({result.journal_count} journal, {result.open_count} open, "
+                f"{result.overdue_count} overdue, {result.done_count} done)"
             )
         elif args.cmd == "task":
             if args.task_cmd == "add":
