@@ -11,6 +11,7 @@ from tools.research import (
     ArxivAdapter,
     CrossrefAdapter,
     DuckDuckGoAdapter,
+    EuropePMCAdapter,
     FixtureAdapter,
     HackerNewsAdapter,
     Hit,
@@ -50,6 +51,7 @@ def test_empty_query_returns_nothing() -> None:
     assert ArxivAdapter().search("") == []
     assert CrossrefAdapter().search("") == []
     assert SemanticScholarAdapter().search("") == []
+    assert EuropePMCAdapter().search("") == []
     assert MultiAdapter(adapters=[FixtureAdapter()]).search("  ") == []
 
 
@@ -130,6 +132,9 @@ def test_get_adapter_resolves_known_backends() -> None:
     assert get_adapter("semanticscholar").name == "semanticscholar"
     assert get_adapter("s2").name == "semanticscholar"
     assert get_adapter("scholar").name == "semanticscholar"
+    assert get_adapter("europepmc").name == "europepmc"
+    assert get_adapter("epmc").name == "europepmc"
+    assert get_adapter("europe").name == "europepmc"
     assert get_adapter("multi").name == "multi"
     assert get_adapter("all").name == "multi"
     assert get_adapter("fixture").name == "fixture"
