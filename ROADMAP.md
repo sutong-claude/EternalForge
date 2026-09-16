@@ -45,7 +45,7 @@
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
-- Daily/weekly review sketch
+- [x] Daily/weekly review sketch
 
 ## Phase 3 – Personal Productivity Platform
 - Task tracking (reviews)
