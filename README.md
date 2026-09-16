@@ -34,6 +34,7 @@ PYTHONPATH=src python -m interfaces.cli recent --tag research
 PYTHONPATH=src python -m interfaces.cli task add "review arXiv hits" --tag papers --due 2026-09-20 --priority high
 PYTHONPATH=src python -m interfaces.cli task list --status open --priority high
 PYTHONPATH=src python -m interfaces.cli task list --query arxiv
+PYTHONPATH=src python -m interfaces.cli task list --id T00 --since 2026-09-01
 PYTHONPATH=src python -m pytest tests -q
 ```
 
