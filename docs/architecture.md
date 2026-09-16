@@ -18,12 +18,15 @@
 - `src/interfaces/cli.py` — local operator surface
 - `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends + journaled hits
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
-- `src/tools/kb.py` — inverted index over memory markdown + journal
-- `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`)
+- `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest
+- `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`)
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
 - Gmail — significant-progress signal
 
 ## Documentation coverage
 - Review sketches live under `memory/reviews/*.md`; `count_reviews` is the source of `Reviews=N`.
+- Digest files (`digest-*.md`) are counted separately (`count_digests` → `Digests=N` / status `digests=N`).
 - `eternalforge review --digest` writes `memory/reviews/digest-YYYY-MM-DD.md` as a coverage note.
+- `eternalforge status --digest` lists those digest filenames after the status lines.
+- The knowledge base indexes digest files as `kind=digest` / `source=digest` (daily/weekly stay `review`).

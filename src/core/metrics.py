@@ -6,7 +6,7 @@ from pathlib import Path
 
 from core.state import ForgeState
 from tools.report import count_reports
-from tools.review import count_reviews
+from tools.review import count_digests, count_reviews
 from tools.tasks import count_open_tasks
 
 _SKIP_DIRS = {".git", ".venv", "__pycache__", ".pytest_cache", "node_modules"}
@@ -56,6 +56,7 @@ def bump_metrics(state: ForgeState, root: Path | None = None) -> ForgeState:
         state.metrics["Reports"] = str(count_reports(root))
         state.metrics["Tasks"] = str(count_open_tasks(root))
         state.metrics["Reviews"] = str(count_reviews(root))
+        state.metrics["Digests"] = str(count_digests(root))
     if "Features shipped" not in state.metrics:
         state.metrics["Features shipped"] = str(features)
     if "Documentation coverage" not in state.metrics:
