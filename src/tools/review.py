@@ -1,6 +1,6 @@
-"""Daily / weekly review sketches from journal rows and the task store.
+"""Daily / weekly review sketches and a reviews digest from journal + tasks.
 
-Writes memory/reviews/{daily|weekly}-YYYY-MM-DD.md and a kind=review journal row.
+Writes memory/reviews/{daily|weekly|digest}-YYYY-MM-DD.md and a kind=review journal row.
 """
 
 from __future__ import annotations
@@ -15,6 +15,7 @@ from tools.report import entry_day, parse_day
 from tools.tasks import Task, format_tasks, list_tasks, load_tasks
 
 PERIODS = ("daily", "weekly")
+DIGEST_KINDS = ("daily", "weekly", "digest", "other")
 
 
 def reviews_dir(root: Path) -> Path:
@@ -264,4 +265,128 @@ def write_review(
         since=since.isoformat(),
         until=until.isoformat(),
         kinds=kinds,
+    )
+
+
+def list_review_files(root: Path) -> list[Path]:
+    """Sorted markdown files under memory/reviews/ (missing dir → [])."""
+    folder = reviews_dir(root)
+    if not folder.is_dir():
+        return []
+    try:
+        files = [
+            path
+            for path in folder.iterdir()
+            if path.is_file() and path.suffix.lower() == ".md"
+        ]
+    except OSError:
+        return []
+    files.sort(key=lambda path: path.name)
+    return files
+
+
+def classify_review_name(name: str) -> tuple[str, str]:
+    """Return (kind, day-or-stem) for a review filename."""
+    stem = name[:-3] if name.lower().endswith(".md") else name
+    for kind in ("daily", "weekly", "digest"):
+        prefix = f"{kind}-"
+        if stem.lower().startswith(prefix):
+            return kind, stem[len(prefix) :]
+    return "other", stem
+
+
+@dataclass
+class DigestResult:
+    day: str
+    path: Path
+    review_count: int
+    daily_count: int
+    weekly_count: int
+    digest_count: int
+    markdown: str
+
+
+def render_digest(day: str, files: list[Path], *, review_count: int | None = None) -> str:
+    """Markdown coverage note listing every review sketch on disk."""
+    tallies = {kind: 0 for kind in DIGEST_KINDS}
+    rows: list[tuple[str, str, str]] = []
+    for path in files:
+        kind, stamp = classify_review_name(path.name)
+        tallies[kind] = tallies.get(kind, 0) + 1
+        rows.append((kind, stamp, path.name))
+    total = review_count if review_count is not None else len(files)
+    lines = [
+        f"# Reviews digest — {day}",
+        "",
+        f"Reviews={total} under memory/reviews/*.md",
+        "",
+        f"- daily: {tallies['daily']}",
+        f"- weekly: {tallies['weekly']}",
+        f"- digest: {tallies['digest']}",
+        f"- other: {tallies['other']}",
+        "",
+        "## Coverage",
+        "",
+    ]
+    if not rows:
+        lines.append("(no review files)")
+        lines.append("")
+        return "\n".join(lines)
+    for kind, stamp, name in rows:
+        label = stamp or name
+        lines.append(f"- {kind}: {name} ({label})")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def write_digest(
+    root: Path,
+    *,
+    journal: Journal | None = None,
+    day: str | None = None,
+    tags: Iterable[str] | None = None,
+) -> DigestResult:
+    """Write memory/reviews/digest-YYYY-MM-DD.md and a kind=review journal row."""
+    day_key = day or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if parse_day(day_key) is None:
+        raise ValueError(f"day must be YYYY-MM-DD, got {day_key!r}")
+
+    files = list_review_files(root)
+    existing_names = {path.name for path in files}
+    digest_name = f"digest-{day_key}.md"
+    planned = list(files)
+    dest = reviews_dir(root) / digest_name
+    if digest_name not in existing_names:
+        planned.append(dest)
+        planned.sort(key=lambda path: path.name)
+
+    tallies = {kind: 0 for kind in DIGEST_KINDS}
+    for path in planned:
+        kind, _ = classify_review_name(path.name)
+        tallies[kind] = tallies.get(kind, 0) + 1
+
+    markdown = render_digest(day_key, planned, review_count=len(planned))
+    folder = reviews_dir(root)
+    folder.mkdir(parents=True, exist_ok=True)
+    dest.write_text(markdown, encoding="utf-8")
+
+    memory_dir = root / "memory"
+    log = journal or Journal(memory_dir / "journal.jsonl")
+    extra = list(tags) if tags is not None else []
+    log.append(
+        MemoryEntry.now(
+            "review",
+            f"Wrote reviews digest {dest.name} (Reviews={len(planned)})",
+            markdown[:800],
+            tags=normalize_tags(["review", "digest", *extra]),
+        )
+    )
+    return DigestResult(
+        day=day_key,
+        path=dest,
+        review_count=len(planned),
+        daily_count=tallies["daily"],
+        weekly_count=tallies["weekly"],
+        digest_count=tallies["digest"],
+        markdown=markdown,
     )
