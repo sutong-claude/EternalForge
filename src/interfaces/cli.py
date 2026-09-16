@@ -1,4 +1,4 @@
-"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report | review | task"""
+"""eternalforge status | next | cycle [--dry-run] | recent | research QUERY | capture | kb QUERY | report | review | task | inbox"""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import sys
 
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
+from tools.inbox import capture_inbox, format_items, get_inbox_adapter, list_inbox
 from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
 from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
@@ -303,6 +304,40 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Replace the task title (must be non-empty)",
     )
+    inbox = sub.add_parser("inbox", help="List or capture Gmail/Drive items (sketch)")
+    inbox_sub = inbox.add_subparsers(dest="inbox_cmd", required=True)
+    inbox_list = inbox_sub.add_parser("list", help="List fixture or live-stub inbox items")
+    inbox_list.add_argument(
+        "--source",
+        default=None,
+        help="gmail, drive, or omit for all",
+    )
+    inbox_list.add_argument("--query", default=None, help="Case-insensitive substring filter")
+    inbox_list.add_argument("--max", type=int, default=10, dest="max_results")
+    inbox_list.add_argument(
+        "--offline",
+        action="store_true",
+        help="Use FixtureInboxAdapter (default even without this flag today)",
+    )
+    inbox_cap = inbox_sub.add_parser("capture", help="Persist matching items to the journal")
+    inbox_cap.add_argument(
+        "--source",
+        default=None,
+        help="gmail, drive, or omit for all",
+    )
+    inbox_cap.add_argument("--query", default=None, help="Case-insensitive substring filter")
+    inbox_cap.add_argument("--max", type=int, default=10, dest="max_results")
+    inbox_cap.add_argument(
+        "--offline",
+        action="store_true",
+        help="Use FixtureInboxAdapter",
+    )
+    inbox_cap.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Tag to persist on the journal row (repeatable)",
+    )
     return parser
 
 
@@ -395,6 +430,29 @@ def main(argv: list[str] | None = None) -> int:
                     f"({result.journal_count} journal, {result.open_count} open, "
                     f"{result.overdue_count} overdue, {result.done_count} done)"
                 )
+        elif args.cmd == "inbox":
+            adapter = get_inbox_adapter("fixture" if args.offline else "fixture")
+            if args.inbox_cmd == "list":
+                print(
+                    format_items(
+                        list_inbox(
+                            source=args.source,
+                            query=args.query,
+                            limit=args.max_results,
+                            adapter=adapter,
+                        )
+                    )
+                )
+            elif args.inbox_cmd == "capture":
+                result = capture_inbox(
+                    args.root,
+                    source=args.source,
+                    query=args.query,
+                    limit=args.max_results,
+                    adapter=adapter,
+                    tags=args.tags,
+                )
+                print(f"{result.summary}")
         elif args.cmd == "task":
             if args.task_cmd == "add":
                 task_obj = add_task(

@@ -1,6 +1,6 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-16 20:20 UTC
+**Last updated:** 2026-09-16 21:10 UTC
 **Current phase:** Core Agent
 **Overall progress:** 99%
 
@@ -9,27 +9,29 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 
 ## Immediate Priorities (next few runs)
 1. Keep CHANGELOG honest: do not invent a dedicated PubMed heading unless the source commit is found.
-2. Next product slice: Gmail/Drive integration sketch (read-only listing or capture-to-journal).
+2. Live Gmail/Drive OAuth (read-only) behind InboxAdapter, or skip until tokens exist.
 3. Optional: write a weekly review sketch on cycle in addition to the digest, or skip if one exists for the UTC week.
+4. Optional: index `kind=inbox` journal rows more explicitly in the KB.
 
 ## Recent Actions
+- [2026-09-16 21:10 UTC] Gmail/Drive listing sketch (`tools.inbox`): fixture list + capture-to-journal (`kind=inbox`). CLI `inbox list|capture`. Live adapter is an empty stub. CHANGELOG 0.16.12. No PubMed heading invented.
 - [2026-09-16 20:20 UTC] Cycle now writes today's reviews digest (`write_cycle_digest`). Dry-run skips it. Tests updated so cycle metrics include the new digest file. CHANGELOG 0.16.11. No PubMed heading invented.
 - [2026-09-16 19:08 UTC] Restored full `src/tools/review.py` (~12.5k). KB classifies `digest-*.md` as kind/source=digest. CLI `status --digest` lists filenames. Added digest helper tests + `tests/test_digest_status.py`. Fixed kb.py search_index syntax. CHANGELOG 0.16.10 already described this work; no PubMed heading invented.
-- [2026-09-16 18:12 UTC] Started 0.16.10 (digest KB + status digests=N + Digests metric). review.py was truncated mid-write.
 
 ## Known Issues / Blockers
 - CHANGELOG still has no dedicated PubMed heading; do not invent one.
+- Live Google OAuth for Gmail/Drive is not wired; `LiveInboxAdapter` returns [].
 
 ## Metrics
-- Files: 55
-- Tests: 184
-- Features shipped: 51
+- Files: 57
+- Tests: 191
+- Features shipped: 52
 - Cycles: 41
 - Reports: 0
 - Tasks: 0
 - Reviews: 0
 - Digests: 0
-- Documentation coverage: Core + Reviews digest + digest KB/status + cycle digest
+- Documentation coverage: Core + Reviews digest + digest KB/status + cycle digest + inbox sketch
 
 ## Notes for next agent
-Cycle writes digest-YYYY-MM-DD.md. tasks.py still ~17k. Do not invent a PubMed heading. Prefer Gmail/Drive sketch next.
+Inbox sketch is offline-first. Prefer live OAuth only if credentials can be designed without secrets in-repo. tasks.py still ~17k. Do not invent a PubMed heading.
