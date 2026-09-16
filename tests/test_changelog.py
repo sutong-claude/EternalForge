@@ -39,8 +39,12 @@ def test_count_versions_file_missing(tmp_path: Path) -> None:
 
 
 def test_cycle_extras_formats_counts() -> None:
-    assert cycle_extras(reports=0, tasks=0) == ["reports=0", "tasks=0"]
-    assert cycle_extras(reports=3, tasks=1) == ["reports=3", "tasks=1"]
+    assert cycle_extras(reports=0, tasks=0) == ["reports=0", "tasks=0", "reviews=0"]
+    assert cycle_extras(reports=3, tasks=1, reviews=2) == [
+        "reports=3",
+        "tasks=1",
+        "reviews=2",
+    ]
 
 
 def test_append_entry_prepends_section(tmp_path: Path) -> None:
