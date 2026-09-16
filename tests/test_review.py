@@ -7,12 +7,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from core.memory import Journal, MemoryEntry
+from interfaces.cli import build_parser, main
 from tools.review import (
+    classify_review_name,
     count_reviews,
     journal_in_window,
+    list_review_files,
     normalize_period,
+    render_digest,
     render_review,
     review_window,
+    write_digest,
     write_review,
 )
 from tools.tasks import Task, save_tasks
@@ -137,6 +142,65 @@ def test_write_review_weekly_window(tmp_path: Path) -> None:
 
 def test_count_reviews_missing_dir_is_zero(tmp_path: Path) -> None:
     assert count_reviews(tmp_path) == 0
+
+
+def test_classify_and_list_review_files(tmp_path: Path) -> None:
+    assert classify_review_name("daily-2026-09-16.md") == ("daily", "2026-09-16")
+    assert classify_review_name("weekly-2026-09-16.md") == ("weekly", "2026-09-16")
+    assert classify_review_name("digest-2026-09-16.md") == ("digest", "2026-09-16")
+    assert classify_review_name("notes.md") == ("other", "notes")
+    folder = tmp_path / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "weekly-2026-09-16.md").write_text("# w\n", encoding="utf-8")
+    (folder / "daily-2026-09-14.md").write_text("# d\n", encoding="utf-8")
+    names = [p.name for p in list_review_files(tmp_path)]
+    assert names == ["daily-2026-09-14.md", "weekly-2026-09-16.md"]
+    assert list_review_files(tmp_path / "missing") == []
+
+
+def test_render_digest_empty() -> None:
+    text = render_digest("2026-09-16", [], review_count=0)
+    assert "# Reviews digest — 2026-09-16" in text
+    assert "Reviews=0" in text
+    assert "(no review files)" in text
+
+
+def test_write_digest_persists_markdown_and_journal(tmp_path: Path) -> None:
+    folder = tmp_path / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-14.md").write_text("# d\n", encoding="utf-8")
+    (folder / "weekly-2026-09-16.md").write_text("# w\n", encoding="utf-8")
+    journal = Journal(tmp_path / "memory" / "journal.jsonl")
+    result = write_digest(tmp_path, journal=journal, day="2026-09-16")
+    assert result.path == folder / "digest-2026-09-16.md"
+    assert result.path.exists()
+    text = result.path.read_text(encoding="utf-8")
+    assert "Reviews=3" in text
+    assert "daily-2026-09-14.md" in text
+    assert "digest-2026-09-16.md" in text
+    assert result.review_count == 3
+    assert result.daily_count == 1
+    assert result.weekly_count == 1
+    assert result.digest_count == 1
+    assert count_reviews(tmp_path) == 3
+    row = json.loads(journal.path.read_text(encoding="utf-8").splitlines()[-1])
+    assert row["kind"] == "review"
+    assert "digest-2026-09-16.md" in row["summary"]
+    assert "digest" in row["tags"]
+
+
+def test_cli_review_digest_flag(tmp_path: Path, capsys) -> None:
+    ns = build_parser().parse_args(["review", "--digest", "--day", "2026-09-16"])
+    assert ns.digest is True
+    folder = tmp_path / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-14.md").write_text("# d\n", encoding="utf-8")
+    rc = main(["--root", str(tmp_path), "review", "--digest", "--day", "2026-09-16"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "digest-2026-09-16.md" in out
+    assert "Reviews=2" in out
+    assert (folder / "digest-2026-09-16.md").exists()
 
 
 def test_count_reviews_counts_markdown_only(tmp_path: Path) -> None:
