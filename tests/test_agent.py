@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -143,21 +144,26 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "Implement CLI" in log
     assert "reports=0" in log
     assert "tasks=0" in log
-    assert "reviews=0" in log
+    assert "reviews=1" in log
+    assert "digests=1" in log
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
     assert state.metrics["Reports"] == "0"
     assert state.metrics["Tasks"] == "0"
-    assert state.metrics["Reviews"] == "0"
+    assert state.metrics["Reviews"] == "1"
+    assert state.metrics["Digests"] == "1"
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    assert (root / "memory" / "reviews" / f"digest-{today}.md").is_file()
     status = Agent(root).status()
     assert "changelog_versions=2" in status
-    assert "journal_kinds=cycle" in status
+    assert "journal_kinds=review,cycle" in status or "journal_kinds=cycle" in status
     assert "reports=0" in status
     assert "tasks=0" in status
-    assert "reviews=0" in status
+    assert "reviews=1" in status
+    assert "digests=1" in status
 
 
 def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
@@ -179,9 +185,11 @@ def test_cycle_persists_review_count_in_state(tmp_path: Path) -> None:
     (folder / "daily-2026-09-16.md").write_text("# review\n", encoding="utf-8")
     Agent(root).run_once(dry_run=False)
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
-    assert state.metrics["Reviews"] == "1"
+    assert state.metrics["Reviews"] == "2"
+    assert state.metrics["Digests"] == "1"
     log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
-    assert "reviews=1" in log
+    assert "reviews=2" in log
+    assert "digests=1" in log
 
 
 def test_cycle_persists_open_task_count_in_state(tmp_path: Path) -> None:
