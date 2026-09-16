@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.9 — 2026-09-16
+
+- CLI tests for `task list --tag --status --priority --since --until`.
+- Parser coverage: repeatable `--tag`, created-window `--since`/`--until`, status and priority filters.
+- Integration coverage: tag match strips `#` and is case-insensitive; any-of multi-tag; inclusive created window.
+
 ## 0.16.8 — 2026-09-16
 
 - CLI tests for `task list --due-soon --overdue --query`.
