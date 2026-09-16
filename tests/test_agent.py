@@ -40,6 +40,7 @@ def test_status_includes_changelog_versions(tmp_path: Path) -> None:
     assert "changelog_versions=1" in text
     assert "reports=0" in text
     assert "tasks=0" in text
+    assert "reviews=0" in text
     assert "phase=Core Agent" in text
     assert "progress=18%" in text
     assert "journal_kinds=-" in text
@@ -52,6 +53,7 @@ def test_status_zero_versions_when_changelog_missing(tmp_path: Path) -> None:
     assert "changelog_versions=0" in text
     assert "reports=0" in text
     assert "tasks=0" in text
+    assert "reviews=0" in text
 
 
 def test_status_includes_report_count(tmp_path: Path) -> None:
@@ -62,6 +64,16 @@ def test_status_includes_report_count(tmp_path: Path) -> None:
     (folder / "2026-09-15.md").write_text("# r2\n", encoding="utf-8")
     text = Agent(root).status()
     assert "reports=2" in text
+
+
+def test_status_includes_review_count(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    folder = root / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-14.md").write_text("# d\n", encoding="utf-8")
+    (folder / "weekly-2026-09-16.md").write_text("# w\n", encoding="utf-8")
+    text = Agent(root).status()
+    assert "reviews=2" in text
 
 
 def test_status_includes_open_task_count(tmp_path: Path) -> None:
@@ -131,10 +143,12 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "Implement CLI" in log
     assert "reports=0" in log
     assert "tasks=0" in log
+    assert "reviews=0" in log
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
     assert state.metrics["Reports"] == "0"
     assert state.metrics["Tasks"] == "0"
+    assert state.metrics["Reviews"] == "0"
     assert state.priorities == ["Add research tool"]
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "changelog=" in journal
@@ -143,6 +157,7 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "journal_kinds=cycle" in status
     assert "reports=0" in status
     assert "tasks=0" in status
+    assert "reviews=0" in status
 
 
 def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
@@ -155,6 +170,18 @@ def test_cycle_persists_report_count_in_state(tmp_path: Path) -> None:
     assert state.metrics["Reports"] == "1"
     log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
     assert "reports=1" in log
+
+
+def test_cycle_persists_review_count_in_state(tmp_path: Path) -> None:
+    root = _seed(tmp_path)
+    folder = root / "memory" / "reviews"
+    folder.mkdir(parents=True)
+    (folder / "daily-2026-09-16.md").write_text("# review\n", encoding="utf-8")
+    Agent(root).run_once(dry_run=False)
+    state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
+    assert state.metrics["Reviews"] == "1"
+    log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "reviews=1" in log
 
 
 def test_cycle_persists_open_task_count_in_state(tmp_path: Path) -> None:
