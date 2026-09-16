@@ -5,6 +5,7 @@ from tools.inbox import (
     InboxCaptureResult,
     InboxItem,
     capture_inbox,
+    count_inbox_entries,
     format_items,
     list_inbox,
 )
@@ -56,5 +57,6 @@ __all__ = [
     "InboxCaptureResult",
     "list_inbox",
     "capture_inbox",
+    "count_inbox_entries",
     "format_items",
 ]

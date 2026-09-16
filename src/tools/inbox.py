@@ -8,10 +8,10 @@ credentials are absent.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Iterable, Protocol
 
-from core.memory import Journal, MemoryEntry, normalize_tags
-from pathlib import Path
+from core.memory import Journal, MemoryEntry, normalize_kind, normalize_tags
 
 
 @dataclass(frozen=True)
@@ -167,3 +167,9 @@ def capture_inbox(
         )
     )
     return InboxCaptureResult(count=len(items), items=items, summary=summary)
+
+
+def count_inbox_entries(root: Path, journal: Journal | None = None) -> int:
+    """Count journal rows whose kind is inbox (missing journal → 0)."""
+    log = journal or Journal(root / "memory" / "journal.jsonl")
+    return sum(1 for entry in log.load() if normalize_kind(entry.kind) == "inbox")

@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from core.state import ForgeState
+from tools.inbox import count_inbox_entries
 from tools.report import count_reports
 from tools.review import count_digests, count_reviews
 from tools.tasks import count_open_tasks
@@ -46,7 +47,7 @@ def count_tests(root: Path) -> int:
 
 
 def bump_metrics(state: ForgeState, root: Path | None = None) -> ForgeState:
-    """Increment Cycles; refresh Files/Tests/Reports/Tasks/Reviews when a workspace root is given."""
+    """Increment Cycles; refresh Files/Tests/Reports/Tasks/Reviews/Inbox when a workspace root is given."""
     cycles = _int(state.metrics, "Cycles") + 1
     features = _int(state.metrics, "Features shipped")
     state.metrics["Cycles"] = str(cycles)
@@ -57,6 +58,7 @@ def bump_metrics(state: ForgeState, root: Path | None = None) -> ForgeState:
         state.metrics["Tasks"] = str(count_open_tasks(root))
         state.metrics["Reviews"] = str(count_reviews(root))
         state.metrics["Digests"] = str(count_digests(root))
+        state.metrics["Inbox"] = str(count_inbox_entries(root))
     if "Features shipped" not in state.metrics:
         state.metrics["Features shipped"] = str(features)
     if "Documentation coverage" not in state.metrics:

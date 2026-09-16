@@ -9,6 +9,7 @@ from core.memory import Journal, MemoryEntry
 from core.metrics import bump_metrics
 from core.planner import select_task
 from core.state import ForgeState, load_state_file, save_state_file
+from tools.inbox import count_inbox_entries
 from tools.report import count_reports
 from tools.review import count_digests, count_reviews, format_digest_listing, write_cycle_digest
 from tools.tasks import count_open_tasks
@@ -38,6 +39,7 @@ class Agent:
         open_tasks = count_open_tasks(self.root)
         reviews = count_reviews(self.root)
         digests = count_digests(self.root)
+        inbox = count_inbox_entries(self.root, journal=self.journal)
         kinds = self.journal.format_recent_kinds(kind=kind)
         lines = [
             f"phase={state.phase} progress={pct}%",
@@ -47,6 +49,7 @@ class Agent:
             f"tasks={open_tasks}",
             f"reviews={reviews}",
             f"digests={digests}",
+            f"inbox={inbox}",
             f"journal_kinds={kinds}",
             f"updated={state.last_updated}",
         ]
@@ -80,6 +83,7 @@ class Agent:
             tasks=count_open_tasks(self.root),
             reviews=count_reviews(self.root),
             digests=count_digests(self.root),
+            inbox=count_inbox_entries(self.root, journal=self.journal),
         )]
         version = append_entry(
             self.changelog_path,
