@@ -20,6 +20,7 @@ from tools.tasks import (
     normalize_query,
     normalize_sort,
     normalize_status,
+    normalize_updated_day,
     set_task_status,
     sort_tasks,
     update_task,
@@ -61,6 +62,10 @@ def test_normalize_priority_and_due() -> None:
 def test_normalize_sort() -> None:
     assert normalize_sort(None) == "due"
     assert normalize_sort("PRI") == "priority"
+    assert normalize_sort("age") == "created"
+    assert normalize_sort("recent") == "updated"
+    assert normalize_sort("created") == "created"
+    assert normalize_sort("updated") == "updated"
     try:
         normalize_sort("alpha")
     except ValueError as exc:
@@ -315,3 +320,54 @@ def test_missing_file_is_empty(tmp_path: Path) -> None:
     assert load_tasks(tmp_path) == []
     assert count_open_tasks(tmp_path) == 0
     assert format_tasks([]) == "(no tasks)"
+
+
+def test_list_by_exact_id_and_updated(tmp_path: Path) -> None:
+    from tools.tasks import save_tasks
+    first = add_task(tmp_path, "First")
+    second = add_task(tmp_path, "Second")
+    first.created = "2026-09-10T12:00:00Z"
+    first.updated = "2026-09-12T09:00:00Z"
+    second.created = "2026-09-11T08:00:00Z"
+    second.updated = "2026-09-16T08:00:00Z"
+    save_tasks(tmp_path, [first, second])
+    assert normalize_updated_day("2026-09-12") == "2026-09-12"
+    try:
+        normalize_updated_day("12/09/2026")
+    except ValueError as exc:
+        assert "YYYY-MM-DD" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+    prefix = list_tasks(tmp_path, task_id="T00")
+    assert [t.id for t in prefix] == ["T001", "T002"]
+    exact = list_tasks(tmp_path, task_id="T001", exact_id=True)
+    assert [t.id for t in exact] == ["T001"]
+    assert list_tasks(tmp_path, task_id="T00", exact_id=True) == []
+    window = list_tasks(tmp_path, updated_since="2026-09-12", updated_until="2026-09-12")
+    assert [t.id for t in window] == ["T001"]
+    later = list_tasks(tmp_path, updated_since="2026-09-16")
+    assert [t.id for t in later] == ["T002"]
+    until = list_tasks(tmp_path, updated_until="2026-09-12")
+    assert [t.id for t in until] == ["T001"]
+    empty = list_tasks(tmp_path)[0]
+    empty.updated = ""
+    assert not empty.matches_updated(since="2026-09-01")
+    assert empty.matches_updated()
+
+
+def test_sort_created_and_updated(tmp_path: Path) -> None:
+    from tools.tasks import save_tasks
+    a = add_task(tmp_path, "A")
+    b = add_task(tmp_path, "B")
+    c = add_task(tmp_path, "C")
+    a.created = "2026-09-14T00:00:00Z"
+    a.updated = "2026-09-16T12:00:00Z"
+    b.created = "2026-09-15T00:00:00Z"
+    b.updated = "2026-09-15T12:00:00Z"
+    c.created = "2026-09-16T00:00:00Z"
+    c.updated = "2026-09-14T12:00:00Z"
+    save_tasks(tmp_path, [a, b, c])
+    by_created = list_tasks(tmp_path, sort="created")
+    assert [t.id for t in by_created] == [a.id, b.id, c.id]
+    by_updated = list_tasks(tmp_path, sort="updated")
+    assert [t.id for t in by_updated] == [c.id, b.id, a.id]
