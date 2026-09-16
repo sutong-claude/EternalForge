@@ -186,6 +186,22 @@ def main(argv: list[str] | None = None) -> int:
         help="Case-insensitive substring match on title and notes",
     )
     task_list.add_argument(
+        "--id",
+        default=None,
+        dest="task_id_prefix",
+        help="Filter by task id prefix (case-insensitive, e.g. T00 or t001)",
+    )
+    task_list.add_argument(
+        "--since",
+        default=None,
+        help="Only tasks created on or after YYYY-MM-DD",
+    )
+    task_list.add_argument(
+        "--until",
+        default=None,
+        help="Only tasks created on or before YYYY-MM-DD",
+    )
+    task_list.add_argument(
         "--overdue",
         action="store_true",
         help="Only open tasks whose due date is before today",
@@ -323,6 +339,9 @@ def main(argv: list[str] | None = None) -> int:
                             priority=args.priority,
                             tag=args.tags,
                             query=args.query,
+                            task_id=args.task_id_prefix,
+                            since=args.since,
+                            until=args.until,
                             overdue=args.overdue,
                             due_soon=args.due_soon if args.due_soon is not None else False,
                             sort=args.sort,
