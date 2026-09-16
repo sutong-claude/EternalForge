@@ -38,6 +38,7 @@
 - [x] Task title edit on set
 - [x] Task list text search on title + notes
 - [x] Task list filter by id prefix or created window
+- [x] Seventh live SearchAdapter (Semantic Scholar)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter

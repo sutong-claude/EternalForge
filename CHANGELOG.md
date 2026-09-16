@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.13.0 — 2026-09-16
+
+- Seventh live SearchAdapter: Semantic Scholar graph paper search (`SemanticScholarAdapter`, `parse_semanticscholar_payload`).
+- CLI `--backend semanticscholar` (aliases: s2, scholar).
+- `MultiAdapter` now includes Semantic Scholar as a seventh live source.
+- Payload tests do not hit the network.
+
 ## 0.12.3 — 2026-09-16
 
 - Task list filter by id prefix: `Task.matches_id` / `normalize_id_prefix`; `list_tasks(..., task_id=)`.
