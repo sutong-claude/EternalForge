@@ -4,7 +4,15 @@ from tools.capture import CaptureResult, capture
 from tools.kb import IndexHit, KnowledgeIndex, build_index, search_kb
 from tools.report import ReportResult, count_reports, write_report
 from tools.research import Hit, SearchAdapter, get_adapter, record_hits, search, summarize
-from tools.review import DigestResult, ReviewResult, count_reviews, write_digest, write_review
+from tools.review import (
+    DigestResult,
+    ReviewResult,
+    count_digests,
+    count_reviews,
+    write_cycle_digest,
+    write_digest,
+    write_review,
+)
 from tools.tasks import Task, add_task, count_open_tasks, list_tasks, set_task_status, sort_tasks, update_task
 
 __all__ = [
@@ -25,7 +33,9 @@ __all__ = [
     "ReportResult",
     "write_review",
     "write_digest",
+    "write_cycle_digest",
     "count_reviews",
+    "count_digests",
     "ReviewResult",
     "DigestResult",
     "Task",

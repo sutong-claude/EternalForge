@@ -414,3 +414,13 @@ def write_digest(
         digest_count=tallies["digest"],
         markdown=markdown,
     )
+
+
+def write_cycle_digest(
+    root: Path,
+    *,
+    journal: Journal | None = None,
+    day: str | None = None,
+) -> DigestResult:
+    """Write today's reviews digest as part of a non-dry cycle (tags include cycle)."""
+    return write_digest(root, journal=journal, day=day, tags=["cycle"])
