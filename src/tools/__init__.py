@@ -1,6 +1,13 @@
 """Tools for the EternalForge agent."""
 
 from tools.capture import CaptureResult, capture
+from tools.inbox import (
+    InboxCaptureResult,
+    InboxItem,
+    capture_inbox,
+    format_items,
+    list_inbox,
+)
 from tools.kb import IndexHit, KnowledgeIndex, build_index, search_kb
 from tools.report import ReportResult, count_reports, write_report
 from tools.research import Hit, SearchAdapter, get_adapter, record_hits, search, summarize
@@ -45,4 +52,9 @@ __all__ = [
     "set_task_status",
     "update_task",
     "count_open_tasks",
+    "InboxItem",
+    "InboxCaptureResult",
+    "list_inbox",
+    "capture_inbox",
+    "format_items",
 ]

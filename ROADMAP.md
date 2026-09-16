@@ -48,6 +48,7 @@
 - [x] Reviews digest / documentation coverage note (`review --digest`)
 - [x] Index digest files distinctly in the KB; surface `digests=N` on status
 - [x] Write reviews digest automatically on each agent cycle
+- [x] Gmail / Drive listing sketch (fixture + capture-to-journal)
 
 ## Phase 2 – Research Capabilities
 - Additional live search backends behind SearchAdapter
@@ -57,7 +58,8 @@
 - Task tracking (reviews)
 - Daily/weekly review
 - [x] Cycle writes a reviews digest
-- Gmail / Drive integration
+- [x] Gmail / Drive listing sketch
+- Live Gmail / Drive OAuth (read-only)
 
 ## Phase 4 – Self-Improvement & Scale
 - Automated testing gates

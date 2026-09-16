@@ -20,6 +20,7 @@
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest
 - `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`, `write_cycle_digest`)
+- `src/tools/inbox.py` — Gmail/Drive listing sketch + capture-to-journal (`kind=inbox`)
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
 - Gmail — significant-progress signal
@@ -31,3 +32,4 @@
 - A non-dry `Agent` cycle also writes that digest via `write_cycle_digest` (journal tags include `cycle`).
 - `eternalforge status --digest` lists those digest filenames after the status lines.
 - The knowledge base indexes digest files as `kind=digest` / `source=digest` (daily/weekly stay `review`).
+- `eternalforge inbox list|capture` is offline-first (`FixtureInboxAdapter`); live Google OAuth is not wired yet.

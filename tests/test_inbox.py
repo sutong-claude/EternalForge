@@ -1,0 +1,88 @@
+from pathlib import Path
+import json
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from interfaces.cli import build_parser, main
+from tools.inbox import (
+    FixtureInboxAdapter,
+    InboxItem,
+    LiveInboxAdapter,
+    capture_inbox,
+    format_items,
+    get_inbox_adapter,
+    list_inbox,
+)
+
+
+def test_list_filters_source_and_query() -> None:
+    items = list_inbox(source="gmail", query="research", limit=5)
+    assert len(items) == 1
+    assert items[0].item_id == "m001"
+    drive = list_inbox(source="drive")
+    assert len(drive) == 1
+    assert drive[0].source == "drive"
+
+
+def test_format_empty() -> None:
+    assert format_items([]) == "(no inbox items)"
+
+
+def test_live_adapter_is_empty() -> None:
+    assert LiveInboxAdapter().list_items() == []
+    assert isinstance(get_inbox_adapter("live"), LiveInboxAdapter)
+    assert isinstance(get_inbox_adapter("fixture"), FixtureInboxAdapter)
+
+
+def test_item_matches() -> None:
+    item = InboxItem(source="gmail", item_id="x", title="Hello", snippet="world")
+    assert item.matches(query="HELLO")
+    assert not item.matches(source="drive")
+    assert item.matches(source="all")
+
+
+def test_capture_writes_journal(tmp_path: Path) -> None:
+    result = capture_inbox(tmp_path, source="drive", limit=3)
+    assert result.count == 1
+    journal = tmp_path / "memory" / "journal.jsonl"
+    row = json.loads(journal.read_text(encoding="utf-8").splitlines()[-1])
+    assert row["kind"] == "inbox"
+    assert "drive" in row["summary"]
+    assert "inbox" in row["tags"]
+    assert "EternalForge notes" in row["details"]
+
+
+def test_cli_inbox_list_offline(capsys) -> None:
+    ns = build_parser().parse_args(["inbox", "list", "--source", "gmail", "--offline"])
+    assert ns.cmd == "inbox"
+    assert ns.inbox_cmd == "list"
+    rc = main(["inbox", "list", "--source", "gmail", "--offline", "--max", "2"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "m001" in out
+    assert "gmail" in out
+
+
+def test_cli_inbox_capture(tmp_path: Path, capsys) -> None:
+    rc = main(
+        [
+            "--root",
+            str(tmp_path),
+            "inbox",
+            "capture",
+            "--source",
+            "gmail",
+            "--query",
+            "invoice",
+            "--offline",
+        ]
+    )
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "Captured 1" in out
+    journal = tmp_path / "memory" / "journal.jsonl"
+    row = json.loads(journal.read_text(encoding="utf-8").splitlines()[-1])
+    assert row["kind"] == "inbox"
+    assert "invoice" in row["details"].lower()
