@@ -41,6 +41,14 @@ def _seed(tmp_path: Path) -> Path:
         "Compiled findings on transformer attention and retrieval. #transformers\n",
         encoding="utf-8",
     )
+    reviews = memory / "reviews"
+    reviews.mkdir()
+    (reviews / "daily-2026-09-16.md").write_text(
+        "# Daily review \u2014 2026-09-16\n\n"
+        "tags: review, daily\n\n"
+        "Window wrap of journal rows and open tasks. #standup\n",
+        encoding="utf-8",
+    )
     journal = Journal(memory / "journal.jsonl")
     journal.append(
         MemoryEntry(
@@ -96,6 +104,7 @@ def test_collect_markdown_and_journal(tmp_path: Path) -> None:
     assert "markdown" in sources
     assert "journal" in sources
     assert "report" in sources
+    assert "review" in sources
     titles = [d.title for d in docs]
     assert any("Knowledge capture" in t for t in titles)
     md = next(d for d in docs if d.source == "markdown")
@@ -117,6 +126,20 @@ def test_collect_indexes_reports_subdir(tmp_path: Path) -> None:
     assert doc.timestamp == "2026-09-15"
     assert "transformer" in doc.text.lower()
     assert "transformers" in doc.tags
+
+
+def test_collect_indexes_reviews_subdir(tmp_path: Path) -> None:
+    docs = collect_documents(_seed(tmp_path))
+    reviews = [d for d in docs if d.source == "review"]
+    assert len(reviews) == 1
+    doc = reviews[0]
+    assert doc.kind == "review"
+    assert doc.path == "memory/reviews/daily-2026-09-16.md"
+    assert doc.doc_id == "md:memory/reviews/daily-2026-09-16.md"
+    assert doc.timestamp == "2026-09-16"
+    assert "standup" in doc.tags
+    assert "review" in doc.tags
+    assert "journal rows" in doc.text.lower()
 
 
 def test_journal_tags_merge_dedupes_extra_and_extracted(tmp_path: Path) -> None:
@@ -162,6 +185,10 @@ def test_search_filters_by_kind(tmp_path: Path) -> None:
     assert report
     assert all(h.kind.lower() == "report" for h in report)
     assert all("reports/" in h.path for h in report)
+    review = search_kb(root, "standup journal", kind="review")
+    assert review
+    assert all(h.kind.lower() == "review" for h in review)
+    assert all("reviews/" in h.path for h in review)
     missing = search_kb(root, "knowledge", kind="cycle")
     assert missing == []
 
@@ -177,6 +204,9 @@ def test_search_filters_by_source(tmp_path: Path) -> None:
     report = search_kb(root, "transformer", source="report")
     assert report
     assert all(h.source == "report" for h in report)
+    review = search_kb(root, "standup", source="review")
+    assert review
+    assert all(h.source == "review" for h in review)
     missing = search_kb(root, "agents", source="email")
     assert missing == []
 
@@ -189,6 +219,9 @@ def test_search_filters_by_tag(tmp_path: Path) -> None:
     hashed = search_kb(root, "transformer", tag="#Transformers")
     assert hashed
     assert all("transformers" in h.tags for h in hashed)
+    review_tag = search_kb(root, "standup", tag="#standup")
+    assert review_tag
+    assert all("standup" in h.tags for h in review_tag)
     missing = search_kb(root, "agents", tag="nonexistent")
     assert missing == []
 
@@ -288,4 +321,13 @@ def test_missing_reports_dir_is_fine(tmp_path: Path) -> None:
     (memory / "2026-09-14.md").write_text("# note\nalpha token\n", encoding="utf-8")
     docs = collect_documents(tmp_path)
     assert all(d.source != "report" for d in docs)
+    assert search_kb(tmp_path, "alpha")
+
+
+def test_missing_reviews_dir_is_fine(tmp_path: Path) -> None:
+    memory = tmp_path / "memory"
+    memory.mkdir()
+    (memory / "2026-09-14.md").write_text("# note\nalpha token\n", encoding="utf-8")
+    docs = collect_documents(tmp_path)
+    assert all(d.source != "review" for d in docs)
     assert search_kb(tmp_path, "alpha")

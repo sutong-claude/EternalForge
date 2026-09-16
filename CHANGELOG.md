@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.3 — 2026-09-16
+
+- Knowledge base indexes `memory/reviews/*.md` as `kind=review` / `source=review`.
+- Document ids use the repo-relative path (`md:memory/reviews/…`) so daily notes, reports, and reviews do not collide.
+- `eternalforge kb QUERY --kind review` filters daily/weekly review sketches.
+- Tests cover review collection, kind/source/tag filters, and a missing reviews directory.
+
 ## 0.16.2 — 2026-09-16
 
 - Task list filter by exact id: `Task.matches_id(..., exact=True)`; `list_tasks(..., exact_id=)`.

@@ -1,4 +1,4 @@
-"""Knowledge-base index over memory/ markdown, reports, and the JSONL journal.
+"""Knowledge-base index over memory/ markdown, reports, reviews, and the JSONL journal.
 
 Rebuilds in-memory from disk (no network). Optional snapshot at
 memory/kb-index.json for inspection by later tools.
@@ -192,6 +192,8 @@ def _markdown_kind_and_source(rel: str) -> tuple[str, str]:
     posix = rel.replace("\\", "/")
     if posix.startswith("memory/reports/") or "/reports/" in f"/{posix}":
         return "report", "report"
+    if posix.startswith("memory/reviews/") or "/reviews/" in f"/{posix}":
+        return "review", "review"
     return "markdown", "markdown"
 
 
@@ -221,7 +223,7 @@ def _add_markdown_docs(docs: list[Document], root: Path, paths: list[Path]) -> N
 
 
 def collect_documents(root: Path) -> list[Document]:
-    """Load markdown notes, research reports, and journal rows under memory/."""
+    """Load markdown notes, research reports, reviews, and journal rows under memory/."""
     memory = root / "memory"
     docs: list[Document] = []
     if not memory.exists():
@@ -230,7 +232,9 @@ def collect_documents(root: Path) -> list[Document]:
     top_level = sorted(memory.glob("*.md"))
     reports_dir = memory / "reports"
     report_files = sorted(reports_dir.glob("*.md")) if reports_dir.is_dir() else []
-    _add_markdown_docs(docs, root, top_level + report_files)
+    reviews_dir = memory / "reviews"
+    review_files = sorted(reviews_dir.glob("*.md")) if reviews_dir.is_dir() else []
+    _add_markdown_docs(docs, root, top_level + report_files + review_files)
 
     journal = memory / "journal.jsonl"
     if journal.exists():
