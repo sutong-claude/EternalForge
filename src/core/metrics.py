@@ -6,6 +6,7 @@ from pathlib import Path
 
 from core.state import ForgeState
 from tools.report import count_reports
+from tools.review import count_reviews
 from tools.tasks import count_open_tasks
 
 _SKIP_DIRS = {".git", ".venv", "__pycache__", ".pytest_cache", "node_modules"}
@@ -45,7 +46,7 @@ def count_tests(root: Path) -> int:
 
 
 def bump_metrics(state: ForgeState, root: Path | None = None) -> ForgeState:
-    """Increment Cycles; refresh Files/Tests/Reports/Tasks when a workspace root is given."""
+    """Increment Cycles; refresh Files/Tests/Reports/Tasks/Reviews when a workspace root is given."""
     cycles = _int(state.metrics, "Cycles") + 1
     features = _int(state.metrics, "Features shipped")
     state.metrics["Cycles"] = str(cycles)
@@ -54,6 +55,7 @@ def bump_metrics(state: ForgeState, root: Path | None = None) -> ForgeState:
         state.metrics["Tests"] = str(count_tests(root))
         state.metrics["Reports"] = str(count_reports(root))
         state.metrics["Tasks"] = str(count_open_tasks(root))
+        state.metrics["Reviews"] = str(count_reviews(root))
     if "Features shipped" not in state.metrics:
         state.metrics["Features shipped"] = str(features)
     if "Documentation coverage" not in state.metrics:
