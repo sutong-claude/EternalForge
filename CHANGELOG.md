@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.18 — 2026-09-17
+
+- Env-only Google client credentials: `ETERNALFORGE_GOOGLE_CLIENT_ID` / `_SECRET` override file values.
+- Refresh persist drops `client_id` / `client_secret` from the token file when those env vars are set.
+- `inbox status` treats env client_id + refresh_token as refreshable (`google-api`).
+- Tests cover env override, stripped persist, and expired-token status with env-only client_id.
+- No PubMed heading invented.
+
 ## 0.16.17 — 2026-09-17
 
 - Refresh expired Google access tokens with the OAuth `refresh_token` grant before live listing.
