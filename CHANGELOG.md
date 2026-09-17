@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.29 — 2026-09-17
+
+- Thirteenth live SearchAdapter: DOAJ articles API (`tools.doaj`) with no key.
+- Aliases `oa-journals` / `journals`; `multi` includes DOAJ. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and articles-list shape.
+- No PubMed heading invented.
+
 ## 0.16.28 — 2026-09-17
 
 - Twelfth live SearchAdapter: DataCite DOI REST API (`tools.datacite`) with no key.
