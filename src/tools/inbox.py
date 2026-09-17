@@ -36,3 +36,24 @@ DRIVE_LIST_URL = "https://www.googleapis.com/drive/v3/files"
 TOKEN_REFRESH_URL = "https://oauth2.googleapis.com/token"
 HTTP_TIMEOUT = 8
 EXPIRY_SKEW = timedelta(seconds=60)
+
+
+@dataclass(frozen=True)
+class InboxItem:
+    source: str
+    item_id: str
+    title: str
+    snippet: str = ""
+    url: str = ""
+    when: str = ""
+
+    def matches(self, query: str | None = None, source: str | None = None) -> bool:
+        wanted_source = (source or "").strip().lower()
+        if wanted_source and wanted_source not in {"all", "*"}:
+            if self.source.strip().lower() != wanted_source:
+                return False
+        needle = (query or "").strip().lower()
+        if not needle:
+            return True
+        hay = " ".join([self.title, self.snippet, self.item_id, self.url]).lower()
+        return needle in hay
