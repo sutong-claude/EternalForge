@@ -13,6 +13,7 @@ from tools.inbox import (
     LiveInboxAdapter,
     capture_inbox,
     count_inbox_entries,
+    find_google_token,
     format_items,
     get_inbox_adapter,
     list_inbox,
@@ -98,3 +99,52 @@ def test_cli_inbox_capture(tmp_path: Path, capsys) -> None:
     row = json.loads(journal.read_text(encoding="utf-8").splitlines()[-1])
     assert row["kind"] == "inbox"
     assert "invoice" in row["details"].lower()
+
+
+def test_find_google_token_absent(tmp_path, monkeypatch) -> None:
+    monkeypatch.delenv("ETERNALFORGE_GOOGLE_TOKEN_PATH", raising=False)
+    monkeypatch.delenv("ETERNALFORGE_CONFIG_DIR", raising=False)
+    monkeypatch.setattr("tools.inbox.Path.home", lambda: tmp_path / "home")
+    assert find_google_token(tmp_path) is None
+    status = LiveInboxAdapter(root=tmp_path).creds_status()
+    assert status.token_present is False
+    assert status.listing == "stub-empty"
+    assert "token=absent" in status.format()
+
+
+def test_find_google_token_env_path(tmp_path, monkeypatch) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text('{"token": "redacted"}', encoding="utf-8")
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_TOKEN_PATH", str(token))
+    found = find_google_token(tmp_path)
+    assert found == token
+    status = LiveInboxAdapter(root=tmp_path).creds_status()
+    assert status.token_present is True
+    assert status.path == str(token)
+    assert LiveInboxAdapter(root=tmp_path).list_items() == []
+
+
+def test_find_google_token_secrets_dir(tmp_path, monkeypatch) -> None:
+    monkeypatch.delenv("ETERNALFORGE_GOOGLE_TOKEN_PATH", raising=False)
+    monkeypatch.delenv("ETERNALFORGE_CONFIG_DIR", raising=False)
+    monkeypatch.setattr("tools.inbox.Path.home", lambda: tmp_path / "home")
+    secrets = tmp_path / ".secrets"
+    secrets.mkdir()
+    token = secrets / "google-token.json"
+    token.write_text("{}", encoding="utf-8")
+    assert find_google_token(tmp_path) == token
+
+
+def test_cli_inbox_status(tmp_path, capsys) -> None:
+    rc = main(["--root", str(tmp_path), "inbox", "status"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "adapter=live" in out
+    assert "token=absent" in out
+    assert "listing=stub-empty" in out
+
+
+def test_cli_inbox_live_list_empty(tmp_path, capsys) -> None:
+    rc = main(["--root", str(tmp_path), "inbox", "list", "--live"])
+    assert rc == 0
+    assert capsys.readouterr().out.strip() == "(no inbox items)"
