@@ -1,17 +1,24 @@
 """Gmail / Drive listing sketch (read-only) with optional capture-to-journal.
 
-Live OAuth is not wired. Tests and CLI --offline use FixtureInboxAdapter so
-nothing hits the network. A LiveInboxAdapter stub returns no items when
-credentials are absent.
+Live OAuth is not called. Tests and CLI --offline use FixtureInboxAdapter so
+nothing hits the network. LiveInboxAdapter discovers a token path from env or
+local files but never reads token contents into logs, and still returns no
+items until a Google client is wired.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+import os
 from typing import Iterable, Protocol
 
 from core.memory import Journal, MemoryEntry, normalize_kind, normalize_tags
+
+
+TOKEN_ENV_PATH = "ETERNALFORGE_GOOGLE_TOKEN_PATH"
+TOKEN_ENV_DIR = "ETERNALFORGE_CONFIG_DIR"
+DEFAULT_TOKEN_NAME = "google-token.json"
 
 
 @dataclass(frozen=True)
@@ -90,8 +97,74 @@ class FixtureInboxAdapter:
         return matched[:cap]
 
 
+def candidate_token_paths(root: Path | None = None) -> list[Path]:
+    """Ordered paths that may hold a Google OAuth token. Never invent secrets."""
+    paths: list[Path] = []
+    env_path = (os.environ.get(TOKEN_ENV_PATH) or "").strip()
+    if env_path:
+        paths.append(Path(env_path).expanduser())
+    env_dir = (os.environ.get(TOKEN_ENV_DIR) or "").strip()
+    if env_dir:
+        paths.append(Path(env_dir).expanduser() / DEFAULT_TOKEN_NAME)
+    if root is not None:
+        paths.append(Path(root) / ".secrets" / DEFAULT_TOKEN_NAME)
+    home = Path.home()
+    paths.append(home / ".config" / "eternalforge" / DEFAULT_TOKEN_NAME)
+    seen: set[str] = set()
+    unique: list[Path] = []
+    for path in paths:
+        key = str(path)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(path)
+    return unique
+
+
+def find_google_token(root: Path | None = None) -> Path | None:
+    """Return the first existing non-empty token file, or None."""
+    for path in candidate_token_paths(root):
+        try:
+            if path.is_file() and path.stat().st_size > 0:
+                return path
+        except OSError:
+            continue
+    return None
+
+
+@dataclass(frozen=True)
+class InboxCredsStatus:
+    token_present: bool
+    path: str
+    listing: str
+    adapter: str = "live"
+
+    def format(self) -> str:
+        token = "present" if self.token_present else "absent"
+        path = self.path or "(none)"
+        return (
+            f"adapter={self.adapter}\n"
+            f"token={token}\n"
+            f"path={path}\n"
+            f"listing={self.listing}"
+        )
+
+
 class LiveInboxAdapter:
-    """Placeholder until OAuth tokens exist. Never raises on missing creds."""
+    """Discover a local token path; listing stays empty until a client is wired."""
+
+    def __init__(self, root: Path | None = None) -> None:
+        self.root = Path(root) if root is not None else None
+        self.token_path = find_google_token(self.root)
+
+    def creds_status(self) -> InboxCredsStatus:
+        present = self.token_path is not None
+        return InboxCredsStatus(
+            token_present=present,
+            path=str(self.token_path) if self.token_path else "",
+            listing="stub-empty",
+            adapter="live",
+        )
 
     def list_items(
         self,
@@ -99,13 +172,14 @@ class LiveInboxAdapter:
         query: str | None = None,
         limit: int = 10,
     ) -> list[InboxItem]:
+        # Read-only listing is not implemented: never call Google APIs here.
         return []
 
 
-def get_inbox_adapter(name: str | None = None) -> InboxAdapter:
+def get_inbox_adapter(name: str | None = None, root: Path | None = None) -> InboxAdapter:
     key = (name or "fixture").strip().lower()
     if key in {"live", "gmail", "drive", "google"}:
-        return LiveInboxAdapter()
+        return LiveInboxAdapter(root=root)
     return FixtureInboxAdapter()
 
 
