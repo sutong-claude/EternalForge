@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.30 — 2026-09-17
+
+- Fourteenth live SearchAdapter: Wikidata wbsearchentities API (`tools.wikidata`) with no key.
+- Aliases `wd` / `entities`; `multi` includes Wikidata. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and entities-map shape.
+- No PubMed heading invented.
+
 ## 0.16.29 — 2026-09-17
 
 - Thirteenth live SearchAdapter: DOAJ articles API (`tools.doaj`) with no key.
