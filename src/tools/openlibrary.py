@@ -13,6 +13,7 @@ from tools.datacite import DataCiteAdapter
 from tools.doaj import DoajAdapter
 from tools.europepmc import EuropePMCAdapter
 from tools.hackernews import HackerNewsAdapter
+from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
 from tools.pubmed import PubMedAdapter
 from tools.research import (
@@ -174,6 +175,7 @@ class MultiAdapter:
             DataCiteAdapter(timeout=timeout),
             DoajAdapter(timeout=timeout),
             WikidataAdapter(timeout=timeout),
+            OpenaireAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
