@@ -55,6 +55,9 @@ LIVE_EXTRA = {
     "core",
     "coreac",
     "works-core",
+    "s2graph",
+    "graph-s2",
+    "s2-extra",
     "multi",
     "all",
 }
@@ -74,6 +77,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import openalex as oamod
         from tools import openlibrary as olmod
         from tools import pubmed as pmmod
+        from tools import s2graph as s2gmod
         from tools import semanticscholar as s2mod
         from tools import wikidata as wdmod
         from tools import zenodo as zenmod
@@ -106,6 +110,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oairemod.OpenaireAdapter()
         if key in {"core", "coreac", "works-core"}:
             return coremod.CoreAdapter()
+        if key in {"s2graph", "graph-s2", "s2-extra"}:
+            return s2gmod.S2GraphAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
