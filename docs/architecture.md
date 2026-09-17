@@ -16,7 +16,7 @@
 - `src/core/changelog.py` — CHANGELOG.md version sections
 - `src/core/metrics.py` — Files/Tests recount and Cycles bump
 - `src/interfaces/cli.py` — local operator surface (parser in `cli_parser`, constants in `cli_const`)
-- `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends + journaled hits
+- `src/tools/research.py` — facade over `research_models` / `research_wiki` / `research_dispatch` (SearchAdapter + live backends + journaled hits)
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
 - `src/tools/review.py` — facade over `review_const` / `review_files` / `review_window` / `review_sketch` / `review_digest` (daily/weekly sketches + digest; `Reviews=N`, `Digests=N`, cycle writes)
