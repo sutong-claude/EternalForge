@@ -10,6 +10,7 @@ from urllib.request import Request, urlopen
 from tools.arxiv import ArxivAdapter
 from tools.crossref import CrossrefAdapter
 from tools.datacite import DataCiteAdapter
+from tools.doaj import DoajAdapter
 from tools.europepmc import EuropePMCAdapter
 from tools.hackernews import HackerNewsAdapter
 from tools.openalex import OpenAlexAdapter
@@ -170,6 +171,7 @@ class MultiAdapter:
             OpenAlexAdapter(timeout=timeout),
             ZenodoAdapter(timeout=timeout),
             DataCiteAdapter(timeout=timeout),
+            DoajAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
