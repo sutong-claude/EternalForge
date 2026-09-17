@@ -43,6 +43,9 @@ LIVE_EXTRA = {
     "datacite",
     "dc",
     "dois",
+    "doaj",
+    "oa-journals",
+    "journals",
     "multi",
     "all",
 }
@@ -54,6 +57,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import arxiv as axmod
         from tools import crossref as xrmod
         from tools import datacite as dcmod
+        from tools import doaj as doajmod
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
         from tools import openalex as oamod
@@ -82,6 +86,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return zenmod.ZenodoAdapter()
         if key in {"datacite", "dc", "dois"}:
             return dcmod.DataCiteAdapter()
+        if key in {"doaj", "oa-journals", "journals"}:
+            return doajmod.DoajAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
