@@ -15,7 +15,7 @@
 - `src/core/agent.py` — plan-act-reflect (cycle writes daily, weekly, then digest)
 - `src/core/changelog.py` — CHANGELOG.md version sections
 - `src/core/metrics.py` — Files/Tests recount and Cycles bump
-- `src/interfaces/cli.py` — local operator surface
+- `src/interfaces/cli.py` — local operator surface (parser in `cli_parser`, constants in `cli_const`)
 - `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends + journaled hits
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
