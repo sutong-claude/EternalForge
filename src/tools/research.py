@@ -2,7 +2,8 @@
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
-PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, and OpenAIRE (stdlib urllib, no API key). Tests inject
+PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
+and CORE (stdlib urllib; CORE key optional via CORE_API_KEY). Tests inject
 FixtureAdapter or call parse_*_payload helpers so they never hit the
 network. Backend ``multi`` merges the live adapters.
 
@@ -147,6 +148,11 @@ def parse_openaire_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_core_payload(payload: dict, limit: int = 5):
+    from tools.core import parse_core_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -192,6 +198,9 @@ def __getattr__(name: str):
     if name == "OpenaireAdapter":
         from tools.openaire import OpenaireAdapter
         return OpenaireAdapter
+    if name == "CoreAdapter":
+        from tools.core import CoreAdapter
+        return CoreAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -209,6 +218,7 @@ __all__ = [
     "get_adapter",
     "merge_hits",
     "parse_arxiv_payload",
+    "parse_core_payload",
     "parse_crossref_payload",
     "parse_datacite_payload",
     "parse_doaj_payload",

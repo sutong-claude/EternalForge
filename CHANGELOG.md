@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.32 — 2026-09-17
+
+- Sixteenth live SearchAdapter: CORE v3 works search API (`tools.core`) with optional `CORE_API_KEY`.
+- Aliases `coreac` / `works-core`; `multi` includes CORE. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and data-list shape.
+- No PubMed heading invented.
+
 ## 0.16.31 — 2026-09-17
 
 - Fifteenth live SearchAdapter: OpenAIRE Graph researchProducts API (`tools.openaire`) with no key.

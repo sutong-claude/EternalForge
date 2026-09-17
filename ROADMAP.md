@@ -47,6 +47,8 @@
 - [x] Twelfth live SearchAdapter (DataCite)
 - [x] Thirteenth live SearchAdapter (DOAJ)
 - [x] Fourteenth live SearchAdapter (Wikidata)
+- [x] Fifteenth live SearchAdapter (OpenAIRE)
+- [x] Sixteenth live SearchAdapter (CORE)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
