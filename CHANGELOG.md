@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.23 — 2026-09-17
+
+- Split `src/interfaces/cli.py` (~20k, at the GitHub write limit) into `cli_const`, `cli_parser`, and a slim `cli` facade.
+- Public imports stay on `interfaces.cli` (`BACKEND_HELP`, `build_parser`, `main`).
+- Added facade re-export test. No PubMed heading invented.
+
 ## 0.16.22 — 2026-09-17
 
 - Agent cycle writes today's daily review sketch (`write_cycle_daily` → `memory/reviews/daily-YYYY-MM-DD.md`) before weekly and digest so coverage lists it.
