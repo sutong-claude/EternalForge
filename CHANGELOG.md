@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.34 — 2026-09-17
+
+- Eighteenth live SearchAdapter: Unpaywall v2 title search + DOI lookup (`tools.unpaywall`) with email via `UNPAYWALL_EMAIL` (default noreply).
+- Aliases `upw` / `oa-status`; `multi` includes Unpaywall. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and DOI-object shape.
+- No PubMed heading invented.
+
 ## 0.16.33 — 2026-09-17
 
 - Seventeenth live SearchAdapter: Semantic Scholar Graph extras (`tools.s2graph`) with tldr, citation counts, and publicationDate. No key.
