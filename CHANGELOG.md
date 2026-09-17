@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.22 — 2026-09-17
+
+- Agent cycle writes today's daily review sketch (`write_cycle_daily` → `memory/reviews/daily-YYYY-MM-DD.md`) before weekly and digest so coverage lists it.
+- Journal row is tagged `review`, `daily`, and `cycle`. Dry-run writes neither daily, weekly, nor digest.
+- Tests cover helper tags, same-day window, cycle write-back, and dry-run skip.
+- No PubMed heading invented.
+
 ## 0.16.21 — 2026-09-17
 
 - Agent cycle writes today's weekly review sketch (`write_cycle_weekly` → `memory/reviews/weekly-YYYY-MM-DD.md`) before the digest so coverage lists it.

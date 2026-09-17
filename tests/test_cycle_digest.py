@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from core.agent import Agent
 from core.memory import Journal
 from core.state import dump_state, ForgeState, parse_state
-from tools.review import write_cycle_digest, write_cycle_weekly
+from tools.review import write_cycle_daily, write_cycle_digest, write_cycle_weekly
 
 
 def _seed(tmp: Path) -> Path:
@@ -55,6 +55,21 @@ def test_write_cycle_weekly_tags_cycle(tmp_path: Path) -> None:
     assert "weekly" in rows[-1].tags
 
 
+def test_write_cycle_daily_tags_cycle(tmp_path: Path) -> None:
+    result = write_cycle_daily(tmp_path, day="2026-09-16")
+    assert result.path.name == "daily-2026-09-16.md"
+    assert result.period == "daily"
+    assert result.path.is_file()
+    text = result.path.read_text(encoding="utf-8")
+    assert "Daily review" in text
+    assert "Window: 2026-09-16" in text
+    journal = Journal(tmp_path / "memory" / "journal.jsonl")
+    rows = journal.load()
+    assert rows[-1].kind == "review"
+    assert "cycle" in rows[-1].tags
+    assert "daily" in rows[-1].tags
+
+
 def test_cycle_writes_today_digest(tmp_path: Path) -> None:
     root = _seed(tmp_path)
     folder = root / "memory" / "reviews"
@@ -64,11 +79,14 @@ def test_cycle_writes_today_digest(tmp_path: Path) -> None:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     digest = folder / f"digest-{today}.md"
     weekly = folder / f"weekly-{today}.md"
+    daily = folder / f"daily-{today}.md"
     assert digest.is_file()
     assert weekly.is_file()
+    assert daily.is_file()
     text = digest.read_text(encoding="utf-8")
     assert "Reviews digest" in text
     assert f"weekly-{today}.md" in text
+    assert f"daily-{today}.md" in text
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert int(state.metrics["Digests"]) >= 1
     assert int(state.metrics["Reviews"]) >= 3
@@ -77,6 +95,7 @@ def test_cycle_writes_today_digest(tmp_path: Path) -> None:
     journal = (root / "memory" / "journal.jsonl").read_text(encoding="utf-8")
     assert "digest-" in journal
     assert "weekly-" in journal
+    assert "daily-" in journal
 
 
 def test_dry_run_does_not_write_digest(tmp_path: Path) -> None:
@@ -85,3 +104,4 @@ def test_dry_run_does_not_write_digest(tmp_path: Path) -> None:
     reviews = root / "memory" / "reviews"
     assert not reviews.exists() or not any(reviews.glob("digest-*.md"))
     assert not reviews.exists() or not any(reviews.glob("weekly-*.md"))
+    assert not reviews.exists() or not any(reviews.glob("daily-*.md"))

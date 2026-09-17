@@ -12,14 +12,14 @@
 - `src/core/state.py` — living context
 - `src/core/memory.py` — JSONL journal
 - `src/core/planner.py` — single-task selection
-- `src/core/agent.py` — plan-act-reflect (cycle writes today's reviews digest)
+- `src/core/agent.py` — plan-act-reflect (cycle writes daily, weekly, then digest)
 - `src/core/changelog.py` — CHANGELOG.md version sections
 - `src/core/metrics.py` — Files/Tests recount and Cycles bump
 - `src/interfaces/cli.py` — local operator surface
 - `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends + journaled hits
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
-- `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`, `write_cycle_digest`)
+- `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`, `write_cycle_daily` / `write_cycle_weekly` / `write_cycle_digest`)
 - `src/tools/inbox.py` — Gmail/Drive listing + capture-to-journal (`kind=inbox`) + token probe + read-only `HttpGoogleClient` + refresh_token grant
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
@@ -29,7 +29,7 @@
 - Review sketches live under `memory/reviews/*.md`; `count_reviews` is the source of `Reviews=N`.
 - Digest files (`digest-*.md`) are counted separately (`count_digests` → `Digests=N` / status `digests=N`).
 - `eternalforge review --digest` writes `memory/reviews/digest-YYYY-MM-DD.md` as a coverage note.
-- A non-dry `Agent` cycle also writes that digest via `write_cycle_digest` (journal tags include `cycle`).
+- A non-dry `Agent` cycle writes daily, then weekly, then digest (`write_cycle_daily` / `write_cycle_weekly` / `write_cycle_digest`; journal tags include `cycle`).
 - `eternalforge status --digest` lists those digest filenames after the status lines.
 - The knowledge base indexes digest files as `kind=digest` / `source=digest` (daily/weekly stay `review`).
 - Journal rows with `kind=inbox` are indexed as `source=inbox` and tagged `inbox`.

@@ -154,14 +154,14 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "Implement CLI" in log
     assert "reports=0" in log
     assert "tasks=0" in log
-    assert "reviews=1" in log
+    assert "reviews=3" in log
     assert "digests=1" in log
     assert "inbox=0" in log
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
     assert state.metrics["Cycles"] == "1"
     assert state.metrics["Reports"] == "0"
     assert state.metrics["Tasks"] == "0"
-    assert state.metrics["Reviews"] == "1"
+    assert state.metrics["Reviews"] == "3"
     assert state.metrics["Digests"] == "1"
     assert state.metrics["Inbox"] == "0"
     assert state.priorities == ["Add research tool"]
@@ -169,12 +169,14 @@ def test_cycle_writes_changelog_and_bumps_metrics(tmp_path: Path) -> None:
     assert "changelog=" in journal
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     assert (root / "memory" / "reviews" / f"digest-{today}.md").is_file()
+    assert (root / "memory" / "reviews" / f"daily-{today}.md").is_file()
+    assert (root / "memory" / "reviews" / f"weekly-{today}.md").is_file()
     status = Agent(root).status()
     assert "changelog_versions=2" in status
     assert "journal_kinds=review,cycle" in status or "journal_kinds=cycle" in status
     assert "reports=0" in status
     assert "tasks=0" in status
-    assert "reviews=1" in status
+    assert "reviews=3" in status
     assert "digests=1" in status
     assert "inbox=0" in status
 
@@ -198,10 +200,12 @@ def test_cycle_persists_review_count_in_state(tmp_path: Path) -> None:
     (folder / "daily-2026-09-16.md").write_text("# review\n", encoding="utf-8")
     Agent(root).run_once(dry_run=False)
     state = parse_state((root / "STATE.md").read_text(encoding="utf-8"))
-    assert state.metrics["Reviews"] == "2"
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    expected = 3 if today == "2026-09-16" else 4
+    assert state.metrics["Reviews"] == str(expected)
     assert state.metrics["Digests"] == "1"
     log = (root / "CHANGELOG.md").read_text(encoding="utf-8")
-    assert "reviews=2" in log
+    assert f"reviews={expected}" in log
     assert "digests=1" in log
 
 
