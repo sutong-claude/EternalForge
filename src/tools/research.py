@@ -3,9 +3,10 @@
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
-and CORE (stdlib urllib; CORE key optional via CORE_API_KEY). Tests inject
-FixtureAdapter or call parse_*_payload helpers so they never hit the
-network. Backend ``multi`` merges the live adapters.
+CORE, and Semantic Scholar Graph extras (stdlib urllib; CORE key optional
+via CORE_API_KEY). Tests inject FixtureAdapter or call parse_*_payload
+helpers so they never hit the network. Backend ``multi`` merges the live
+adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -153,6 +154,11 @@ def parse_core_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_s2graph_payload(payload: dict, limit: int = 5):
+    from tools.s2graph import parse_s2graph_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -201,6 +207,9 @@ def __getattr__(name: str):
     if name == "CoreAdapter":
         from tools.core import CoreAdapter
         return CoreAdapter
+    if name == "S2GraphAdapter":
+        from tools.s2graph import S2GraphAdapter
+        return S2GraphAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -229,6 +238,7 @@ __all__ = [
     "parse_openalex_payload",
     "parse_openlibrary_payload",
     "parse_pubmed_payload",
+    "parse_s2graph_payload",
     "parse_semanticscholar_payload",
     "parse_wikidata_payload",
     "parse_wikipedia_payload",
