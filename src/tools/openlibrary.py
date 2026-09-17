@@ -22,6 +22,7 @@ from tools.research import (
     _unavailable,
 )
 from tools.semanticscholar import SemanticScholarAdapter
+from tools.zenodo import ZenodoAdapter
 
 
 def _is_unavailable(hit: Hit) -> bool:
@@ -166,6 +167,7 @@ class MultiAdapter:
             PubMedAdapter(timeout=timeout),
             EuropePMCAdapter(timeout=timeout),
             OpenAlexAdapter(timeout=timeout),
+            ZenodoAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
