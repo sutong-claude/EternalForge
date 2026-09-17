@@ -1,4 +1,6 @@
 from pathlib import Path
+from datetime import datetime, timezone
+from urllib.parse import parse_qs
 import json
 import sys
 
@@ -12,6 +14,7 @@ from tools.inbox import (
     HttpGoogleClient,
     InboxItem,
     LiveInboxAdapter,
+    access_token_expired,
     capture_inbox,
     count_inbox_entries,
     find_google_token,
@@ -19,6 +22,8 @@ from tools.inbox import (
     get_inbox_adapter,
     list_inbox,
     load_access_token,
+    refresh_access_token,
+    resolve_access_token,
 )
 
 
@@ -235,3 +240,95 @@ def test_cli_inbox_live_list_empty(tmp_path, capsys) -> None:
     rc = main(["--root", str(tmp_path), "inbox", "list", "--live"])
     assert rc == 0
     assert capsys.readouterr().out.strip() == "(no inbox items)"
+
+
+def test_access_token_expired_from_iso() -> None:
+    past = {"expiry": "2020-01-01T00:00:00Z", "access_token": "old"}
+    future = {"expiry": "2099-01-01T00:00:00Z", "access_token": "fresh"}
+    now = datetime(2026, 9, 17, tzinfo=timezone.utc)
+    assert access_token_expired(past, now=now) is True
+    assert access_token_expired(future, now=now) is False
+    assert access_token_expired({"access_token": "no-expiry"}, now=now) is False
+
+
+def test_refresh_access_token_updates_file(tmp_path, monkeypatch) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text(
+        json.dumps(
+            {
+                "access_token": "old",
+                "refresh_token": "rt-1",
+                "client_id": "cid",
+                "client_secret": "csec",
+                "expiry": "2020-01-01T00:00:00Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    class DummyResponse:
+        def read(self) -> bytes:
+            return json.dumps({"access_token": "new-token", "expires_in": 3600}).encode("utf-8")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args) -> None:
+            return None
+
+    def opener(request, timeout=0):
+        assert request.full_url == "https://oauth2.googleapis.com/token"
+        body = parse_qs(request.data.decode("utf-8"))
+        assert body["grant_type"] == ["refresh_token"]
+        assert body["refresh_token"] == ["rt-1"]
+        assert body["client_id"] == ["cid"]
+        return DummyResponse()
+
+    got = refresh_access_token(token, opener=opener)
+    assert got == "new-token"
+    saved = json.loads(token.read_text(encoding="utf-8"))
+    assert saved["access_token"] == "new-token"
+    assert saved["refresh_token"] == "rt-1"
+    assert "expiry" in saved
+
+
+def test_resolve_refreshes_when_expired(tmp_path) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text(
+        json.dumps(
+            {
+                "access_token": "stale",
+                "refresh_token": "rt-2",
+                "client_id": "cid",
+                "expiry": "2020-01-01T00:00:00Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    class DummyResponse:
+        def read(self) -> bytes:
+            return json.dumps({"access_token": "rotated"}).encode("utf-8")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args) -> None:
+            return None
+
+    def opener(request, timeout=0):
+        return DummyResponse()
+
+    assert resolve_access_token(token, opener=opener) == "rotated"
+
+
+def test_status_expired_without_refresh(tmp_path, monkeypatch) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text(
+        json.dumps({"access_token": "stale", "expiry": "2020-01-01T00:00:00Z"}),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_TOKEN_PATH", str(token))
+    status = LiveInboxAdapter(root=tmp_path).creds_status()
+    assert status.token_present is True
+    assert status.listing == "expired"

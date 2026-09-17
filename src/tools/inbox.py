@@ -5,11 +5,14 @@ LiveInboxAdapter discovers a token path from env or local files, never logs
 token contents, and lists via an injectable GoogleApiClient. The default
 HttpGoogleClient is read-only (Gmail metadata + Drive file list) and swallows
 network errors so a missing or unusable token still yields an empty list.
+Expired access tokens are refreshed with the OAuth refresh_token grant when
+refresh_token + client_id are available (file or env). Secrets stay off logs.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Iterable, Protocol
 from urllib.error import HTTPError, URLError
@@ -23,11 +26,15 @@ from core.memory import Journal, MemoryEntry, normalize_kind, normalize_tags
 
 TOKEN_ENV_PATH = "ETERNALFORGE_GOOGLE_TOKEN_PATH"
 TOKEN_ENV_DIR = "ETERNALFORGE_CONFIG_DIR"
+CLIENT_ID_ENV = "ETERNALFORGE_GOOGLE_CLIENT_ID"
+CLIENT_SECRET_ENV = "ETERNALFORGE_GOOGLE_CLIENT_SECRET"
 DEFAULT_TOKEN_NAME = "google-token.json"
 GMAIL_LIST_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messages"
 GMAIL_GET_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messages/{id}"
 DRIVE_LIST_URL = "https://www.googleapis.com/drive/v3/files"
+TOKEN_REFRESH_URL = "https://oauth2.googleapis.com/token"
 HTTP_TIMEOUT = 8
+EXPIRY_SKEW = timedelta(seconds=60)
 
 
 @dataclass(frozen=True)
@@ -154,20 +161,161 @@ def find_google_token(root: Path | None = None) -> Path | None:
     return None
 
 
-def load_access_token(path: Path) -> str | None:
-    """Read access_token or token from a Google OAuth JSON file. Never log the value."""
+def load_token_payload(path: Path) -> dict | None:
+    """Parse OAuth JSON. Never log values."""
     try:
         raw = path.read_text(encoding="utf-8")
         data = json.loads(raw)
     except (OSError, UnicodeError, json.JSONDecodeError, TypeError):
         return None
-    if not isinstance(data, dict):
-        return None
-    for key in ("access_token", "token"):
+    return data if isinstance(data, dict) else None
+
+
+def _field(data: dict, *keys: str) -> str:
+    for key in keys:
         value = data.get(key)
         if isinstance(value, str) and value.strip():
             return value.strip()
+    return ""
+
+
+def load_access_token(path: Path) -> str | None:
+    """Read access_token or token from a Google OAuth JSON file. Never log the value."""
+    data = load_token_payload(path)
+    if data is None:
+        return None
+    value = _field(data, "access_token", "token")
+    return value or None
+
+
+def token_expiry(data: dict) -> datetime | None:
+    """Best-effort expiry from common Google token JSON keys."""
+    raw = data.get("expiry") or data.get("token_expiry") or data.get("expires_at")
+    if isinstance(raw, (int, float)):
+        try:
+            return datetime.fromtimestamp(float(raw), tz=timezone.utc)
+        except (OverflowError, OSError, ValueError):
+            return None
+    if isinstance(raw, str) and raw.strip():
+        text = raw.strip().replace("Z", "+00:00")
+        try:
+            parsed = datetime.fromisoformat(text)
+        except ValueError:
+            return None
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
     return None
+
+
+def access_token_expired(data: dict, now: datetime | None = None) -> bool:
+    """True when expiry is known and already passed (with a small skew)."""
+    expiry = token_expiry(data)
+    if expiry is None:
+        return False
+    stamp = now or datetime.now(timezone.utc)
+    if stamp.tzinfo is None:
+        stamp = stamp.replace(tzinfo=timezone.utc)
+    return stamp + EXPIRY_SKEW >= expiry
+
+
+def refresh_client_fields(data: dict) -> tuple[str, str, str]:
+    """refresh_token, client_id, client_secret from file or env. Empty strings if missing."""
+    refresh = _field(data, "refresh_token")
+    client_id = _field(data, "client_id") or (os.environ.get(CLIENT_ID_ENV) or "").strip()
+    client_secret = _field(data, "client_secret") or (os.environ.get(CLIENT_SECRET_ENV) or "").strip()
+    return refresh, client_id, client_secret
+
+
+def can_refresh_token(data: dict) -> bool:
+    refresh, client_id, _secret = refresh_client_fields(data)
+    return bool(refresh and client_id)
+
+
+def persist_access_token(path: Path, data: dict, access_token: str, expires_in: int | None) -> None:
+    """Write the new access token back to the same file. Never log values."""
+    updated = dict(data)
+    updated["access_token"] = access_token
+    if expires_in is not None and expires_in > 0:
+        updated["expires_in"] = int(expires_in)
+        expiry = datetime.now(timezone.utc) + timedelta(seconds=int(expires_in))
+        updated["expiry"] = expiry.strftime("%Y-%m-%dT%H:%M:%SZ")
+    path.write_text(json.dumps(updated, indent=2) + "\n", encoding="utf-8")
+
+
+def refresh_access_token(path: Path, opener=None, payload: dict | None = None) -> str | None:
+    """POST refresh_token grant. Returns new access token or None. Does not log secrets."""
+    data = payload if payload is not None else load_token_payload(path)
+    if not data:
+        return None
+    refresh, client_id, client_secret = refresh_client_fields(data)
+    if not refresh or not client_id:
+        return None
+    body = {
+        "grant_type": "refresh_token",
+        "refresh_token": refresh,
+        "client_id": client_id,
+    }
+    if client_secret:
+        body["client_secret"] = client_secret
+    request = Request(
+        TOKEN_REFRESH_URL,
+        data=urlencode(body).encode("utf-8"),
+        headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+        method="POST",
+    )
+    fetch = opener or urlopen
+    try:
+        with fetch(request, timeout=HTTP_TIMEOUT) as response:
+            raw = response.read()
+        parsed = json.loads(raw.decode("utf-8"))
+    except (OSError, URLError, HTTPError, json.JSONDecodeError, TimeoutError, ValueError, TypeError):
+        return None
+    if not isinstance(parsed, dict):
+        return None
+    token = parsed.get("access_token")
+    if not isinstance(token, str) or not token.strip():
+        return None
+    token = token.strip()
+    expires_in = parsed.get("expires_in")
+    seconds = int(expires_in) if isinstance(expires_in, (int, float)) else None
+    new_refresh = parsed.get("refresh_token")
+    if isinstance(new_refresh, str) and new_refresh.strip():
+        data = dict(data)
+        data["refresh_token"] = new_refresh.strip()
+    try:
+        persist_access_token(path, data, token, seconds)
+    except OSError:
+        pass
+    return token
+
+
+def resolve_access_token(path: Path, opener=None, now: datetime | None = None) -> str | None:
+    """Return a usable access token, refreshing when expired or missing."""
+    data = load_token_payload(path)
+    if data is None:
+        return None
+    current = _field(data, "access_token", "token")
+    if current and not access_token_expired(data, now=now):
+        return current
+    refreshed = refresh_access_token(path, opener=opener, payload=data)
+    if refreshed:
+        return refreshed
+    return current or None
+
+
+def listing_status_for_payload(data: dict | None) -> str:
+    if not data:
+        return "no-token"
+    current = _field(data, "access_token", "token")
+    expired = access_token_expired(data)
+    if current and not expired:
+        return "google-api"
+    if can_refresh_token(data):
+        return "google-api"
+    if current and expired:
+        return "expired"
+    return "expired" if data else "no-token"
 
 
 def _header_value(headers: dict[str, str], name: str) -> str:
@@ -209,7 +357,7 @@ class HttpGoogleClient:
         query: str | None = None,
         limit: int = 10,
     ) -> list[InboxItem]:
-        token = load_access_token(token_path)
+        token = resolve_access_token(token_path, opener=self._opener)
         if not token:
             return []
         cap = max(0, int(limit))
@@ -326,7 +474,10 @@ class LiveInboxAdapter:
 
     def creds_status(self) -> InboxCredsStatus:
         present = self.token_path is not None
-        listing = "google-api" if present else "no-token"
+        if not present:
+            listing = "no-token"
+        else:
+            listing = listing_status_for_payload(load_token_payload(self.token_path))
         return InboxCredsStatus(
             token_present=present,
             path=str(self.token_path) if self.token_path else "",

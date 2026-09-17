@@ -65,7 +65,7 @@
 - [x] Wire Google API client once tokens exist
 - [x] Index inbox captures in the knowledge base
 - [x] Surface inbox count on status
-- Refresh Google tokens (refresh_token grant) when access_token expires
+- [x] Refresh Google tokens (refresh_token grant) when access_token expires
 
 ## Phase 4 – Self-Improvement & Scale
 - Automated testing gates

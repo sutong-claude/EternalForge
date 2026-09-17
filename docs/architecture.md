@@ -20,7 +20,7 @@
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
 - `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`, `write_cycle_digest`)
-- `src/tools/inbox.py` — Gmail/Drive listing + capture-to-journal (`kind=inbox`) + token probe + read-only `HttpGoogleClient`
+- `src/tools/inbox.py` — Gmail/Drive listing + capture-to-journal (`kind=inbox`) + token probe + read-only `HttpGoogleClient` + refresh_token grant
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
 - Gmail — significant-progress signal
@@ -35,5 +35,6 @@
 - Journal rows with `kind=inbox` are indexed as `source=inbox` and tagged `inbox`.
 - `count_inbox_entries` is the source of `Inbox=N` / status `inbox=N` (journal `kind=inbox` rows).
 - `eternalforge inbox list|capture` is offline-first (`FixtureInboxAdapter`); `--live` uses `LiveInboxAdapter`.
-- `eternalforge inbox status` reports token present/absent and `listing=no-token|google-api` (no secrets in-repo).
+- `eternalforge inbox status` reports token present/absent and `listing=no-token|google-api|expired` (no secrets in-repo).
 - When a token file exists, `LiveInboxAdapter` calls a read-only Google API client (injectable in tests; default HTTP client).
+- Expired access tokens are refreshed with the OAuth refresh_token grant when `refresh_token` and `client_id` are available (token file or env).

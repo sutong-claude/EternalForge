@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.16.17 — 2026-09-17
+
+- Refresh expired Google access tokens with the OAuth `refresh_token` grant before live listing.
+- Client id/secret come from the token file or `ETERNALFORGE_GOOGLE_CLIENT_ID` / `ETERNALFORGE_GOOGLE_CLIENT_SECRET`.
+- New access token is written back to the same token file; values are never logged.
+- `inbox status` listing is `no-token` | `google-api` | `expired`.
+- Tests cover expiry parse, dummy-opener refresh, resolve-on-expiry, and expired status.
+- No PubMed heading invented.
+
 ## 0.16.16 — 2026-09-17
 
 - Wire a read-only Google API client behind `LiveInboxAdapter` (`HttpGoogleClient` + injectable `GoogleApiClient`).
