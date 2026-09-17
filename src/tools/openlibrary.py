@@ -24,6 +24,7 @@ from tools.research import (
     _unavailable,
 )
 from tools.semanticscholar import SemanticScholarAdapter
+from tools.wikidata import WikidataAdapter
 from tools.zenodo import ZenodoAdapter
 
 
@@ -172,6 +173,7 @@ class MultiAdapter:
             ZenodoAdapter(timeout=timeout),
             DataCiteAdapter(timeout=timeout),
             DoajAdapter(timeout=timeout),
+            WikidataAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
