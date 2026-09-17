@@ -49,6 +49,9 @@ LIVE_EXTRA = {
     "wikidata",
     "wd",
     "entities",
+    "openaire",
+    "oaire",
+    "graph",
     "multi",
     "all",
 }
@@ -63,6 +66,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import doaj as doajmod
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
+        from tools import openaire as oairemod
         from tools import openalex as oamod
         from tools import openlibrary as olmod
         from tools import pubmed as pmmod
@@ -94,6 +98,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return doajmod.DoajAdapter()
         if key in {"wikidata", "wd", "entities"}:
             return wdmod.WikidataAdapter()
+        if key in {"openaire", "oaire", "graph"}:
+            return oairemod.OpenaireAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
