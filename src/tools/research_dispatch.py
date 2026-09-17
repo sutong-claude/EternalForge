@@ -46,6 +46,9 @@ LIVE_EXTRA = {
     "doaj",
     "oa-journals",
     "journals",
+    "wikidata",
+    "wd",
+    "entities",
     "multi",
     "all",
 }
@@ -64,6 +67,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import openlibrary as olmod
         from tools import pubmed as pmmod
         from tools import semanticscholar as s2mod
+        from tools import wikidata as wdmod
         from tools import zenodo as zenmod
 
         if key in {"multi", "all"}:
@@ -88,6 +92,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return dcmod.DataCiteAdapter()
         if key in {"doaj", "oa-journals", "journals"}:
             return doajmod.DoajAdapter()
+        if key in {"wikidata", "wd", "entities"}:
+            return wdmod.WikidataAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
