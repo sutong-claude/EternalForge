@@ -66,6 +66,7 @@
 - [x] Index inbox captures in the knowledge base
 - [x] Surface inbox count on status
 - [x] Refresh Google tokens (refresh_token grant) when access_token expires
+- [x] Env-only Google client_id / client_secret (not persisted to token file)
 
 ## Phase 4 – Self-Improvement & Scale
 - Automated testing gates
