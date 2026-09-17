@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.35 — 2026-09-17
+
+- Nineteenth live SearchAdapter: Crossref extras (`tools.xrefextra`) with citation counts, abstract, license, type, and subjects. Optional `CROSSREF_MAILTO`.
+- Aliases `cr-extra` / `cites-xr`; `multi` includes xrefextra. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and works-list shape.
+- No PubMed heading invented.
+
 ## 0.16.34 — 2026-09-17
 
 - Eighteenth live SearchAdapter: Unpaywall v2 title search + DOI lookup (`tools.unpaywall`) with email via `UNPAYWALL_EMAIL` (default noreply).
