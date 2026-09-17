@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.21 — 2026-09-17
+
+- Agent cycle writes today's weekly review sketch (`write_cycle_weekly` → `memory/reviews/weekly-YYYY-MM-DD.md`) before the digest so coverage lists it.
+- Journal row is tagged `review`, `weekly`, and `cycle`. Dry-run writes neither weekly nor digest.
+- Tests cover helper tags, seven-day window, cycle write-back, and dry-run skip.
+- No PubMed heading invented.
+
 ## 0.16.20 — 2026-09-17
 
 - Split `src/tools/tasks.py` (~17k) into `task_const`, `task_model`, `task_store`, and `task_ops` behind the `tools.tasks` facade.
