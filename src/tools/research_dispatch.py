@@ -61,6 +61,9 @@ LIVE_EXTRA = {
     "unpaywall",
     "upw",
     "oa-status",
+    "xrefextra",
+    "cr-extra",
+    "cites-xr",
     "multi",
     "all",
 }
@@ -84,6 +87,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import semanticscholar as s2mod
         from tools import unpaywall as upwmod
         from tools import wikidata as wdmod
+        from tools import xrefextra as xremod
         from tools import zenodo as zenmod
 
         if key in {"multi", "all"}:
@@ -118,6 +122,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return s2gmod.S2GraphAdapter()
         if key in {"unpaywall", "upw", "oa-status"}:
             return upwmod.UnpaywallAdapter()
+        if key in {"xrefextra", "cr-extra", "cites-xr"}:
+            return xremod.XrefExtraAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
