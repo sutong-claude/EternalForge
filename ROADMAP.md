@@ -61,7 +61,8 @@
 - Daily/weekly review
 - [x] Cycle writes a reviews digest
 - [x] Gmail / Drive listing sketch
-- Live Gmail / Drive OAuth (read-only)
+- [x] Live Gmail / Drive OAuth token probe (listing still stub-empty)
+- Wire Google API client once tokens exist
 - [x] Index inbox captures in the knowledge base
 - [x] Surface inbox count on status
 

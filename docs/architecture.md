@@ -20,7 +20,7 @@
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
 - `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`, `write_cycle_digest`)
-- `src/tools/inbox.py` — Gmail/Drive listing sketch + capture-to-journal (`kind=inbox`, `count_inbox_entries` → `Inbox=N`)
+- `src/tools/inbox.py` — Gmail/Drive listing sketch + capture-to-journal (`kind=inbox`, `count_inbox_entries` → `Inbox=N`) + local token probe
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
 - Gmail — significant-progress signal
@@ -34,4 +34,5 @@
 - The knowledge base indexes digest files as `kind=digest` / `source=digest` (daily/weekly stay `review`).
 - Journal rows with `kind=inbox` are indexed as `source=inbox` and tagged `inbox`.
 - `count_inbox_entries` is the source of `Inbox=N` / status `inbox=N` (journal `kind=inbox` rows).
-- `eternalforge inbox list|capture` is offline-first (`FixtureInboxAdapter`); live Google OAuth is not wired yet.
+- `eternalforge inbox list|capture` is offline-first (`FixtureInboxAdapter`); `--live` uses `LiveInboxAdapter`.
+- `eternalforge inbox status` reports whether a local Google token file exists; listing remains stub-empty (no API calls, no secrets in-repo).
