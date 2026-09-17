@@ -332,3 +332,63 @@ def test_status_expired_without_refresh(tmp_path, monkeypatch) -> None:
     status = LiveInboxAdapter(root=tmp_path).creds_status()
     assert status.token_present is True
     assert status.listing == "expired"
+
+
+def test_refresh_uses_env_client_id_and_strips_file(tmp_path, monkeypatch) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text(
+        json.dumps(
+            {
+                "access_token": "old",
+                "refresh_token": "rt-env",
+                "client_id": "file-cid",
+                "client_secret": "file-sec",
+                "expiry": "2020-01-01T00:00:00Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_CLIENT_ID", "env-cid")
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_CLIENT_SECRET", "env-sec")
+
+    class DummyResponse:
+        def read(self) -> bytes:
+            return json.dumps({"access_token": "env-token", "expires_in": 3600}).encode("utf-8")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args) -> None:
+            return None
+
+    def opener(request, timeout=0):
+        body = parse_qs(request.data.decode("utf-8"))
+        assert body["client_id"] == ["env-cid"]
+        assert body["client_secret"] == ["env-sec"]
+        return DummyResponse()
+
+    got = refresh_access_token(token, opener=opener)
+    assert got == "env-token"
+    saved = json.loads(token.read_text(encoding="utf-8"))
+    assert saved["access_token"] == "env-token"
+    assert saved["refresh_token"] == "rt-env"
+    assert "client_id" not in saved
+    assert "client_secret" not in saved
+
+
+def test_status_google_api_with_env_client_id(tmp_path, monkeypatch) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text(
+        json.dumps(
+            {
+                "access_token": "stale",
+                "refresh_token": "rt-3",
+                "expiry": "2020-01-01T00:00:00Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_TOKEN_PATH", str(token))
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_CLIENT_ID", "env-only")
+    status = LiveInboxAdapter(root=tmp_path).creds_status()
+    assert status.listing == "google-api"
