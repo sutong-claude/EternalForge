@@ -18,3 +18,35 @@
 - Split `src/tools/research.py` (~13k) into `research_models`, `research_wiki`, and `research_dispatch` behind a slim `tools.research` facade.
 - Public imports stay on `tools.research` (`Hit`, adapters, `get_adapter`, parse helpers, `search` / `record_hits`). Added facade re-export test.
 - No PubMed heading invented.
+
+## 0.16.24 — 2026-09-17
+
+- Split `src/tools/review.py` (~13.5k) into `review_const`, `review_files`, `review_window`, `review_sketch`, and `review_digest` behind a slim `tools.review` facade.
+- Public imports stay on `tools.review`. Added facade re-export test.
+- No PubMed heading invented.
+
+## 0.16.23 — 2026-09-17
+
+- Split `src/interfaces/cli.py` (~20k, at the GitHub write limit) into `cli_const`, `cli_parser`, and a slim `cli` facade.
+- Public imports stay on `interfaces.cli` (`BACKEND_HELP`, `build_parser`, `main`).
+- Added facade re-export test. No PubMed heading invented.
+
+## 0.16.22 — 2026-09-17
+
+- Agent cycle writes today's daily review sketch (`write_cycle_daily` → `memory/reviews/daily-YYYY-MM-DD.md`) before weekly and digest so coverage lists it.
+- Journal row is tagged `review`, `daily`, and `cycle`. Dry-run writes neither daily, weekly, nor digest.
+- Tests cover helper tags, same-day window, cycle write-back, and dry-run skip.
+- No PubMed heading invented.
+
+## 0.16.21 — 2026-09-17
+
+- Agent cycle writes today's weekly review sketch (`write_cycle_weekly` → `memory/reviews/weekly-YYYY-MM-DD.md`) before the digest so coverage lists it.
+- Journal row is tagged `review`, `weekly`, and `cycle`. Dry-run writes neither weekly nor digest.
+- Tests cover helper tags, seven-day window, cycle write-back, and dry-run skip.
+- No PubMed heading invented.
+
+## 0.16.20 — 2026-09-17
+
+- Split `src/tools/tasks.py` (~17k) into `task_const`, `task_model`, `task_store`, and `task_ops` behind the `tools.tasks` facade.
+- Public imports stay on `tools.tasks`; added a facade re-export test.
+- No PubMed heading invented.
