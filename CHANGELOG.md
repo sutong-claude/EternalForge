@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.16.16 — 2026-09-17
+
+- Wire a read-only Google API client behind `LiveInboxAdapter` (`HttpGoogleClient` + injectable `GoogleApiClient`).
+- Token JSON is parsed for `access_token` / `token` only; values are never logged.
+- Live listing calls Gmail metadata + Drive file list when a token file exists; network errors yield an empty list.
+- `inbox status` listing is `no-token` or `google-api` (replaces stub-empty).
+- Tests cover injected client, HTTP mapping with a dummy opener, and token parse.
+- No PubMed heading invented.
+
 ## 0.16.15 — 2026-09-17
 
 - Live inbox creds probe: discover a local Google token path from `ETERNALFORGE_GOOGLE_TOKEN_PATH`, `ETERNALFORGE_CONFIG_DIR`, `<root>/.secrets/google-token.json`, or `~/.config/eternalforge/google-token.json`.

@@ -62,9 +62,10 @@
 - [x] Cycle writes a reviews digest
 - [x] Gmail / Drive listing sketch
 - [x] Live Gmail / Drive OAuth token probe (listing still stub-empty)
-- Wire Google API client once tokens exist
+- [x] Wire Google API client once tokens exist
 - [x] Index inbox captures in the knowledge base
 - [x] Surface inbox count on status
+- Refresh Google tokens (refresh_token grant) when access_token expires
 
 ## Phase 4 – Self-Improvement & Scale
 - Automated testing gates

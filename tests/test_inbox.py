@@ -9,6 +9,7 @@ from core.memory import Journal, MemoryEntry
 from interfaces.cli import build_parser, main
 from tools.inbox import (
     FixtureInboxAdapter,
+    HttpGoogleClient,
     InboxItem,
     LiveInboxAdapter,
     capture_inbox,
@@ -17,7 +18,19 @@ from tools.inbox import (
     format_items,
     get_inbox_adapter,
     list_inbox,
+    load_access_token,
 )
+
+
+class FakeGoogleClient:
+    def __init__(self, items: list[InboxItem] | None = None) -> None:
+        self.items = list(items) if items is not None else []
+        self.calls: list[tuple] = []
+
+    def list_items(self, token_path, source=None, query=None, limit=10):
+        self.calls.append((token_path, source, query, limit))
+        matched = [item for item in self.items if item.matches(query=query, source=source)]
+        return matched[: max(0, int(limit))]
 
 
 def test_list_filters_source_and_query() -> None:
@@ -33,7 +46,7 @@ def test_format_empty() -> None:
     assert format_items([]) == "(no inbox items)"
 
 
-def test_live_adapter_is_empty() -> None:
+def test_live_adapter_is_empty_without_token() -> None:
     assert LiveInboxAdapter().list_items() == []
     assert isinstance(get_inbox_adapter("live"), LiveInboxAdapter)
     assert isinstance(get_inbox_adapter("fixture"), FixtureInboxAdapter)
@@ -108,7 +121,7 @@ def test_find_google_token_absent(tmp_path, monkeypatch) -> None:
     assert find_google_token(tmp_path) is None
     status = LiveInboxAdapter(root=tmp_path).creds_status()
     assert status.token_present is False
-    assert status.listing == "stub-empty"
+    assert status.listing == "no-token"
     assert "token=absent" in status.format()
 
 
@@ -121,7 +134,80 @@ def test_find_google_token_env_path(tmp_path, monkeypatch) -> None:
     status = LiveInboxAdapter(root=tmp_path).creds_status()
     assert status.token_present is True
     assert status.path == str(token)
-    assert LiveInboxAdapter(root=tmp_path).list_items() == []
+    assert status.listing == "google-api"
+    assert load_access_token(token) == "redacted"
+
+
+def test_live_list_uses_injected_client(tmp_path, monkeypatch) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text('{"access_token": "secret-value"}', encoding="utf-8")
+    monkeypatch.setenv("ETERNALFORGE_GOOGLE_TOKEN_PATH", str(token))
+    fake = FakeGoogleClient(
+        [
+            InboxItem(source="gmail", item_id="gx", title="Hello from Gmail"),
+            InboxItem(source="drive", item_id="dx", title="Notes doc"),
+        ]
+    )
+    adapter = LiveInboxAdapter(root=tmp_path, client=fake)
+    items = adapter.list_items(source="gmail", limit=5)
+    assert [item.item_id for item in items] == ["gx"]
+    assert fake.calls
+    assert fake.calls[0][0] == token
+
+
+def test_http_client_maps_gmail_and_drive(tmp_path) -> None:
+    token = tmp_path / "tok.json"
+    token.write_text('{"access_token": "abc"}', encoding="utf-8")
+
+    class DummyResponse:
+        def __init__(self, payload: dict) -> None:
+            self._payload = json.dumps(payload).encode("utf-8")
+
+        def read(self) -> bytes:
+            return self._payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args) -> None:
+            return None
+
+    def opener(request, timeout=0):
+        url = request.full_url
+        auth = request.get_header("Authorization")
+        assert auth == "Bearer abc"
+        if "gmail.googleapis.com" in url and "/messages/" in url and "format=" in url:
+            return DummyResponse(
+                {
+                    "id": "m99",
+                    "snippet": "body preview",
+                    "payload": {"headers": [{"name": "Subject", "value": "Paper alert"}]},
+                    "internalDate": "1710000000000",
+                }
+            )
+        if "gmail.googleapis.com" in url:
+            return DummyResponse({"messages": [{"id": "m99"}]})
+        if "googleapis.com/drive" in url:
+            return DummyResponse(
+                {
+                    "files": [
+                        {
+                            "id": "d99",
+                            "name": "Outline.gdoc",
+                            "modifiedTime": "2026-09-16T00:00:00Z",
+                            "webViewLink": "https://drive.google.com/file/d/d99/view",
+                            "mimeType": "application/vnd.google-apps.document",
+                        }
+                    ]
+                }
+            )
+        raise AssertionError(url)
+
+    client = HttpGoogleClient(opener=opener)
+    items = client.list_items(token, source="all", limit=5)
+    assert [item.item_id for item in items] == ["m99", "d99"]
+    assert items[0].title == "Paper alert"
+    assert items[1].title == "Outline.gdoc"
 
 
 def test_find_google_token_secrets_dir(tmp_path, monkeypatch) -> None:
@@ -133,6 +219,7 @@ def test_find_google_token_secrets_dir(tmp_path, monkeypatch) -> None:
     token = secrets / "google-token.json"
     token.write_text("{}", encoding="utf-8")
     assert find_google_token(tmp_path) == token
+    assert load_access_token(token) is None
 
 
 def test_cli_inbox_status(tmp_path, capsys) -> None:
@@ -141,7 +228,7 @@ def test_cli_inbox_status(tmp_path, capsys) -> None:
     out = capsys.readouterr().out
     assert "adapter=live" in out
     assert "token=absent" in out
-    assert "listing=stub-empty" in out
+    assert "listing=no-token" in out
 
 
 def test_cli_inbox_live_list_empty(tmp_path, capsys) -> None:
