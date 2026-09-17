@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.31 — 2026-09-17
+
+- Fifteenth live SearchAdapter: OpenAIRE Graph researchProducts API (`tools.openaire`) with no key.
+- Aliases `oaire` / `graph`; `multi` includes OpenAIRE. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and researchProducts-list shape.
+- No PubMed heading invented.
+
 ## 0.16.30 — 2026-09-17
 
 - Fourteenth live SearchAdapter: Wikidata wbsearchentities API (`tools.wikidata`) with no key.
