@@ -44,6 +44,7 @@
 - [x] Ninth live SearchAdapter (Europe PMC)
 - [x] Tenth live SearchAdapter (OpenAlex)
 - [x] Eleventh live SearchAdapter (Zenodo)
+- [x] Twelfth live SearchAdapter (DataCite)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
