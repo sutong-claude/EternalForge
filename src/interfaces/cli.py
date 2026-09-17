@@ -8,7 +8,7 @@ import sys
 
 from core.agent import Agent
 from tools.capture import DEFAULT_TOPICS, capture
-from tools.inbox import capture_inbox, format_items, get_inbox_adapter, list_inbox
+from tools.inbox import LiveInboxAdapter, capture_inbox, format_items, get_inbox_adapter, list_inbox
 from tools.kb import build_index, format_index_hits, parse_day, search_kb, write_index
 from tools.report import write_report
 from tools.research import FixtureAdapter, format_hits, get_adapter, record_hits, search
@@ -304,7 +304,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Replace the task title (must be non-empty)",
     )
-    inbox = sub.add_parser("inbox", help="List or capture Gmail/Drive items (sketch)")
+    inbox = sub.add_parser("inbox", help="List or capture Gmail/Drive items (sketch + creds probe)")
     inbox_sub = inbox.add_subparsers(dest="inbox_cmd", required=True)
     inbox_list = inbox_sub.add_parser("list", help="List fixture or live-stub inbox items")
     inbox_list.add_argument(
@@ -317,7 +317,12 @@ def build_parser() -> argparse.ArgumentParser:
     inbox_list.add_argument(
         "--offline",
         action="store_true",
-        help="Use FixtureInboxAdapter (default even without this flag today)",
+        help="Use FixtureInboxAdapter (default when --live is omitted)",
+    )
+    inbox_list.add_argument(
+        "--live",
+        action="store_true",
+        help="Use LiveInboxAdapter (empty list until a Google client is wired)",
     )
     inbox_cap = inbox_sub.add_parser("capture", help="Persist matching items to the journal")
     inbox_cap.add_argument(
@@ -333,10 +338,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="Use FixtureInboxAdapter",
     )
     inbox_cap.add_argument(
+        "--live",
+        action="store_true",
+        help="Use LiveInboxAdapter (empty list until a Google client is wired)",
+    )
+    inbox_cap.add_argument(
         "--tag",
         action="append",
         dest="tags",
         help="Tag to persist on the journal row (repeatable)",
+    )
+    inbox_sub.add_parser(
+        "status",
+        help="Show whether a local Google token file is present (never prints secrets)",
     )
     return parser
 
@@ -431,7 +445,11 @@ def main(argv: list[str] | None = None) -> int:
                     f"{result.overdue_count} overdue, {result.done_count} done)"
                 )
         elif args.cmd == "inbox":
-            adapter = get_inbox_adapter("fixture" if args.offline else "fixture")
+            if args.inbox_cmd == "status":
+                print(LiveInboxAdapter(root=args.root).creds_status().format())
+                return 0
+            use_live = bool(getattr(args, "live", False)) and not bool(getattr(args, "offline", False))
+            adapter = get_inbox_adapter("live" if use_live else "fixture", root=args.root)
             if args.inbox_cmd == "list":
                 print(
                     format_items(
