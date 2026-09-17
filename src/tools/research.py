@@ -3,10 +3,10 @@
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
-CORE, and Semantic Scholar Graph extras (stdlib urllib; CORE key optional
-via CORE_API_KEY). Tests inject FixtureAdapter or call parse_*_payload
-helpers so they never hit the network. Backend ``multi`` merges the live
-adapters.
+CORE, Semantic Scholar Graph extras, and Unpaywall (stdlib urllib; CORE key
+optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL). Tests inject
+FixtureAdapter or call parse_*_payload helpers so they never hit the network.
+Backend ``multi`` merges the live adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -159,6 +159,11 @@ def parse_s2graph_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_unpaywall_payload(payload: dict, limit: int = 5):
+    from tools.unpaywall import parse_unpaywall_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -210,6 +215,9 @@ def __getattr__(name: str):
     if name == "S2GraphAdapter":
         from tools.s2graph import S2GraphAdapter
         return S2GraphAdapter
+    if name == "UnpaywallAdapter":
+        from tools.unpaywall import UnpaywallAdapter
+        return UnpaywallAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -240,6 +248,7 @@ __all__ = [
     "parse_pubmed_payload",
     "parse_s2graph_payload",
     "parse_semanticscholar_payload",
+    "parse_unpaywall_payload",
     "parse_wikidata_payload",
     "parse_wikipedia_payload",
     "parse_zenodo_payload",
