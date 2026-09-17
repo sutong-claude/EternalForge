@@ -37,6 +37,9 @@ LIVE_EXTRA = {
     "openalex",
     "oa",
     "works-oa",
+    "zenodo",
+    "zen",
+    "records",
     "multi",
     "all",
 }
@@ -53,6 +56,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import openlibrary as olmod
         from tools import pubmed as pmmod
         from tools import semanticscholar as s2mod
+        from tools import zenodo as zenmod
 
         if key in {"multi", "all"}:
             return olmod.MultiAdapter()
@@ -70,6 +74,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return epmcmod.EuropePMCAdapter()
         if key in {"openalex", "oa", "works-oa"}:
             return oamod.OpenAlexAdapter()
+        if key in {"zenodo", "zen", "records"}:
+            return zenmod.ZenodoAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
