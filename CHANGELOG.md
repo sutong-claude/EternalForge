@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.16.15 — 2026-09-17
+
+- Live inbox creds probe: discover a local Google token path from `ETERNALFORGE_GOOGLE_TOKEN_PATH`, `ETERNALFORGE_CONFIG_DIR`, `<root>/.secrets/google-token.json`, or `~/.config/eternalforge/google-token.json`.
+- `LiveInboxAdapter.creds_status` reports token present/absent without printing file contents; listing stays stub-empty (no Google API calls).
+- CLI: `eternalforge inbox status` and `inbox list|capture --live`.
+- `.gitignore` ignores `.secrets/` and `google-token.json`.
+- Tests cover missing token, env path, workspace secrets file, status CLI, and empty live list.
+- No PubMed heading invented.
+
 ## 0.16.14 — 2026-09-16
 
 - Surface inbox capture count as `inbox=N` on `eternalforge status`.
