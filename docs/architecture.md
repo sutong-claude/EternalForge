@@ -19,7 +19,7 @@
 - `src/tools/research.py` — SearchAdapter + Wikipedia/fixture backends + journaled hits
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
-- `src/tools/review.py` — daily/weekly sketches + reviews digest (`Reviews=N`, `Digests=N`, `write_cycle_daily` / `write_cycle_weekly` / `write_cycle_digest`)
+- `src/tools/review.py` — facade over `review_const` / `review_files` / `review_window` / `review_sketch` / `review_digest` (daily/weekly sketches + digest; `Reviews=N`, `Digests=N`, cycle writes)
 - `src/tools/inbox.py` — Gmail/Drive listing + capture-to-journal (`kind=inbox`) + token probe + read-only `HttpGoogleClient` + refresh_token grant
 - `src/tools/files.py` — workspace file helpers
 - GitHub — source of truth
