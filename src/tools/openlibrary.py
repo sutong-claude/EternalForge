@@ -27,6 +27,7 @@ from tools.research import (
 )
 from tools.s2graph import S2GraphAdapter
 from tools.semanticscholar import SemanticScholarAdapter
+from tools.unpaywall import UnpaywallAdapter
 from tools.wikidata import WikidataAdapter
 from tools.zenodo import ZenodoAdapter
 
@@ -180,6 +181,7 @@ class MultiAdapter:
             OpenaireAdapter(timeout=timeout),
             CoreAdapter(timeout=timeout),
             S2GraphAdapter(timeout=timeout),
+            UnpaywallAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
