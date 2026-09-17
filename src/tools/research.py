@@ -3,10 +3,11 @@
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
-CORE, Semantic Scholar Graph extras, and Unpaywall (stdlib urllib; CORE key
-optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL). Tests inject
-FixtureAdapter or call parse_*_payload helpers so they never hit the network.
-Backend ``multi`` merges the live adapters.
+CORE, Semantic Scholar Graph extras, Unpaywall, and Crossref extras (stdlib
+urllib; CORE key optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL;
+Crossref extras mailto via CROSSREF_MAILTO). Tests inject FixtureAdapter or call
+parse_*_payload helpers so they never hit the network. Backend ``multi`` merges
+the live adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -164,6 +165,11 @@ def parse_unpaywall_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_xrefextra_payload(payload: dict, limit: int = 5):
+    from tools.xrefextra import parse_xrefextra_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -218,6 +224,9 @@ def __getattr__(name: str):
     if name == "UnpaywallAdapter":
         from tools.unpaywall import UnpaywallAdapter
         return UnpaywallAdapter
+    if name == "XrefExtraAdapter":
+        from tools.xrefextra import XrefExtraAdapter
+        return XrefExtraAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -251,6 +260,7 @@ __all__ = [
     "parse_unpaywall_payload",
     "parse_wikidata_payload",
     "parse_wikipedia_payload",
+    "parse_xrefextra_payload",
     "parse_zenodo_payload",
     "record_hits",
     "search",
