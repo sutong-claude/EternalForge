@@ -11,7 +11,13 @@ from core.planner import select_task
 from core.state import ForgeState, load_state_file, save_state_file
 from tools.inbox import count_inbox_entries
 from tools.report import count_reports
-from tools.review import count_digests, count_reviews, format_digest_listing, write_cycle_digest
+from tools.review import (
+    count_digests,
+    count_reviews,
+    format_digest_listing,
+    write_cycle_digest,
+    write_cycle_weekly,
+)
 from tools.tasks import count_open_tasks
 
 
@@ -74,6 +80,7 @@ class Agent:
         return f"queued-for-implementation: {task}"
 
     def reflect(self, state: ForgeState, task: str, result: str) -> None:
+        write_cycle_weekly(self.root, journal=self.journal)
         write_cycle_digest(self.root, journal=self.journal)
         state.complete_current(f"Cycled task: {task} ({result})")
         bump_metrics(state, self.root)

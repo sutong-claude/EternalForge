@@ -18,6 +18,7 @@ from tools.review import (
     count_digests,
     count_reviews,
     write_cycle_digest,
+    write_cycle_weekly,
     write_digest,
     write_review,
 )
@@ -42,6 +43,7 @@ __all__ = [
     "write_review",
     "write_digest",
     "write_cycle_digest",
+    "write_cycle_weekly",
     "count_reviews",
     "count_digests",
     "ReviewResult",

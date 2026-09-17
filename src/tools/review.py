@@ -424,3 +424,19 @@ def write_cycle_digest(
 ) -> DigestResult:
     """Write today's reviews digest as part of a non-dry cycle (tags include cycle)."""
     return write_digest(root, journal=journal, day=day, tags=["cycle"])
+
+
+def write_cycle_weekly(
+    root: Path,
+    *,
+    journal: Journal | None = None,
+    day: str | None = None,
+) -> ReviewResult:
+    """Write today's weekly review sketch as part of a non-dry cycle (tags include cycle)."""
+    return write_review(
+        root,
+        journal=journal,
+        day=day,
+        period="weekly",
+        tags=["cycle"],
+    )
