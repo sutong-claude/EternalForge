@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.28 — 2026-09-17
+
+- Twelfth live SearchAdapter: DataCite DOI REST API (`tools.datacite`) with no key.
+- Aliases `dc` / `dois`; `multi` includes DataCite. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and dois-list shape.
+- No PubMed heading invented.
+
 ## 0.16.27 — 2026-09-17
 
 - Eleventh live SearchAdapter: Zenodo records API (`tools.zenodo`) with no key.
