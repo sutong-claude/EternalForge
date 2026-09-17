@@ -52,6 +52,9 @@ LIVE_EXTRA = {
     "openaire",
     "oaire",
     "graph",
+    "core",
+    "coreac",
+    "works-core",
     "multi",
     "all",
 }
@@ -61,6 +64,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
     key = (name or "wikipedia").strip().lower()
     if key in LIVE_EXTRA:
         from tools import arxiv as axmod
+        from tools import core as coremod
         from tools import crossref as xrmod
         from tools import datacite as dcmod
         from tools import doaj as doajmod
@@ -100,6 +104,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return wdmod.WikidataAdapter()
         if key in {"openaire", "oaire", "graph"}:
             return oairemod.OpenaireAdapter()
+        if key in {"core", "coreac", "works-core"}:
+            return coremod.CoreAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:

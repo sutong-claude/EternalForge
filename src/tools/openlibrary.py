@@ -8,6 +8,7 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 from tools.arxiv import ArxivAdapter
+from tools.core import CoreAdapter
 from tools.crossref import CrossrefAdapter
 from tools.datacite import DataCiteAdapter
 from tools.doaj import DoajAdapter
@@ -176,6 +177,7 @@ class MultiAdapter:
             DoajAdapter(timeout=timeout),
             WikidataAdapter(timeout=timeout),
             OpenaireAdapter(timeout=timeout),
+            CoreAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
