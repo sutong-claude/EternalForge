@@ -11,3 +11,5 @@ build/
 .idea/
 .vscode/
 *.log
+.secrets/
+google-token.json
