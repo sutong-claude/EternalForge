@@ -1,0 +1,82 @@
+"""Adapter registry and get_adapter dispatch."""
+
+from __future__ import annotations
+
+from tools.research_models import FixtureAdapter, SearchAdapter
+from tools.research_wiki import DuckDuckGoAdapter, WikipediaAdapter
+
+ADAPTERS: dict[str, type] = {
+    "wikipedia": WikipediaAdapter,
+    "duckduckgo": DuckDuckGoAdapter,
+    "ddg": DuckDuckGoAdapter,
+    "fixture": FixtureAdapter,
+}
+
+LIVE_EXTRA = {
+    "openlibrary",
+    "ol",
+    "books",
+    "hackernews",
+    "hn",
+    "algolia",
+    "arxiv",
+    "papers",
+    "preprint",
+    "crossref",
+    "doi",
+    "works",
+    "semanticscholar",
+    "s2",
+    "scholar",
+    "pubmed",
+    "ncbi",
+    "medline",
+    "europepmc",
+    "epmc",
+    "europe",
+    "openalex",
+    "oa",
+    "works-oa",
+    "multi",
+    "all",
+}
+
+
+def get_adapter(name: str | None = None) -> SearchAdapter:
+    key = (name or "wikipedia").strip().lower()
+    if key in LIVE_EXTRA:
+        from tools import arxiv as axmod
+        from tools import crossref as xrmod
+        from tools import europepmc as epmcmod
+        from tools import hackernews as hnmod
+        from tools import openalex as oamod
+        from tools import openlibrary as olmod
+        from tools import pubmed as pmmod
+        from tools import semanticscholar as s2mod
+
+        if key in {"multi", "all"}:
+            return olmod.MultiAdapter()
+        if key in {"hackernews", "hn", "algolia"}:
+            return hnmod.HackerNewsAdapter()
+        if key in {"arxiv", "papers", "preprint"}:
+            return axmod.ArxivAdapter()
+        if key in {"crossref", "doi", "works"}:
+            return xrmod.CrossrefAdapter()
+        if key in {"semanticscholar", "s2", "scholar"}:
+            return s2mod.SemanticScholarAdapter()
+        if key in {"pubmed", "ncbi", "medline"}:
+            return pmmod.PubMedAdapter()
+        if key in {"europepmc", "epmc", "europe"}:
+            return epmcmod.EuropePMCAdapter()
+        if key in {"openalex", "oa", "works-oa"}:
+            return oamod.OpenAlexAdapter()
+        return olmod.OpenLibraryAdapter()
+    cls = ADAPTERS.get(key)
+    if cls is None:
+        known = ", ".join(sorted(set(ADAPTERS) | LIVE_EXTRA))
+        raise ValueError(f"Unknown search backend {name!r}. Known: {known}")
+    return cls()
+
+
+def default_adapter() -> SearchAdapter:
+    return WikipediaAdapter()
