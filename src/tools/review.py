@@ -440,3 +440,19 @@ def write_cycle_weekly(
         period="weekly",
         tags=["cycle"],
     )
+
+
+def write_cycle_daily(
+    root: Path,
+    *,
+    journal: Journal | None = None,
+    day: str | None = None,
+) -> ReviewResult:
+    """Write today's daily review sketch as part of a non-dry cycle (tags include cycle)."""
+    return write_review(
+        root,
+        journal=journal,
+        day=day,
+        period="daily",
+        tags=["cycle"],
+    )

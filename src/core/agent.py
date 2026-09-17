@@ -15,6 +15,7 @@ from tools.review import (
     count_digests,
     count_reviews,
     format_digest_listing,
+    write_cycle_daily,
     write_cycle_digest,
     write_cycle_weekly,
 )
@@ -80,6 +81,7 @@ class Agent:
         return f"queued-for-implementation: {task}"
 
     def reflect(self, state: ForgeState, task: str, result: str) -> None:
+        write_cycle_daily(self.root, journal=self.journal)
         write_cycle_weekly(self.root, journal=self.journal)
         write_cycle_digest(self.root, journal=self.journal)
         state.complete_current(f"Cycled task: {task} ({result})")
