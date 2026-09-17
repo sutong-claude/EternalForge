@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.33 — 2026-09-17
+
+- Seventeenth live SearchAdapter: Semantic Scholar Graph extras (`tools.s2graph`) with tldr, citation counts, and publicationDate. No key.
+- Aliases `graph-s2` / `s2-extra`; `multi` includes s2graph. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and papers-list shape.
+- No PubMed heading invented.
+
 ## 0.16.32 — 2026-09-17
 
 - Sixteenth live SearchAdapter: CORE v3 works search API (`tools.core`) with optional `CORE_API_KEY`.

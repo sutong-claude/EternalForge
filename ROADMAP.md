@@ -49,6 +49,7 @@
 - [x] Fourteenth live SearchAdapter (Wikidata)
 - [x] Fifteenth live SearchAdapter (OpenAIRE)
 - [x] Sixteenth live SearchAdapter (CORE)
+- [x] Seventeenth live SearchAdapter (Semantic Scholar Graph extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
