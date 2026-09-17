@@ -2,7 +2,7 @@
 
 Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
-PubMed, Europe PMC, and OpenAlex (stdlib urllib, no API key). Tests inject
+PubMed, Europe PMC, OpenAlex, and Zenodo (stdlib urllib, no API key). Tests inject
 FixtureAdapter or call parse_*_payload helpers so they never hit the
 network. Backend ``multi`` merges the live adapters.
 
@@ -122,6 +122,11 @@ def parse_openalex_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_zenodo_payload(payload: dict, limit: int = 5):
+    from tools.zenodo import parse_zenodo_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -152,6 +157,9 @@ def __getattr__(name: str):
     if name == "OpenAlexAdapter":
         from tools.openalex import OpenAlexAdapter
         return OpenAlexAdapter
+    if name == "ZenodoAdapter":
+        from tools.zenodo import ZenodoAdapter
+        return ZenodoAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -178,6 +186,7 @@ __all__ = [
     "parse_pubmed_payload",
     "parse_semanticscholar_payload",
     "parse_wikipedia_payload",
+    "parse_zenodo_payload",
     "record_hits",
     "search",
     "summarize",
