@@ -4,7 +4,7 @@ from __future__ import annotations
 
 BACKEND_HELP = (
     "Search backend: wikipedia, duckduckgo, openlibrary, hackernews, arxiv, crossref, "
-    "semanticscholar, pubmed, europepmc, openalex, zenodo, datacite, doaj, wikidata, openaire, core, s2graph, multi, fixture "
+    "semanticscholar, pubmed, europepmc, openalex, zenodo, datacite, doaj, wikidata, openaire, core, s2graph, unpaywall, multi, fixture "
     "(aliases: ddg, ol, books, hn, algolia, papers, preprint, doi, works, s2, scholar, "
-    "ncbi, medline, epmc, europe, oa, works-oa, zen, records, dc, dois, oa-journals, journals, wd, entities, oaire, graph, coreac, works-core, graph-s2, s2-extra, all)"
+    "ncbi, medline, epmc, europe, oa, works-oa, zen, records, dc, dois, oa-journals, journals, wd, entities, oaire, graph, coreac, works-core, graph-s2, s2-extra, upw, oa-status, all)"
 )

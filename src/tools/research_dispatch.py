@@ -58,6 +58,9 @@ LIVE_EXTRA = {
     "s2graph",
     "graph-s2",
     "s2-extra",
+    "unpaywall",
+    "upw",
+    "oa-status",
     "multi",
     "all",
 }
@@ -79,6 +82,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import pubmed as pmmod
         from tools import s2graph as s2gmod
         from tools import semanticscholar as s2mod
+        from tools import unpaywall as upwmod
         from tools import wikidata as wdmod
         from tools import zenodo as zenmod
 
@@ -112,6 +116,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return coremod.CoreAdapter()
         if key in {"s2graph", "graph-s2", "s2-extra"}:
             return s2gmod.S2GraphAdapter()
+        if key in {"unpaywall", "upw", "oa-status"}:
+            return upwmod.UnpaywallAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
