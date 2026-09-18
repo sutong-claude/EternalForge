@@ -103,6 +103,9 @@ LIVE_EXTRA = {
     "oainstitution",
     "institutions-oa",
     "cites-institution-oa",
+    "oaauthor",
+    "authors-oa",
+    "cites-author-oa",
     "multi",
     "all",
 }
@@ -121,6 +124,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import epmcextra as epmcexmod
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
+        from tools import oaauthor as oaamod
         from tools import oaconcept as oacmod
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
@@ -202,6 +206,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oapmod.OaPublisherAdapter()
         if key in {"oainstitution", "institutions-oa", "cites-institution-oa"}:
             return oaimod.OaInstitutionAdapter()
+        if key in {"oaauthor", "authors-oa", "cites-author-oa"}:
+            return oaamod.OaAuthorAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.49 — 2026-09-18
+
+- Thirty-third live SearchAdapter: OpenAlex authors extras (`tools.oaauthor`) with ORCID, last-known institution/country, alt-names, h-index, works, and cites. Optional `OPENALEX_MAILTO`.
+- Aliases `authors-oa` / `cites-author-oa`; `multi` includes oaauthor. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and authors-list shape.
+- No PubMed heading invented.
+
 ## 0.16.48 — 2026-09-18
 
 - Thirty-second live SearchAdapter: OpenAlex institutions extras (`tools.oainstitution`) with type, country, acronyms/alts, associated parent, ROR, works, and cites. Optional `OPENALEX_MAILTO`.
