@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.40 — 2026-09-18
+
+- Twenty-fourth live SearchAdapter: DataCite extras (`tools.dcextra`) with publisher, subjects, rights, citation counts, language, and container. No key.
+- Aliases `dc-extra` / `cites-dc`; `multi` includes dcextra. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and dois-list shape.
+- No PubMed heading invented.
+
 ## 0.16.39 — 2026-09-18
 
 - Twenty-third live SearchAdapter: ORCID extras (`tools.orcidextra`) with expanded-search names, institutions, other names, and ORCID iD. No key.

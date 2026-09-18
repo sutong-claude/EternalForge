@@ -76,6 +76,9 @@ LIVE_EXTRA = {
     "orcidextra",
     "orcid-extra",
     "ids-orcid",
+    "dcextra",
+    "dc-extra",
+    "cites-dc",
     "multi",
     "all",
 }
@@ -88,6 +91,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import core as coremod
         from tools import crossref as xrmod
         from tools import datacite as dcmod
+        from tools import dcextra as dcexmod
         from tools import doaj as doajmod
         from tools import epmcextra as epmcexmod
         from tools import europepmc as epmcmod
@@ -148,6 +152,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return epmcexmod.EpmcExtraAdapter()
         if key in {"orcidextra", "orcid-extra", "ids-orcid"}:
             return orcidexmod.OrcidExtraAdapter()
+        if key in {"dcextra", "dc-extra", "cites-dc"}:
+            return dcexmod.DataCiteExtraAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:

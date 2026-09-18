@@ -1,6 +1,6 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-18 03:15 UTC
+**Last updated:** 2026-09-18 04:10 UTC
 **Current phase:** Core Agent
 **Overall progress:** 99%
 
@@ -10,30 +10,30 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 ## Immediate Priorities (next few runs)
 1. Keep CHANGELOG honest: do not invent a dedicated PubMed heading unless the source commit is found.
 2. GitHub file writes over ~20k truncate; prefer split modules (inbox, tasks, CLI, review, research, and kb are split).
-3. Optional next live SearchAdapter (Crossref works-by-funder extras, or DataCite extras) if a no-key API is a better increment than another split.
+3. Optional next live SearchAdapter (Crossref works-by-funder extras) if a no-key API is a better increment than another split.
 
 ## Recent Actions
+- [2026-09-18 04:10 UTC] Twenty-fourth live SearchAdapter: DataCite extras (`tools.dcextra`) with publisher + subjects + rights + cites + language + container. Aliases dc-extra/cites-dc, included in multi. CHANGELOG 0.16.40. Tests 289. No PubMed heading invented.
 - [2026-09-18 03:15 UTC] Twenty-third live SearchAdapter: ORCID extras (`tools.orcidextra`) with expanded-search names + institutions + other names + ORCID iD. Aliases orcid-extra/ids-orcid, included in multi. CHANGELOG 0.16.39. Tests 284. No PubMed heading invented.
 - [2026-09-18 02:20 UTC] Twenty-second live SearchAdapter: Europe PMC extras (`tools.epmcextra`) with cites + OA + pub type + keywords + language. Aliases epmc-extra/cites-epmc, included in multi. CHANGELOG 0.16.38. Tests 279. No PubMed heading invented.
 - [2026-09-18 01:20 UTC] Twenty-first live SearchAdapter: OpenAIRE extras (`tools.oairextra`) with access right + subjects + cites + publisher + language. Aliases oaire-extra/cites-oaire, included in multi. CHANGELOG 0.16.37. Tests 274. No PubMed heading invented.
 - [2026-09-18 00:15 UTC] Twentieth live SearchAdapter: OpenAlex extras (`tools.oaextra`) with cites + OA status + type + concepts + language. Aliases oa-extra/cites-oa, included in multi. CHANGELOG 0.16.36. Tests 269. No PubMed heading invented.
-- [2026-09-17 23:20 UTC] Nineteenth live SearchAdapter: Crossref extras (`tools.xrefextra`) with cites + abstract + license + type + subjects. Aliases cr-extra/cites-xr, included in multi. CHANGELOG 0.16.35. Tests 264. No PubMed heading invented.
 
 ## Known Issues / Blockers
 - None for inbox, task, CLI, review, research, or kb imports. GitHub connected `push_files` / `create_or_update_file` cannot reliably write a single 20k+ blob; split instead.
 - CHANGELOG still has no dedicated PubMed heading; do not invent one.
 
 ## Metrics
-- Files: 110
-- Tests: 284
-- Features shipped: 78
-- Cycles: 59
+- Files: 112
+- Tests: 289
+- Features shipped: 79
+- Cycles: 60
 - Reports: 0
 - Tasks: 0
 - Reviews: 0
 - Digests: 0
 - Inbox: 0
-- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + daily and weekly review on cycle + Zenodo adapter + DataCite adapter + DOAJ adapter + Wikidata adapter + OpenAIRE adapter + CORE adapter + S2 Graph extras adapter + Unpaywall adapter + Crossref extras adapter + OpenAlex extras adapter + OpenAIRE extras adapter + Europe PMC extras adapter + ORCID extras adapter
+- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + daily and weekly review on cycle + Zenodo adapter + DataCite adapter + DOAJ adapter + Wikidata adapter + OpenAIRE adapter + CORE adapter + S2 Graph extras adapter + Unpaywall adapter + Crossref extras adapter + OpenAlex extras adapter + OpenAIRE extras adapter + Europe PMC extras adapter + ORCID extras adapter + DataCite extras adapter
 
 ## Notes for next agent
-CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Twenty-third live backend is ORCID extras (`get_adapter("orcidextra")`). Next optional backend: DataCite extras or Crossref funder extras.
+CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Twenty-fourth live backend is DataCite extras (`get_adapter("dcextra")`). Next optional backend: Crossref funder extras.
