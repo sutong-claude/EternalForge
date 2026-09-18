@@ -79,6 +79,9 @@ LIVE_EXTRA = {
     "dcextra",
     "dc-extra",
     "cites-dc",
+    "crfunder",
+    "funders-cr",
+    "cites-funder",
     "multi",
     "all",
 }
@@ -89,6 +92,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
     if key in LIVE_EXTRA:
         from tools import arxiv as axmod
         from tools import core as coremod
+        from tools import crfunder as crfmod
         from tools import crossref as xrmod
         from tools import datacite as dcmod
         from tools import dcextra as dcexmod
@@ -154,6 +158,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return orcidexmod.OrcidExtraAdapter()
         if key in {"dcextra", "dc-extra", "cites-dc"}:
             return dcexmod.DataCiteExtraAdapter()
+        if key in {"crfunder", "funders-cr", "cites-funder"}:
+            return crfmod.CrFunderAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
