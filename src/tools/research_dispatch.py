@@ -67,6 +67,9 @@ LIVE_EXTRA = {
     "oaextra",
     "oa-extra",
     "cites-oa",
+    "oairextra",
+    "oaire-extra",
+    "cites-oaire",
     "multi",
     "all",
 }
@@ -83,6 +86,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
         from tools import oaextra as oaexmod
+        from tools import oairextra as oaxmod
         from tools import openaire as oairemod
         from tools import openalex as oamod
         from tools import openlibrary as olmod
@@ -130,6 +134,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return xremod.XrefExtraAdapter()
         if key in {"oaextra", "oa-extra", "cites-oa"}:
             return oaexmod.OaExtraAdapter()
+        if key in {"oairextra", "oaire-extra", "cites-oaire"}:
+            return oaxmod.OaireExtraAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
