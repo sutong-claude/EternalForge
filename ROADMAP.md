@@ -64,6 +64,7 @@
 - [x] Twenty-ninth live SearchAdapter (OpenAlex concepts extras)
 - [x] Thirtieth live SearchAdapter (OpenAlex sources extras)
 - [x] Thirty-first live SearchAdapter (OpenAlex publishers extras)
+- [x] Thirty-second live SearchAdapter (OpenAlex institutions extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
