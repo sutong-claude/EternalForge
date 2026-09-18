@@ -9,10 +9,11 @@ Crossref funder extras, OpenAlex funder extras, ORCID works extras,
 OpenAlex topics extras, OpenAlex concepts extras, OpenAlex sources extras,
 OpenAlex publishers extras, OpenAlex institutions extras,
 OpenAlex authors extras, OpenAlex works-by-year extras,
-OpenAlex works-by-type extras, and OpenAlex works-by-language extras
+OpenAlex works-by-type extras, OpenAlex works-by-language extras,
+OpenAlex works-by-OA-status extras, and OpenAlex works-by-country extras
 (stdlib urllib; CORE key optional via CORE_API_KEY; Unpaywall email via
 UNPAYWALL_EMAIL; Crossref extras/funders mailto via CROSSREF_MAILTO; OpenAlex
-extras/funders/topics/concepts/sources/publishers/institutions/authors/years/types/languages mailto via OPENALEX_MAILTO). Tests
+extras/funders/topics/concepts/sources/publishers/institutions/authors/years/types/languages/oa-status/countries mailto via OPENALEX_MAILTO). Tests
 inject FixtureAdapter or call parse_*_payload helpers so they never hit the
 network. Backend ``multi`` merges the live adapters.
 
@@ -262,6 +263,16 @@ def parse_oalang_payload(payload: dict, limit: int = 5, query: str = ""):
     return _parse(payload, limit=limit, query=query)
 
 
+def parse_oaostatus_payload(payload: dict, limit: int = 5, query: str = ""):
+    from tools.oaostatus import parse_oaostatus_payload as _parse
+    return _parse(payload, limit=limit, query=query)
+
+
+def parse_oacountry_payload(payload: dict, limit: int = 5, query: str = ""):
+    from tools.oacountry import parse_oacountry_payload as _parse
+    return _parse(payload, limit=limit, query=query)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -370,6 +381,12 @@ def __getattr__(name: str):
     if name == "OaLangAdapter":
         from tools.oalang import OaLangAdapter
         return OaLangAdapter
+    if name == "OaOaStatusAdapter":
+        from tools.oaostatus import OaOaStatusAdapter
+        return OaOaStatusAdapter
+    if name == "OaCountryAdapter":
+        from tools.oacountry import OaCountryAdapter
+        return OaCountryAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -399,11 +416,13 @@ __all__ = [
     "parse_hackernews_payload",
     "parse_oaauthor_payload",
     "parse_oaconcept_payload",
+    "parse_oacountry_payload",
     "parse_oaextra_payload",
     "parse_oafunder_payload",
     "parse_oairextra_payload",
     "parse_oainstitution_payload",
     "parse_oalang_payload",
+    "parse_oaostatus_payload",
     "parse_oapublisher_payload",
     "parse_oasource_payload",
     "parse_oatopic_payload",
