@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.39 — 2026-09-18
+
+- Twenty-third live SearchAdapter: ORCID extras (`tools.orcidextra`) with expanded-search names, institutions, other names, and ORCID iD. No key.
+- Aliases `orcid-extra` / `ids-orcid`; `multi` includes orcidextra. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and result-list shape.
+- No PubMed heading invented.
+
 ## 0.16.38 — 2026-09-18
 
 - Twenty-second live SearchAdapter: Europe PMC extras (`tools.epmcextra`) with citation counts, OA flag, pub type, keywords, language, and abstract. Uses `resultType=core`. No key.

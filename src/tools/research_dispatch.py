@@ -73,6 +73,9 @@ LIVE_EXTRA = {
     "epmcextra",
     "epmc-extra",
     "cites-epmc",
+    "orcidextra",
+    "orcid-extra",
+    "ids-orcid",
     "multi",
     "all",
 }
@@ -94,6 +97,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import openaire as oairemod
         from tools import openalex as oamod
         from tools import openlibrary as olmod
+        from tools import orcidextra as orcidexmod
         from tools import pubmed as pmmod
         from tools import s2graph as s2gmod
         from tools import semanticscholar as s2mod
@@ -142,6 +146,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oaxmod.OaireExtraAdapter()
         if key in {"epmcextra", "epmc-extra", "cites-epmc"}:
             return epmcexmod.EpmcExtraAdapter()
+        if key in {"orcidextra", "orcid-extra", "ids-orcid"}:
+            return orcidexmod.OrcidExtraAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
