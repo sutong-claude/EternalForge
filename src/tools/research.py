@@ -4,11 +4,11 @@ Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
 CORE, Semantic Scholar Graph extras, Unpaywall, Crossref extras, OpenAlex
-extras, OpenAIRE extras, and Europe PMC extras (stdlib urllib; CORE key
-optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL; Crossref
-extras mailto via CROSSREF_MAILTO; OpenAlex extras mailto via OPENALEX_MAILTO).
-Tests inject FixtureAdapter or call parse_*_payload helpers so they never hit
-the network. Backend ``multi`` merges the live adapters.
+extras, OpenAIRE extras, Europe PMC extras, and ORCID extras (stdlib urllib;
+CORE key optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL;
+Crossref extras mailto via CROSSREF_MAILTO; OpenAlex extras mailto via
+OPENALEX_MAILTO). Tests inject FixtureAdapter or call parse_*_payload helpers
+so they never hit the network. Backend ``multi`` merges the live adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -186,6 +186,11 @@ def parse_epmcextra_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_orcidextra_payload(payload: dict, limit: int = 5):
+    from tools.orcidextra import parse_orcidextra_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -252,6 +257,9 @@ def __getattr__(name: str):
     if name == "EpmcExtraAdapter":
         from tools.epmcextra import EpmcExtraAdapter
         return EpmcExtraAdapter
+    if name == "OrcidExtraAdapter":
+        from tools.orcidextra import OrcidExtraAdapter
+        return OrcidExtraAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -282,6 +290,7 @@ __all__ = [
     "parse_openaire_payload",
     "parse_openalex_payload",
     "parse_openlibrary_payload",
+    "parse_orcidextra_payload",
     "parse_pubmed_payload",
     "parse_s2graph_payload",
     "parse_semanticscholar_payload",
