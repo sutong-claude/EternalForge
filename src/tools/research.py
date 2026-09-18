@@ -5,12 +5,13 @@ Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
 CORE, Semantic Scholar Graph extras, Unpaywall, Crossref extras, OpenAlex
 extras, OpenAIRE extras, Europe PMC extras, ORCID extras, DataCite extras,
-Crossref funder extras, OpenAlex funder extras, ORCID works extras, and
-OpenAlex topics extras (stdlib urllib; CORE key optional via CORE_API_KEY;
-Unpaywall email via UNPAYWALL_EMAIL; Crossref extras/funders mailto via
-CROSSREF_MAILTO; OpenAlex extras/funders/topics mailto via OPENALEX_MAILTO).
-Tests inject FixtureAdapter or call parse_*_payload helpers so they never hit
-the network. Backend ``multi`` merges the live adapters.
+Crossref funder extras, OpenAlex funder extras, ORCID works extras,
+OpenAlex topics extras, and OpenAlex concepts extras (stdlib urllib; CORE key
+optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL; Crossref
+extras/funders mailto via CROSSREF_MAILTO; OpenAlex extras/funders/topics/
+concepts mailto via OPENALEX_MAILTO). Tests inject FixtureAdapter or call
+parse_*_payload helpers so they never hit the network. Backend ``multi``
+merges the live adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -218,6 +219,11 @@ def parse_oatopic_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_oaconcept_payload(payload: dict, limit: int = 5):
+    from tools.oaconcept import parse_oaconcept_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -302,6 +308,9 @@ def __getattr__(name: str):
     if name == "OaTopicAdapter":
         from tools.oatopic import OaTopicAdapter
         return OaTopicAdapter
+    if name == "OaConceptAdapter":
+        from tools.oaconcept import OaConceptAdapter
+        return OaConceptAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -329,6 +338,7 @@ __all__ = [
     "parse_epmcextra_payload",
     "parse_europepmc_payload",
     "parse_hackernews_payload",
+    "parse_oaconcept_payload",
     "parse_oaextra_payload",
     "parse_oafunder_payload",
     "parse_oairextra_payload",
