@@ -64,6 +64,9 @@ LIVE_EXTRA = {
     "xrefextra",
     "cr-extra",
     "cites-xr",
+    "oaextra",
+    "oa-extra",
+    "cites-oa",
     "multi",
     "all",
 }
@@ -79,6 +82,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import doaj as doajmod
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
+        from tools import oaextra as oaexmod
         from tools import openaire as oairemod
         from tools import openalex as oamod
         from tools import openlibrary as olmod
@@ -124,6 +128,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return upwmod.UnpaywallAdapter()
         if key in {"xrefextra", "cr-extra", "cites-xr"}:
             return xremod.XrefExtraAdapter()
+        if key in {"oaextra", "oa-extra", "cites-oa"}:
+            return oaexmod.OaExtraAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
