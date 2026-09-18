@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.57 — 2026-09-18
+
+- Forty-first live SearchAdapter: OpenAlex works-by-retraction extras (`tools.oaretracted`) grouping works via `group_by=is_retracted` with work counts, optional cites, and retraction-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `retracted-oa` / `works-retracted-oa`; `multi` includes oaretracted. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and retracted-list shape.
+- No PubMed heading invented.
+
 ## 0.16.56 — 2026-09-18
 
 - Fortieth live SearchAdapter: OpenAlex works-by-source-type extras (`tools.oasrctype`) grouping works via `group_by=primary_location.source.type` with work counts, optional cites, and source-type-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
