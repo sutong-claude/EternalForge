@@ -19,6 +19,7 @@ from tools.oaextra import OaExtraAdapter
 from tools.oairextra import OaireExtraAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
+from tools.orcidextra import OrcidExtraAdapter
 from tools.pubmed import PubMedAdapter
 from tools.research import (
     USER_AGENT,
@@ -190,6 +191,7 @@ class MultiAdapter:
             OaExtraAdapter(timeout=timeout),
             OaireExtraAdapter(timeout=timeout),
             EpmcExtraAdapter(timeout=timeout),
+            OrcidExtraAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
