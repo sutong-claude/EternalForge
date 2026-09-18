@@ -70,6 +70,7 @@
 - [x] Thirty-fifth live SearchAdapter (OpenAlex works-by-type extras)
 - [x] Thirty-sixth live SearchAdapter (OpenAlex works-by-language extras)
 - [x] Thirty-seventh live SearchAdapter (OpenAlex works-by-OA-status extras)
+- [x] Thirty-eighth live SearchAdapter (OpenAlex works-by-country extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
