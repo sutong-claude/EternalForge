@@ -23,6 +23,7 @@ from tools.oairextra import OaireExtraAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
 from tools.orcidextra import OrcidExtraAdapter
+from tools.orcidworks import OrcidWorksAdapter
 from tools.pubmed import PubMedAdapter
 from tools.research import (
     USER_AGENT,
@@ -198,6 +199,7 @@ class MultiAdapter:
             DataCiteExtraAdapter(timeout=timeout),
             CrFunderAdapter(timeout=timeout),
             OaFunderAdapter(timeout=timeout),
+            OrcidWorksAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:

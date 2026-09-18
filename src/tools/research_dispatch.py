@@ -85,6 +85,9 @@ LIVE_EXTRA = {
     "oafunder",
     "funders-oa",
     "cites-funder-oa",
+    "orcidworks",
+    "works-orcid",
+    "orcid-works",
     "multi",
     "all",
 }
@@ -110,6 +113,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import openalex as oamod
         from tools import openlibrary as olmod
         from tools import orcidextra as orcidexmod
+        from tools import orcidworks as orcidwmod
         from tools import pubmed as pmmod
         from tools import s2graph as s2gmod
         from tools import semanticscholar as s2mod
@@ -166,6 +170,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return crfmod.CrFunderAdapter()
         if key in {"oafunder", "funders-oa", "cites-funder-oa"}:
             return oafmod.OaFunderAdapter()
+        if key in {"orcidworks", "works-orcid", "orcid-works"}:
+            return orcidwmod.OrcidWorksAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
