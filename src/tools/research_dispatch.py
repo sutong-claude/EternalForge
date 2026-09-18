@@ -97,6 +97,9 @@ LIVE_EXTRA = {
     "oasource",
     "sources-oa",
     "cites-source-oa",
+    "oapublisher",
+    "publishers-oa",
+    "cites-publisher-oa",
     "multi",
     "all",
 }
@@ -119,6 +122,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
         from tools import oairextra as oaxmod
+        from tools import oapublisher as oapmod
         from tools import oasource as oasmod
         from tools import oatopic as oatmmod
         from tools import openaire as oairemod
@@ -190,6 +194,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oacmod.OaConceptAdapter()
         if key in {"oasource", "sources-oa", "cites-source-oa"}:
             return oasmod.OaSourceAdapter()
+        if key in {"oapublisher", "publishers-oa", "cites-publisher-oa"}:
+            return oapmod.OaPublisherAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
