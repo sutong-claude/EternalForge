@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.59 — 2026-09-18
+
+- Forty-third live SearchAdapter: OpenAlex works-by-has_doi extras (`tools.oadoi`) grouping works via `group_by=has_doi` with work counts, optional cites, and DOI-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `doi-oa` / `works-doi-oa`; `multi` includes oadoi. Public imports stay on `tools.research`. Crossref keeps the `doi` alias.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_doi-list shape.
+- No PubMed heading invented.
+
 ## 0.16.58 — 2026-09-18
 
 - Forty-second live SearchAdapter: OpenAlex works-by-paratext extras (`tools.oaparatext`) grouping works via `group_by=is_paratext` with work counts, optional cites, and paratext-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
