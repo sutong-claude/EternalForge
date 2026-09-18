@@ -8,10 +8,10 @@ extras, OpenAIRE extras, Europe PMC extras, ORCID extras, DataCite extras,
 Crossref funder extras, OpenAlex funder extras, ORCID works extras,
 OpenAlex topics extras, OpenAlex concepts extras, OpenAlex sources extras,
 OpenAlex publishers extras, OpenAlex institutions extras,
-and OpenAlex authors extras
+OpenAlex authors extras, and OpenAlex works-by-year extras
 (stdlib urllib; CORE key optional via CORE_API_KEY; Unpaywall email via
 UNPAYWALL_EMAIL; Crossref extras/funders mailto via CROSSREF_MAILTO; OpenAlex
-extras/funders/topics/concepts/sources/publishers/institutions/authors mailto via OPENALEX_MAILTO). Tests
+extras/funders/topics/concepts/sources/publishers/institutions/authors/years mailto via OPENALEX_MAILTO). Tests
 inject FixtureAdapter or call parse_*_payload helpers so they never hit the
 network. Backend ``multi`` merges the live adapters.
 
@@ -246,6 +246,11 @@ def parse_oaauthor_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_oayear_payload(payload: dict, limit: int = 5, query: str = ""):
+    from tools.oayear import parse_oayear_payload as _parse
+    return _parse(payload, limit=limit, query=query)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -345,6 +350,9 @@ def __getattr__(name: str):
     if name == "OaAuthorAdapter":
         from tools.oaauthor import OaAuthorAdapter
         return OaAuthorAdapter
+    if name == "OaYearAdapter":
+        from tools.oayear import OaYearAdapter
+        return OaYearAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -381,6 +389,7 @@ __all__ = [
     "parse_oapublisher_payload",
     "parse_oasource_payload",
     "parse_oatopic_payload",
+    "parse_oayear_payload",
     "parse_openaire_payload",
     "parse_openalex_payload",
     "parse_openlibrary_payload",
