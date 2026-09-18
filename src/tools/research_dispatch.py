@@ -127,6 +127,9 @@ LIVE_EXTRA = {
     "oasrctype",
     "source-types-oa",
     "works-source-type-oa",
+    "oaretracted",
+    "retracted-oa",
+    "works-retracted-oa",
     "multi",
     "all",
 }
@@ -156,6 +159,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oalang as oalmod
         from tools import oaostatus as oaosmod
         from tools import oapublisher as oapmod
+        from tools import oaretracted as oarmd
         from tools import oasource as oasmod
         from tools import oasrctype as oastmod
         from tools import oatopic as oatmmod
@@ -250,6 +254,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oactmod.OaContinentAdapter()
         if key in {"oasrctype", "source-types-oa", "works-source-type-oa"}:
             return oastmod.OaSrcTypeAdapter()
+        if key in {"oaretracted", "retracted-oa", "works-retracted-oa"}:
+            return oarmd.OaRetractedAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
