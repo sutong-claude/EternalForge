@@ -133,6 +133,9 @@ LIVE_EXTRA = {
     "oaparatext",
     "paratext-oa",
     "works-paratext-oa",
+    "oadoi",
+    "doi-oa",
+    "works-doi-oa",
     "multi",
     "all",
 }
@@ -155,6 +158,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oaconcept as oacmod
         from tools import oacontinent as oactmod
         from tools import oacountry as oacnmod
+        from tools import oadoi as oadoimod
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
         from tools import oairextra as oaxmod
@@ -262,6 +266,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oarmd.OaRetractedAdapter()
         if key in {"oaparatext", "paratext-oa", "works-paratext-oa"}:
             return oaptmod.OaParatextAdapter()
+        if key in {"oadoi", "doi-oa", "works-doi-oa"}:
+            return oadoimod.OaDoiAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
