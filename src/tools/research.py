@@ -5,7 +5,7 @@ Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
 CORE, Semantic Scholar Graph extras, Unpaywall, Crossref extras, OpenAlex
 extras, OpenAIRE extras, Europe PMC extras, ORCID extras, DataCite extras,
-Crossref funder extras, and OpenAlex funder extras (stdlib urllib; CORE key
+Crossref funder extras, OpenAlex funder extras, and ORCID works extras (stdlib urllib; CORE key
 optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL; Crossref
 extras/funders mailto via CROSSREF_MAILTO; OpenAlex extras/funders mailto via
 OPENALEX_MAILTO). Tests inject FixtureAdapter or call parse_*_payload helpers
@@ -207,6 +207,11 @@ def parse_oafunder_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_orcidworks_payload(payload: dict, limit: int = 5, orcid: str = ""):
+    from tools.orcidworks import parse_orcidworks_payload as _parse
+    return _parse(payload, limit=limit, orcid=orcid)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -285,6 +290,9 @@ def __getattr__(name: str):
     if name == "OaFunderAdapter":
         from tools.oafunder import OaFunderAdapter
         return OaFunderAdapter
+    if name == "OrcidWorksAdapter":
+        from tools.orcidworks import OrcidWorksAdapter
+        return OrcidWorksAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -319,6 +327,7 @@ __all__ = [
     "parse_openalex_payload",
     "parse_openlibrary_payload",
     "parse_orcidextra_payload",
+    "parse_orcidworks_payload",
     "parse_pubmed_payload",
     "parse_s2graph_payload",
     "parse_semanticscholar_payload",

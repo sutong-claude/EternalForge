@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.43 — 2026-09-18
+
+- Twenty-seventh live SearchAdapter: ORCID works extras (`tools.orcidworks`) with type, year, journal, and DOI from the public `/works` list. Resolves an ORCID iD from the query or expanded-search. No key.
+- Aliases `works-orcid` / `orcid-works`; `multi` includes orcidworks. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and work-summary-list shape.
+- No PubMed heading invented.
+
 ## 0.16.42 — 2026-09-18
 
 - Twenty-sixth live SearchAdapter: OpenAlex funder extras (`tools.oafunder`) with country, alt-names, works, cites, grants, and description. Optional `OPENALEX_MAILTO`.
