@@ -88,6 +88,9 @@ LIVE_EXTRA = {
     "orcidworks",
     "works-orcid",
     "orcid-works",
+    "oatopic",
+    "topics-oa",
+    "cites-topic-oa",
     "multi",
     "all",
 }
@@ -109,6 +112,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
         from tools import oairextra as oaxmod
+        from tools import oatopic as oatmmod
         from tools import openaire as oairemod
         from tools import openalex as oamod
         from tools import openlibrary as olmod
@@ -172,6 +176,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oafmod.OaFunderAdapter()
         if key in {"orcidworks", "works-orcid", "orcid-works"}:
             return orcidwmod.OrcidWorksAdapter()
+        if key in {"oatopic", "topics-oa", "cites-topic-oa"}:
+            return oatmmod.OaTopicAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
