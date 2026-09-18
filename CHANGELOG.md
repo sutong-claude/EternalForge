@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.41 — 2026-09-18
+
+- Twenty-fifth live SearchAdapter: Crossref funder extras (`tools.crfunder`) with location, alt-names, work counts, and descendant work counts. Optional `CROSSREF_MAILTO`.
+- Aliases `funders-cr` / `cites-funder`; `multi` includes crfunder. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and funders-list shape.
+- No PubMed heading invented.
+
 ## 0.16.40 — 2026-09-18
 
 - Twenty-fourth live SearchAdapter: DataCite extras (`tools.dcextra`) with publisher, subjects, rights, citation counts, language, and container. No key.
