@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.50 — 2026-09-18
+
+- Thirty-fourth live SearchAdapter: OpenAlex works-by-year extras (`tools.oayear`) grouping works via `group_by=publication_year` with work counts, optional cites, and year-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `years-oa` / `works-year-oa`; `multi` includes oayear. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (newest year first), limit, and counts_by_year shape.
+- No PubMed heading invented.
+
 ## 0.16.49 — 2026-09-18
 
 - Thirty-third live SearchAdapter: OpenAlex authors extras (`tools.oaauthor`) with ORCID, last-known institution/country, alt-names, h-index, works, and cites. Optional `OPENALEX_MAILTO`.
