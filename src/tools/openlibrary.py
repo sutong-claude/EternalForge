@@ -18,6 +18,7 @@ from tools.epmcextra import EpmcExtraAdapter
 from tools.europepmc import EuropePMCAdapter
 from tools.hackernews import HackerNewsAdapter
 from tools.oaextra import OaExtraAdapter
+from tools.oafunder import OaFunderAdapter
 from tools.oairextra import OaireExtraAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
@@ -196,6 +197,7 @@ class MultiAdapter:
             OrcidExtraAdapter(timeout=timeout),
             DataCiteExtraAdapter(timeout=timeout),
             CrFunderAdapter(timeout=timeout),
+            OaFunderAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
