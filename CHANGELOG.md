@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.45 — 2026-09-18
+
+- Twenty-ninth live SearchAdapter: OpenAlex concepts extras (`tools.oaconcept`) with level, ancestors, related concepts, works, cites, and description. Optional `OPENALEX_MAILTO`.
+- Aliases `concepts-oa` / `cites-concept-oa`; `multi` includes oaconcept. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and concepts-list shape.
+- No PubMed heading invented.
+
 ## 0.16.44 — 2026-09-18
 
 - Twenty-eighth live SearchAdapter: OpenAlex topics extras (`tools.oatopic`) with domain/field/subfield, keywords, works, cites, and description. Optional `OPENALEX_MAILTO`.

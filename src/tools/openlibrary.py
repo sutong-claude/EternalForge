@@ -17,6 +17,7 @@ from tools.doaj import DoajAdapter
 from tools.epmcextra import EpmcExtraAdapter
 from tools.europepmc import EuropePMCAdapter
 from tools.hackernews import HackerNewsAdapter
+from tools.oaconcept import OaConceptAdapter
 from tools.oaextra import OaExtraAdapter
 from tools.oafunder import OaFunderAdapter
 from tools.oairextra import OaireExtraAdapter
@@ -202,6 +203,7 @@ class MultiAdapter:
             OaFunderAdapter(timeout=timeout),
             OrcidWorksAdapter(timeout=timeout),
             OaTopicAdapter(timeout=timeout),
+            OaConceptAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
