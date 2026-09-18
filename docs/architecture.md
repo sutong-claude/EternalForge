@@ -16,7 +16,7 @@
 - `src/core/changelog.py` — CHANGELOG.md version sections
 - `src/core/metrics.py` — Files/Tests recount and Cycles bump
 - `src/interfaces/cli.py` — local operator surface (parser in `cli_parser`, constants in `cli_const`)
-- `src/tools/research.py` — facade over `research_models` / `research_wiki` / `research_dispatch` (SearchAdapter + live backends including Zenodo, CORE, S2 Graph extras + journaled hits)
+- `src/tools/research.py` — facade over `research_models` / `research_wiki` / `research_dispatch` (SearchAdapter + live backends including Zenodo, CORE, S2 Graph extras, Unpaywall, Crossref/OpenAlex/OpenAIRE extras, Europe PMC extras + journaled hits)
 - `src/tools/capture.py` — daily topic research → memory/YYYY-MM-DD.md
 - `src/tools/kb.py` — inverted index over memory markdown + journal; digest-*.md is kind/source=digest; inbox journal rows are source=inbox
 - `src/tools/review.py` — facade over `review_const` / `review_files` / `review_window` / `review_sketch` / `review_digest` (daily/weekly sketches + digest; `Reviews=N`, `Digests=N`, cycle writes)
@@ -38,4 +38,4 @@
 - `eternalforge inbox status` reports token present/absent and `listing=no-token|google-api|expired` (no secrets in-repo).
 - When a token file exists, `LiveInboxAdapter` calls a read-only Google API client (injectable in tests; default HTTP client).
 - Expired access tokens are refreshed with the OAuth refresh_token grant when `refresh_token` and `client_id` are available (token file or env).
-- Live research backends (no API key): Wikipedia, DuckDuckGo, Open Library, Hacker News, arXiv, Crossref, Semantic Scholar, PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE, CORE, S2 Graph extras; `multi` merges them.
+- Live research backends (no API key): Wikipedia, DuckDuckGo, Open Library, Hacker News, arXiv, Crossref, Semantic Scholar, PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE, CORE, S2 Graph extras, Unpaywall, Crossref extras, OpenAlex extras, OpenAIRE extras, Europe PMC extras; `multi` merges them.

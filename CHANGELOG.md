@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.38 — 2026-09-18
+
+- Twenty-second live SearchAdapter: Europe PMC extras (`tools.epmcextra`) with citation counts, OA flag, pub type, keywords, language, and abstract. Uses `resultType=core`. No key.
+- Aliases `epmc-extra` / `cites-epmc`; `multi` includes epmcextra. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and articles-list shape.
+- No PubMed heading invented.
+
 ## 0.16.37 — 2026-09-18
 
 - Twenty-first live SearchAdapter: OpenAIRE extras (`tools.oairextra`) with access right, subjects, citation counts, publisher, language, and abstract. No key.
