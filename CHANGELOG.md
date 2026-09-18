@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.54 — 2026-09-18
+
+- Thirty-eighth live SearchAdapter: OpenAlex works-by-country extras (`tools.oacountry`) grouping works via `group_by=authorships.countries` with work counts, optional cites, and country-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `countries-oa` / `works-country-oa`; `multi` includes oacountry. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and countries-list shape.
+- No PubMed heading invented.
+
 ## 0.16.53 — 2026-09-18
 
 - Thirty-seventh live SearchAdapter: OpenAlex works-by-OA-status extras (`tools.oaostatus`) grouping works via `group_by=oa_status` with work counts, optional cites, and OA-status-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
