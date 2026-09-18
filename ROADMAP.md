@@ -55,6 +55,7 @@
 - [x] Twentieth live SearchAdapter (OpenAlex extras)
 - [x] Twenty-first live SearchAdapter (OpenAIRE extras)
 - [x] Twenty-second live SearchAdapter (Europe PMC extras)
+- [x] Twenty-third live SearchAdapter (ORCID extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
