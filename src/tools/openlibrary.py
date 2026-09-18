@@ -21,6 +21,7 @@ from tools.oaconcept import OaConceptAdapter
 from tools.oaextra import OaExtraAdapter
 from tools.oafunder import OaFunderAdapter
 from tools.oairextra import OaireExtraAdapter
+from tools.oasource import OaSourceAdapter
 from tools.oatopic import OaTopicAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
@@ -204,6 +205,7 @@ class MultiAdapter:
             OrcidWorksAdapter(timeout=timeout),
             OaTopicAdapter(timeout=timeout),
             OaConceptAdapter(timeout=timeout),
+            OaSourceAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
