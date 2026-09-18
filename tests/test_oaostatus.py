@@ -1,0 +1,64 @@
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from tools.research import OaOaStatusAdapter, get_adapter, parse_oaostatus_payload
+
+
+def test_oaostatus_empty_query() -> None:
+    assert OaOaStatusAdapter().search("") == []
+    assert OaOaStatusAdapter().search("   ") == []
+
+
+def test_get_adapter_oaostatus_aliases() -> None:
+    assert get_adapter("oaostatus").name == "oaostatus"
+    assert get_adapter("status-oa").name == "oaostatus"
+    assert get_adapter("works-oa-status").name == "oaostatus"
+
+
+def test_parse_oaostatus_payload() -> None:
+    payload = {
+        "group_by": [
+            {"key": "green", "key_display_name": "green", "count": 10},
+            {"key": "gold", "key_display_name": "gold", "count": 40, "cited_by_count": 900},
+            {"key": "unknown", "count": 3},
+            {"key": "hybrid", "key_display_name": "hybrid", "works_count": 5},
+        ]
+    }
+    hits = parse_oaostatus_payload(payload, limit=5, query="attention")
+    assert [h.title for h in hits] == ["gold works", "green works", "hybrid works"]
+    assert hits[0].source == "oaostatus"
+    assert "40 works" in hits[0].snippet
+    assert "900 cites" in hits[0].snippet
+    assert "filter=open_access.oa_status:gold" in hits[0].url
+    assert "search=attention" in hits[0].url
+    assert "10 works" in hits[1].snippet
+    assert "5 works" in hits[2].snippet
+
+
+def test_parse_oaostatus_respects_limit() -> None:
+    payload = {
+        "group_by": [
+            {"key": "bronze", "key_display_name": "bronze", "count": 1},
+            {"key": "gold", "key_display_name": "gold", "count": 2},
+        ]
+    }
+    hits = parse_oaostatus_payload(payload, limit=1)
+    assert [h.title for h in hits] == ["gold works"]
+
+
+def test_parse_oaostatus_statuses_list() -> None:
+    payload = {
+        "oa_statuses": [
+            {"oa_status": "diamond", "works_count": 7, "cited_by_count": 11},
+        ]
+    }
+    hits = parse_oaostatus_payload(payload, limit=5)
+    assert len(hits) == 1
+    assert hits[0].title == "diamond works"
+    assert "7 works" in hits[0].snippet
+    assert "11 cites" in hits[0].snippet
+    assert hits[0].source == "oaostatus"
+    assert "filter=open_access.oa_status:diamond" in hits[0].url
