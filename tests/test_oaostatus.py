@@ -4,7 +4,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tools.research import OaOaStatusAdapter, get_adapter, parse_oaostatus_payload
+from tools.oaostatus import OaOaStatusAdapter, parse_oaostatus_payload
+from tools.research import get_adapter
 
 
 def test_oaostatus_empty_query() -> None:
