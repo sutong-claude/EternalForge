@@ -91,6 +91,9 @@ LIVE_EXTRA = {
     "oatopic",
     "topics-oa",
     "cites-topic-oa",
+    "oaconcept",
+    "concepts-oa",
+    "cites-concept-oa",
     "multi",
     "all",
 }
@@ -109,6 +112,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import epmcextra as epmcexmod
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
+        from tools import oaconcept as oacmod
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
         from tools import oairextra as oaxmod
@@ -178,6 +182,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return orcidwmod.OrcidWorksAdapter()
         if key in {"oatopic", "topics-oa", "cites-topic-oa"}:
             return oatmmod.OaTopicAdapter()
+        if key in {"oaconcept", "concepts-oa", "cites-concept-oa"}:
+            return oacmod.OaConceptAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
