@@ -4,11 +4,12 @@ Live backends: Wikipedia OpenSearch, DuckDuckGo Instant Answer,
 Open Library, Hacker News Algolia, arXiv, Crossref, Semantic Scholar,
 PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
 CORE, Semantic Scholar Graph extras, Unpaywall, Crossref extras, OpenAlex
-extras, OpenAIRE extras, Europe PMC extras, and ORCID extras (stdlib urllib;
-CORE key optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL;
-Crossref extras mailto via CROSSREF_MAILTO; OpenAlex extras mailto via
-OPENALEX_MAILTO). Tests inject FixtureAdapter or call parse_*_payload helpers
-so they never hit the network. Backend ``multi`` merges the live adapters.
+extras, OpenAIRE extras, Europe PMC extras, ORCID extras, and DataCite
+extras (stdlib urllib; CORE key optional via CORE_API_KEY; Unpaywall email
+via UNPAYWALL_EMAIL; Crossref extras mailto via CROSSREF_MAILTO; OpenAlex
+extras mailto via OPENALEX_MAILTO). Tests inject FixtureAdapter or call
+parse_*_payload helpers so they never hit the network. Backend ``multi``
+merges the live adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -191,6 +192,11 @@ def parse_orcidextra_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_dcextra_payload(payload: dict, limit: int = 5):
+    from tools.dcextra import parse_dcextra_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -260,6 +266,9 @@ def __getattr__(name: str):
     if name == "OrcidExtraAdapter":
         from tools.orcidextra import OrcidExtraAdapter
         return OrcidExtraAdapter
+    if name == "DataCiteExtraAdapter":
+        from tools.dcextra import DataCiteExtraAdapter
+        return DataCiteExtraAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -280,6 +289,7 @@ __all__ = [
     "parse_core_payload",
     "parse_crossref_payload",
     "parse_datacite_payload",
+    "parse_dcextra_payload",
     "parse_doaj_payload",
     "parse_duckduckgo_payload",
     "parse_epmcextra_payload",
