@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.46 — 2026-09-18
+
+- Thirtieth live SearchAdapter: OpenAlex sources extras (`tools.oasource`) with type, publisher/host, ISSN, country, OA/DOAJ flags, works, and cites. Optional `OPENALEX_MAILTO`.
+- Aliases `sources-oa` / `cites-source-oa`; `multi` includes oasource. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and sources-list shape.
+- No PubMed heading invented.
+
 ## 0.16.45 — 2026-09-18
 
 - Twenty-ninth live SearchAdapter: OpenAlex concepts extras (`tools.oaconcept`) with level, ancestors, related concepts, works, cites, and description. Optional `OPENALEX_MAILTO`.

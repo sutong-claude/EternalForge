@@ -62,6 +62,7 @@
 - [x] Twenty-seventh live SearchAdapter (ORCID works extras)
 - [x] Twenty-eighth live SearchAdapter (OpenAlex topics extras)
 - [x] Twenty-ninth live SearchAdapter (OpenAlex concepts extras)
+- [x] Thirtieth live SearchAdapter (OpenAlex sources extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
