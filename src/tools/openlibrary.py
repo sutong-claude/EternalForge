@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 
 from tools.arxiv import ArxivAdapter
 from tools.core import CoreAdapter
+from tools.crfunder import CrFunderAdapter
 from tools.crossref import CrossrefAdapter
 from tools.datacite import DataCiteAdapter
 from tools.dcextra import DataCiteExtraAdapter
@@ -194,6 +195,7 @@ class MultiAdapter:
             EpmcExtraAdapter(timeout=timeout),
             OrcidExtraAdapter(timeout=timeout),
             DataCiteExtraAdapter(timeout=timeout),
+            CrFunderAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
