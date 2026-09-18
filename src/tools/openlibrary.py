@@ -15,6 +15,7 @@ from tools.doaj import DoajAdapter
 from tools.europepmc import EuropePMCAdapter
 from tools.hackernews import HackerNewsAdapter
 from tools.oaextra import OaExtraAdapter
+from tools.oairextra import OaireExtraAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
 from tools.pubmed import PubMedAdapter
@@ -186,6 +187,7 @@ class MultiAdapter:
             UnpaywallAdapter(timeout=timeout),
             XrefExtraAdapter(timeout=timeout),
             OaExtraAdapter(timeout=timeout),
+            OaireExtraAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
