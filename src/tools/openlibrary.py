@@ -23,6 +23,7 @@ from tools.oaextra import OaExtraAdapter
 from tools.oafunder import OaFunderAdapter
 from tools.oairextra import OaireExtraAdapter
 from tools.oainstitution import OaInstitutionAdapter
+from tools.oalang import OaLangAdapter
 from tools.oapublisher import OaPublisherAdapter
 from tools.oasource import OaSourceAdapter
 from tools.oatopic import OaTopicAdapter
@@ -216,6 +217,7 @@ class MultiAdapter:
             OaAuthorAdapter(timeout=timeout),
             OaYearAdapter(timeout=timeout),
             OaTypeAdapter(timeout=timeout),
+            OaLangAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
