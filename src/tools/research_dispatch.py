@@ -118,6 +118,9 @@ LIVE_EXTRA = {
     "oaostatus",
     "status-oa",
     "works-oa-status",
+    "oacountry",
+    "countries-oa",
+    "works-country-oa",
     "multi",
     "all",
 }
@@ -138,6 +141,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import hackernews as hnmod
         from tools import oaauthor as oaamod
         from tools import oaconcept as oacmod
+        from tools import oacountry as oacnmod
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
         from tools import oairextra as oaxmod
@@ -232,6 +236,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oalmod.OaLangAdapter()
         if key in {"oaostatus", "status-oa", "works-oa-status"}:
             return oaosmod.OaOaStatusAdapter()
+        if key in {"oacountry", "countries-oa", "works-country-oa"}:
+            return oacnmod.OaCountryAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
