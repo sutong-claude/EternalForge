@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.58 — 2026-09-18
+
+- Forty-second live SearchAdapter: OpenAlex works-by-paratext extras (`tools.oaparatext`) grouping works via `group_by=is_paratext` with work counts, optional cites, and paratext-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `paratext-oa` / `works-paratext-oa`; `multi` includes oaparatext. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and paratext-list shape.
+- No PubMed heading invented.
+
 ## 0.16.57 — 2026-09-18
 
 - Forty-first live SearchAdapter: OpenAlex works-by-retraction extras (`tools.oaretracted`) grouping works via `group_by=is_retracted` with work counts, optional cites, and retraction-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
