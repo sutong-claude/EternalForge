@@ -82,6 +82,9 @@ LIVE_EXTRA = {
     "crfunder",
     "funders-cr",
     "cites-funder",
+    "oafunder",
+    "funders-oa",
+    "cites-funder-oa",
     "multi",
     "all",
 }
@@ -101,6 +104,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import europepmc as epmcmod
         from tools import hackernews as hnmod
         from tools import oaextra as oaexmod
+        from tools import oafunder as oafmod
         from tools import oairextra as oaxmod
         from tools import openaire as oairemod
         from tools import openalex as oamod
@@ -160,6 +164,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return dcexmod.DataCiteExtraAdapter()
         if key in {"crfunder", "funders-cr", "cites-funder"}:
             return crfmod.CrFunderAdapter()
+        if key in {"oafunder", "funders-oa", "cites-funder-oa"}:
+            return oafmod.OaFunderAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
