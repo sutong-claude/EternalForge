@@ -74,6 +74,7 @@
 - [x] Thirty-ninth live SearchAdapter (OpenAlex works-by-continent extras)
 - [x] Fortieth live SearchAdapter (OpenAlex works-by-source-type extras)
 - [x] Forty-first live SearchAdapter (OpenAlex works-by-retraction extras)
+- [x] Forty-second live SearchAdapter (OpenAlex works-by-paratext extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
