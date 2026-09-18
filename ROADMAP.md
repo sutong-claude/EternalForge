@@ -60,6 +60,7 @@
 - [x] Twenty-fifth live SearchAdapter (Crossref funder extras)
 - [x] Twenty-sixth live SearchAdapter (OpenAlex funder extras)
 - [x] Twenty-seventh live SearchAdapter (ORCID works extras)
+- [x] Twenty-eighth live SearchAdapter (OpenAlex topics extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)

@@ -20,6 +20,7 @@ from tools.hackernews import HackerNewsAdapter
 from tools.oaextra import OaExtraAdapter
 from tools.oafunder import OaFunderAdapter
 from tools.oairextra import OaireExtraAdapter
+from tools.oatopic import OaTopicAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
 from tools.orcidextra import OrcidExtraAdapter
@@ -200,6 +201,7 @@ class MultiAdapter:
             CrFunderAdapter(timeout=timeout),
             OaFunderAdapter(timeout=timeout),
             OrcidWorksAdapter(timeout=timeout),
+            OaTopicAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
