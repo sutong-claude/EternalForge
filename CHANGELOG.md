@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.51 — 2026-09-18
+
+- Thirty-fifth live SearchAdapter: OpenAlex works-by-type extras (`tools.oatype`) grouping works via `group_by=type` with work counts, optional cites, and type-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `types-oa` / `works-type-oa`; `multi` includes oatype. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and types-list shape.
+- No PubMed heading invented.
+
 ## 0.16.50 — 2026-09-18
 
 - Thirty-fourth live SearchAdapter: OpenAlex works-by-year extras (`tools.oayear`) grouping works via `group_by=publication_year` with work counts, optional cites, and year-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
