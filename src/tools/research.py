@@ -6,12 +6,12 @@ PubMed, Europe PMC, OpenAlex, Zenodo, DataCite, DOAJ, Wikidata, OpenAIRE,
 CORE, Semantic Scholar Graph extras, Unpaywall, Crossref extras, OpenAlex
 extras, OpenAIRE extras, Europe PMC extras, ORCID extras, DataCite extras,
 Crossref funder extras, OpenAlex funder extras, ORCID works extras,
-OpenAlex topics extras, and OpenAlex concepts extras (stdlib urllib; CORE key
-optional via CORE_API_KEY; Unpaywall email via UNPAYWALL_EMAIL; Crossref
-extras/funders mailto via CROSSREF_MAILTO; OpenAlex extras/funders/topics/
-concepts mailto via OPENALEX_MAILTO). Tests inject FixtureAdapter or call
-parse_*_payload helpers so they never hit the network. Backend ``multi``
-merges the live adapters.
+OpenAlex topics extras, OpenAlex concepts extras, and OpenAlex sources extras
+(stdlib urllib; CORE key optional via CORE_API_KEY; Unpaywall email via
+UNPAYWALL_EMAIL; Crossref extras/funders mailto via CROSSREF_MAILTO; OpenAlex
+extras/funders/topics/concepts/sources mailto via OPENALEX_MAILTO). Tests
+inject FixtureAdapter or call parse_*_payload helpers so they never hit the
+network. Backend ``multi`` merges the live adapters.
 
 Implementation is split into research_models / research_wiki / research_dispatch;
 this module is the public facade so imports stay `tools.research`.
@@ -224,6 +224,11 @@ def parse_oaconcept_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_oasource_payload(payload: dict, limit: int = 5):
+    from tools.oasource import parse_oasource_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -311,6 +316,9 @@ def __getattr__(name: str):
     if name == "OaConceptAdapter":
         from tools.oaconcept import OaConceptAdapter
         return OaConceptAdapter
+    if name == "OaSourceAdapter":
+        from tools.oasource import OaSourceAdapter
+        return OaSourceAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -342,6 +350,7 @@ __all__ = [
     "parse_oaextra_payload",
     "parse_oafunder_payload",
     "parse_oairextra_payload",
+    "parse_oasource_payload",
     "parse_oatopic_payload",
     "parse_openaire_payload",
     "parse_openalex_payload",
