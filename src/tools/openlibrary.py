@@ -11,6 +11,7 @@ from tools.arxiv import ArxivAdapter
 from tools.core import CoreAdapter
 from tools.crossref import CrossrefAdapter
 from tools.datacite import DataCiteAdapter
+from tools.dcextra import DataCiteExtraAdapter
 from tools.doaj import DoajAdapter
 from tools.epmcextra import EpmcExtraAdapter
 from tools.europepmc import EuropePMCAdapter
@@ -192,6 +193,7 @@ class MultiAdapter:
             OaireExtraAdapter(timeout=timeout),
             EpmcExtraAdapter(timeout=timeout),
             OrcidExtraAdapter(timeout=timeout),
+            DataCiteExtraAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
