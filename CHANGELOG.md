@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.37 — 2026-09-18
+
+- Twenty-first live SearchAdapter: OpenAIRE extras (`tools.oairextra`) with access right, subjects, citation counts, publisher, language, and abstract. No key.
+- Aliases `oaire-extra` / `cites-oaire`; `multi` includes oairextra. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and researchProducts-list shape.
+- No PubMed heading invented.
+
 ## 0.16.36 — 2026-09-18
 
 - Twentieth live SearchAdapter: OpenAlex extras (`tools.oaextra`) with citation counts, OA status, type, concepts, language, and abstract. Optional `OPENALEX_MAILTO`.
