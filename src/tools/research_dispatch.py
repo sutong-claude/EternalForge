@@ -106,6 +106,9 @@ LIVE_EXTRA = {
     "oaauthor",
     "authors-oa",
     "cites-author-oa",
+    "oayear",
+    "years-oa",
+    "works-year-oa",
     "multi",
     "all",
 }
@@ -133,6 +136,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oapublisher as oapmod
         from tools import oasource as oasmod
         from tools import oatopic as oatmmod
+        from tools import oayear as oaymod
         from tools import openaire as oairemod
         from tools import openalex as oamod
         from tools import openlibrary as olmod
@@ -208,6 +212,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oaimod.OaInstitutionAdapter()
         if key in {"oaauthor", "authors-oa", "cites-author-oa"}:
             return oaamod.OaAuthorAdapter()
+        if key in {"oayear", "years-oa", "works-year-oa"}:
+            return oaymod.OaYearAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
