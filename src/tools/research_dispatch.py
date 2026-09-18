@@ -124,6 +124,9 @@ LIVE_EXTRA = {
     "oacontinent",
     "continents-oa",
     "works-continent-oa",
+    "oasrctype",
+    "source-types-oa",
+    "works-source-type-oa",
     "multi",
     "all",
 }
@@ -154,6 +157,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oaostatus as oaosmod
         from tools import oapublisher as oapmod
         from tools import oasource as oasmod
+        from tools import oasrctype as oastmod
         from tools import oatopic as oatmmod
         from tools import oatype as oatpmod
         from tools import oayear as oaymod
@@ -244,6 +248,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oacnmod.OaCountryAdapter()
         if key in {"oacontinent", "continents-oa", "works-continent-oa"}:
             return oactmod.OaContinentAdapter()
+        if key in {"oasrctype", "source-types-oa", "works-source-type-oa"}:
+            return oastmod.OaSrcTypeAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
