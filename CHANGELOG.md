@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.56 — 2026-09-18
+
+- Fortieth live SearchAdapter: OpenAlex works-by-source-type extras (`tools.oasrctype`) grouping works via `group_by=primary_location.source.type` with work counts, optional cites, and source-type-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `source-types-oa` / `works-source-type-oa`; `multi` includes oasrctype. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and source_types-list shape.
+- No PubMed heading invented.
+
 ## 0.16.55 — 2026-09-18
 
 - Thirty-ninth live SearchAdapter: OpenAlex works-by-continent extras (`tools.oacontinent`) grouping works via `group_by=authorships.continents` with work counts, optional cites, and continent-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
