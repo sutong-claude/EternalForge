@@ -26,6 +26,7 @@ from tools.oainstitution import OaInstitutionAdapter
 from tools.oapublisher import OaPublisherAdapter
 from tools.oasource import OaSourceAdapter
 from tools.oatopic import OaTopicAdapter
+from tools.oayear import OaYearAdapter
 from tools.openaire import OpenaireAdapter
 from tools.openalex import OpenAlexAdapter
 from tools.orcidextra import OrcidExtraAdapter
@@ -212,6 +213,7 @@ class MultiAdapter:
             OaPublisherAdapter(timeout=timeout),
             OaInstitutionAdapter(timeout=timeout),
             OaAuthorAdapter(timeout=timeout),
+            OaYearAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
