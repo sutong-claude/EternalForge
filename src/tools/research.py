@@ -7,10 +7,11 @@ CORE, Semantic Scholar Graph extras, Unpaywall, Crossref extras, OpenAlex
 extras, OpenAIRE extras, Europe PMC extras, ORCID extras, DataCite extras,
 Crossref funder extras, OpenAlex funder extras, ORCID works extras,
 OpenAlex topics extras, OpenAlex concepts extras, OpenAlex sources extras,
-and OpenAlex publishers extras
+OpenAlex publishers extras,
+and OpenAlex institutions extras
 (stdlib urllib; CORE key optional via CORE_API_KEY; Unpaywall email via
 UNPAYWALL_EMAIL; Crossref extras/funders mailto via CROSSREF_MAILTO; OpenAlex
-extras/funders/topics/concepts/sources/publishers mailto via OPENALEX_MAILTO). Tests
+extras/funders/topics/concepts/sources/publishers/institutions mailto via OPENALEX_MAILTO). Tests
 inject FixtureAdapter or call parse_*_payload helpers so they never hit the
 network. Backend ``multi`` merges the live adapters.
 
@@ -235,6 +236,11 @@ def parse_oapublisher_payload(payload: dict, limit: int = 5):
     return _parse(payload, limit=limit)
 
 
+def parse_oainstitution_payload(payload: dict, limit: int = 5):
+    from tools.oainstitution import parse_oainstitution_payload as _parse
+    return _parse(payload, limit=limit)
+
+
 def merge_hits(*groups, limit: int = 5):
     from tools.openlibrary import merge_hits as _merge
     return _merge(*groups, limit=limit)
@@ -328,6 +334,9 @@ def __getattr__(name: str):
     if name == "OaPublisherAdapter":
         from tools.oapublisher import OaPublisherAdapter
         return OaPublisherAdapter
+    if name == "OaInstitutionAdapter":
+        from tools.oainstitution import OaInstitutionAdapter
+        return OaInstitutionAdapter
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -359,6 +368,7 @@ __all__ = [
     "parse_oaextra_payload",
     "parse_oafunder_payload",
     "parse_oairextra_payload",
+    "parse_oainstitution_payload",
     "parse_oapublisher_payload",
     "parse_oasource_payload",
     "parse_oatopic_payload",
