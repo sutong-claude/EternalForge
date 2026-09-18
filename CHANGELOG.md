@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.36 — 2026-09-18
+
+- Twentieth live SearchAdapter: OpenAlex extras (`tools.oaextra`) with citation counts, OA status, type, concepts, language, and abstract. Optional `OPENALEX_MAILTO`.
+- Aliases `oa-extra` / `cites-oa`; `multi` includes oaextra. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, payload mapping, limit, and works-list shape.
+- No PubMed heading invented.
+
 ## 0.16.35 — 2026-09-17
 
 - Nineteenth live SearchAdapter: Crossref extras (`tools.xrefextra`) with citation counts, abstract, license, type, and subjects. Optional `CROSSREF_MAILTO`.

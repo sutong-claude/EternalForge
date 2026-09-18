@@ -52,6 +52,7 @@
 - [x] Seventeenth live SearchAdapter (Semantic Scholar Graph extras)
 - [x] Eighteenth live SearchAdapter (Unpaywall)
 - [x] Nineteenth live SearchAdapter (Crossref extras)
+- [x] Twentieth live SearchAdapter (OpenAlex extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
