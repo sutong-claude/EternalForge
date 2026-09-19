@@ -77,6 +77,7 @@
 - [x] Forty-second live SearchAdapter (OpenAlex works-by-paratext extras)
 - [x] Forty-third live SearchAdapter (OpenAlex works-by-has_doi extras)
 - [x] Forty-fourth live SearchAdapter (OpenAlex works-by-has_oa extras)
+- [x] Forty-fifth live SearchAdapter (OpenAlex works-by-has_pmid extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
