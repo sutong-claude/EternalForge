@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.69 — 2026-09-19
+
+- Fifty-third live SearchAdapter: OpenAlex works-by-has_fulltext extras (`tools.oahasft`) grouping works via `group_by=has_fulltext` with work counts, optional cites, and fulltext-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasft-oa` / `works-hasft-oa`; `multi` includes oahasft. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_fulltext-list shape.
+- No PubMed heading invented.
+
 ## 0.16.68 — 2026-09-19
 
 - Fifty-second live SearchAdapter: OpenAlex works-by-has_pdf extras (`tools.oahaspdf`) grouping works via `group_by=has_pdf` with work counts, optional cites, and PDF-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
