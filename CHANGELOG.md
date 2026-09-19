@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.76 — 2026-09-19
+
+- Sixtieth live SearchAdapter: OpenAlex works-by-has_oa_green extras (`tools.oahasogreen`) grouping works via `group_by=has_oa_green` with work counts, optional cites, and green-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasogreen-oa` / `works-hasogreen-oa`; `multi` includes oahasogreen. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_oa_green-list shape.
+- No PubMed heading invented.
+
 ## 0.16.75 — 2026-09-19
 
 - Fifty-ninth live SearchAdapter: OpenAlex works-by-has_oa_bronze extras (`tools.oahasobronze`) grouping works via `group_by=has_oa_bronze` with work counts, optional cites, and bronze-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
