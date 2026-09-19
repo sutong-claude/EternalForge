@@ -35,6 +35,7 @@ from tools.oahasogold import OaHasOaGoldAdapter
 from tools.oahasogreen import OaHasOaGreenAdapter
 from tools.oahasoahybrid import OaHasOaHybridAdapter
 from tools.oahasoanyrepo import OaHasOaAnyRepoAdapter
+from tools.oahasoadomain import OaHasOaDomainAdapter
 from tools.oahasoapub import OaHasOaPubAdapter
 from tools.oahasoarepo import OaHasOaRepoAdapter
 from tools.oahasoasub import OaHasOaSubAdapter
@@ -274,6 +275,7 @@ class MultiAdapter:
             OaIsOaAdapter(timeout=timeout),
             OaHasOaAnyRepoAdapter(timeout=timeout),
             OaHasOaPubAdapter(timeout=timeout),
+            OaHasOaDomainAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
