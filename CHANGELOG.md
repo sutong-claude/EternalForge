@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.64 — 2026-09-19
+
+- Forty-eighth live SearchAdapter: OpenAlex works-by-has_orcid extras (`tools.oahasorcid`) grouping works via `group_by=has_orcid` with work counts, optional cites, and ORCID-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasorcid-oa` / `works-hasorcid-oa`; `multi` includes oahasorcid. Public imports stay on `tools.research`. ORCID extras keep `orcidextra` / `orcid-extra` / `ids-orcid`; ORCID works keep `orcidworks` / `works-orcid` / `orcid-works`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_orcid-list shape.
+- No PubMed heading invented.
+
 ## 0.16.63 — 2026-09-19
 
 - Forty-seventh live SearchAdapter: OpenAlex works-by-has_issn extras (`tools.oahasisn`) grouping works via `group_by=has_issn` with work counts, optional cites, and ISSN-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
