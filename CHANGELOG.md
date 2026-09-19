@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.72 — 2026-09-19
+
+- Fifty-sixth live SearchAdapter: OpenAlex works-by-has_oa_repository extras (`tools.oahasoarepo`) grouping works via `group_by=has_oa_repository` with work counts, optional cites, and OA-repository-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasoarepo-oa` / `works-hasoarepo-oa`; `multi` includes oahasoarepo. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_oa_repository-list shape.
+- No PubMed heading invented.
+
 ## 0.16.71 — 2026-09-19
 
 - Fifty-fifth live SearchAdapter: OpenAlex works-by-has_oa_submitted extras (`tools.oahasoasub`) grouping works via `group_by=has_oa_submitted` with work counts, optional cites, and OA-submitted-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
