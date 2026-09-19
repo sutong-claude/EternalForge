@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.62 — 2026-09-19
+
+- Forty-sixth live SearchAdapter: OpenAlex works-by-has_pmcid extras (`tools.oahaspmcid`) grouping works via `group_by=has_pmcid` with work counts, optional cites, and PMCID-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `haspmcid-oa` / `works-haspmcid-oa`; `multi` includes oahaspmcid. Public imports stay on `tools.research`. PubMed keeps the `pubmed` / `ncbi` / `medline` aliases.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_pmcid-list shape.
+- No PubMed heading invented.
+
 ## 0.16.61 — 2026-09-18
 
 - Forty-fifth live SearchAdapter: OpenAlex works-by-has_pmid extras (`tools.oahaspmid`) grouping works via `group_by=has_pmid` with work counts, optional cites, and PMID-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
