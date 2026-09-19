@@ -157,6 +157,9 @@ LIVE_EXTRA = {
     "oahasrefs",
     "hasrefs-oa",
     "works-hasrefs-oa",
+    "oahasabs",
+    "hasabs-oa",
+    "works-hasabs-oa",
     "multi",
     "all",
 }
@@ -182,6 +185,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oadoi as oadoimod
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
+        from tools import oahasabs as oaabsmod
         from tools import oahasaffil as oaaffilmod
         from tools import oahasoa as oahasmod
         from tools import oahasisn as oaisnmod
@@ -310,6 +314,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oaaffilmod.OaHasAffilAdapter()
         if key in {"oahasrefs", "hasrefs-oa", "works-hasrefs-oa"}:
             return oarefsmod.OaHasRefsAdapter()
+        if key in {"oahasabs", "hasabs-oa", "works-hasabs-oa"}:
+            return oaabsmod.OaHasAbsAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
