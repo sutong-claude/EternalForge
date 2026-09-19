@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.68 — 2026-09-19
+
+- Fifty-second live SearchAdapter: OpenAlex works-by-has_pdf extras (`tools.oahaspdf`) grouping works via `group_by=has_pdf` with work counts, optional cites, and PDF-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `haspdf-oa` / `works-haspdf-oa`; `multi` includes oahaspdf. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_pdf-list shape.
+- No PubMed heading invented.
+
 ## 0.16.67 — 2026-09-19
 
 - Fifty-first live SearchAdapter: OpenAlex works-by-has_abstract extras (`tools.oahasabs`) grouping works via `group_by=has_abstract` with work counts, optional cites, and abstract-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
