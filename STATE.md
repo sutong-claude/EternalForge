@@ -1,6 +1,6 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-19 17:20 UTC
+**Last updated:** 2026-09-19 18:20 UTC
 **Current phase:** Core Agent
 **Overall progress:** 99%
 
@@ -13,27 +13,27 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 3. Optional next live SearchAdapter (another no-key extras slice) if a better increment than another split.
 
 ## Recent Actions
+- [2026-09-19 18:20 UTC] Sixty-first live SearchAdapter: OpenAlex works-by-has_oa_diamond extras (`tools.oahasodiamond`) grouping works by has_oa_diamond with work/cites counts and diamond-OA-filtered URLs. Aliases hasodiamond-oa/works-hasodiamond-oa, included in multi. CHANGELOG 0.16.77. Tests 474. No PubMed heading invented.
 - [2026-09-19 17:20 UTC] Sixtieth live SearchAdapter: OpenAlex works-by-has_oa_green extras (`tools.oahasogreen`) grouping works by has_oa_green with work/cites counts and green-OA-filtered URLs. Aliases hasogreen-oa/works-hasogreen-oa, included in multi. CHANGELOG 0.16.76. Tests 469. No PubMed heading invented.
 - [2026-09-19 15:08 UTC] Fifty-ninth live SearchAdapter: OpenAlex works-by-has_oa_bronze extras (`tools.oahasobronze`) grouping works by has_oa_bronze with work/cites counts and bronze-OA-filtered URLs. Aliases hasobronze-oa/works-hasobronze-oa, included in multi. CHANGELOG 0.16.75. Tests 464. No PubMed heading invented.
 - [2026-09-19 14:22 UTC] Fifty-eighth live SearchAdapter: OpenAlex works-by-has_oa_hybrid extras (`tools.oahasoahybrid`) grouping works by has_oa_hybrid with work/cites counts and hybrid-OA-filtered URLs. Aliases hasoahybrid-oa/works-hasoahybrid-oa, included in multi. CHANGELOG 0.16.74. Tests 459. No PubMed heading invented.
 - [2026-09-19 13:20 UTC] Fifty-seventh live SearchAdapter: OpenAlex works-by-has_oa_gold extras (`tools.oahasogold`) grouping works by has_oa_gold with work/cites counts and gold-OA-filtered URLs. Aliases hasogold-oa/works-hasogold-oa, included in multi. CHANGELOG 0.16.73. Tests 454. No PubMed heading invented.
-- [2026-09-19 12:04 UTC] Fifty-sixth live SearchAdapter: OpenAlex works-by-has_oa_repository extras (`tools.oahasoarepo`) grouping works by has_oa_repository with work/cites counts and OA-repository-filtered URLs. Aliases hasoarepo-oa/works-hasoarepo-oa, included in multi. CHANGELOG 0.16.72. Tests 449. No PubMed heading invented.
 
 ## Known Issues / Blockers
 - None for inbox, task, CLI, review, research, or kb imports. GitHub connected `push_files` / `create_or_update_file` cannot reliably write a single 20k+ blob; split instead.
 - CHANGELOG still has no dedicated PubMed heading; do not invent one.
 
 ## Metrics
-- Files: 184
-- Tests: 469
-- Features shipped: 115
-- Cycles: 93
+- Files: 186
+- Tests: 474
+- Features shipped: 116
+- Cycles: 94
 - Reports: 0
 - Tasks: 0
 - Reviews: 0
 - Digests: 0
 - Inbox: 0
-- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + daily and weekly review on cycle + Zenodo adapter + DataCite adapter + DOAJ adapter + Wikidata adapter + OpenAIRE adapter + CORE adapter + S2 Graph extras adapter + Unpaywall adapter + Crossref extras adapter + OpenAlex extras adapter + OpenAIRE extras adapter + Europe PMC extras adapter + ORCID extras adapter + DataCite extras adapter + Crossref funder extras adapter + OpenAlex funder extras adapter + ORCID works extras adapter + OpenAlex topics extras adapter + OpenAlex concepts extras adapter + OpenAlex sources extras adapter + OpenAlex publishers extras adapter + OpenAlex institutions extras adapter + OpenAlex authors extras adapter + OpenAlex works-by-year extras adapter + OpenAlex works-by-type extras adapter + OpenAlex works-by-language extras adapter + OpenAlex works-by-OA-status extras adapter + OpenAlex works-by-country extras adapter + OpenAlex works-by-continent extras adapter + OpenAlex works-by-source-type extras adapter + OpenAlex works-by-retraction extras adapter + OpenAlex works-by-paratext extras adapter + OpenAlex works-by-has_doi extras adapter + OpenAlex works-by-has_oa extras adapter + OpenAlex works-by-has_pmid extras adapter + OpenAlex works-by-has_pmcid extras adapter + OpenAlex works-by-has_issn extras adapter + OpenAlex works-by-has_orcid extras adapter + OpenAlex works-by-has_raw_affiliation_string extras adapter + OpenAlex works-by-has_references extras adapter + OpenAlex works-by-has_abstract extras adapter + OpenAlex works-by-has_pdf extras adapter + OpenAlex works-by-has_fulltext extras adapter + OpenAlex works-by-has_oa_accepted_or_published extras adapter + OpenAlex works-by-has_oa_submitted extras adapter + OpenAlex works-by-has_oa_repository extras adapter + OpenAlex works-by-has_oa_gold extras adapter + OpenAlex works-by-has_oa_hybrid extras adapter + OpenAlex works-by-has_oa_bronze extras adapter + OpenAlex works-by-has_oa_green extras adapter
+- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + daily and weekly review on cycle + Zenodo adapter + DataCite adapter + DOAJ adapter + Wikidata adapter + OpenAIRE adapter + CORE adapter + S2 Graph extras adapter + Unpaywall adapter + Crossref extras adapter + OpenAlex extras adapter + OpenAIRE extras adapter + Europe PMC extras adapter + ORCID extras adapter + DataCite extras adapter + Crossref funder extras adapter + OpenAlex funder extras adapter + ORCID works extras adapter + OpenAlex topics extras adapter + OpenAlex concepts extras adapter + OpenAlex sources extras adapter + OpenAlex publishers extras adapter + OpenAlex institutions extras adapter + OpenAlex authors extras adapter + OpenAlex works-by-year extras adapter + OpenAlex works-by-type extras adapter + OpenAlex works-by-language extras adapter + OpenAlex works-by-OA-status extras adapter + OpenAlex works-by-country extras adapter + OpenAlex works-by-continent extras adapter + OpenAlex works-by-source-type extras adapter + OpenAlex works-by-retraction extras adapter + OpenAlex works-by-paratext extras adapter + OpenAlex works-by-has_doi extras adapter + OpenAlex works-by-has_oa extras adapter + OpenAlex works-by-has_pmid extras adapter + OpenAlex works-by-has_pmcid extras adapter + OpenAlex works-by-has_issn extras adapter + OpenAlex works-by-has_orcid extras adapter + OpenAlex works-by-has_raw_affiliation_string extras adapter + OpenAlex works-by-has_references extras adapter + OpenAlex works-by-has_abstract extras adapter + OpenAlex works-by-has_pdf extras adapter + OpenAlex works-by-has_fulltext extras adapter + OpenAlex works-by-has_oa_accepted_or_published extras adapter + OpenAlex works-by-has_oa_submitted extras adapter + OpenAlex works-by-has_oa_repository extras adapter + OpenAlex works-by-has_oa_gold extras adapter + OpenAlex works-by-has_oa_hybrid extras adapter + OpenAlex works-by-has_oa_bronze extras adapter + OpenAlex works-by-has_oa_green extras adapter + OpenAlex works-by-has_oa_diamond extras adapter
 
 ## Notes for next agent
-CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Sixtieth live backend is OpenAlex works-by-has_oa_green extras (`get_adapter("oahasogreen")`). Next optional backend: another no-key extras slice (OpenAlex works by is_oa / has_oa_diamond or similar).
+CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Sixty-first live backend is OpenAlex works-by-has_oa_diamond extras (`get_adapter("oahasodiamond")`). Next optional backend: another no-key extras slice (OpenAlex works by is_oa / has_oa_any_repository or similar).
