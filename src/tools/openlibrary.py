@@ -29,6 +29,7 @@ from tools.oahasaffil import OaHasAffilAdapter
 from tools.oahasft import OaHasFtAdapter
 from tools.oahasoa import OaHasOaAdapter
 from tools.oahasoaap import OaHasOaapAdapter
+from tools.oahasoasub import OaHasOaSubAdapter
 from tools.oahasisn import OaHasIssnAdapter
 from tools.oahasorcid import OaHasOrcidAdapter
 from tools.oahaspdf import OaHasPdfAdapter
@@ -254,6 +255,7 @@ class MultiAdapter:
             OaHasPdfAdapter(timeout=timeout),
             OaHasFtAdapter(timeout=timeout),
             OaHasOaapAdapter(timeout=timeout),
+            OaHasOaSubAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
