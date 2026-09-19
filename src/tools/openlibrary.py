@@ -29,6 +29,7 @@ from tools.oahasaffil import OaHasAffilAdapter
 from tools.oahasft import OaHasFtAdapter
 from tools.oahasoa import OaHasOaAdapter
 from tools.oahasoaap import OaHasOaapAdapter
+from tools.oahasogold import OaHasOaGoldAdapter
 from tools.oahasoarepo import OaHasOaRepoAdapter
 from tools.oahasoasub import OaHasOaSubAdapter
 from tools.oahasisn import OaHasIssnAdapter
@@ -258,6 +259,7 @@ class MultiAdapter:
             OaHasOaapAdapter(timeout=timeout),
             OaHasOaSubAdapter(timeout=timeout),
             OaHasOaRepoAdapter(timeout=timeout),
+            OaHasOaGoldAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
