@@ -139,6 +139,9 @@ LIVE_EXTRA = {
     "oahasoa",
     "hasoa-oa",
     "works-hasoa-oa",
+    "oahaspmid",
+    "haspmid-oa",
+    "works-haspmid-oa",
     "multi",
     "all",
 }
@@ -165,6 +168,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oaextra as oaexmod
         from tools import oafunder as oafmod
         from tools import oahasoa as oahasmod
+        from tools import oahaspmid as oapmidmod
         from tools import oairextra as oaxmod
         from tools import oainstitution as oaimod
         from tools import oalang as oalmod
@@ -274,6 +278,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oadoimod.OaDoiAdapter()
         if key in {"oahasoa", "hasoa-oa", "works-hasoa-oa"}:
             return oahasmod.OaHasOaAdapter()
+        if key in {"oahaspmid", "haspmid-oa", "works-haspmid-oa"}:
+            return oapmidmod.OaHasPmidAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
