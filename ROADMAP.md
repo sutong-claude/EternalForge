@@ -91,6 +91,8 @@
 - [x] Fifty-sixth live SearchAdapter (OpenAlex works-by-has_oa_repository extras)
 - [x] Fifty-seventh live SearchAdapter (OpenAlex works-by-has_oa_gold extras)
 - [x] Fifty-eighth live SearchAdapter (OpenAlex works-by-has_oa_hybrid extras)
+- [x] Fifty-ninth live SearchAdapter (OpenAlex works-by-has_oa_bronze extras)
+- [x] Sixtieth live SearchAdapter (OpenAlex works-by-has_oa_green extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)

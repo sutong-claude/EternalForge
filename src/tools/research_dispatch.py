@@ -184,6 +184,9 @@ LIVE_EXTRA = {
     "oahasobronze",
     "hasobronze-oa",
     "works-hasobronze-oa",
+    "oahasogreen",
+    "hasogreen-oa",
+    "works-hasogreen-oa",
     "multi",
     "all",
 }
@@ -216,6 +219,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oahasoaap as oaoaapmod
         from tools import oahasobronze as oabronzemod
         from tools import oahasogold as oagoldmod
+        from tools import oahasogreen as oagreenmod
         from tools import oahasoahybrid as oahybridmod
         from tools import oahasoarepo as oarepomod
         from tools import oahasoasub as oasubmod
@@ -364,6 +368,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oahybridmod.OaHasOaHybridAdapter()
         if key in {"oahasobronze", "hasobronze-oa", "works-hasobronze-oa"}:
             return oabronzemod.OaHasOaBronzeAdapter()
+        if key in {"oahasogreen", "hasogreen-oa", "works-hasogreen-oa"}:
+            return oagreenmod.OaHasOaGreenAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
