@@ -24,6 +24,7 @@ from tools.oacountry import OaCountryAdapter
 from tools.oadoi import OaDoiAdapter
 from tools.oaextra import OaExtraAdapter
 from tools.oafunder import OaFunderAdapter
+from tools.oahasabs import OaHasAbsAdapter
 from tools.oahasaffil import OaHasAffilAdapter
 from tools.oahasoa import OaHasOaAdapter
 from tools.oahasisn import OaHasIssnAdapter
@@ -246,6 +247,7 @@ class MultiAdapter:
             OaHasOrcidAdapter(timeout=timeout),
             OaHasAffilAdapter(timeout=timeout),
             OaHasRefsAdapter(timeout=timeout),
+            OaHasAbsAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
