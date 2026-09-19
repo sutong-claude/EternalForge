@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.65 — 2026-09-19
+
+- Forty-ninth live SearchAdapter: OpenAlex works-by-has_raw_affiliation_string extras (`tools.oahasaffil`) grouping works via `group_by=has_raw_affiliation_string` with work counts, optional cites, and affiliation-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasaffil-oa` / `works-hasaffil-oa`; `multi` includes oahasaffil. Public imports stay on `tools.research`. Also listed previously missing `oahasorcid` / `hasorcid-oa` / `works-hasorcid-oa` CLI aliases.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_raw_affiliation_string-list shape.
+- No PubMed heading invented.
+
 ## 0.16.64 — 2026-09-19
 
 - Forty-eighth live SearchAdapter: OpenAlex works-by-has_orcid extras (`tools.oahasorcid`) grouping works via `group_by=has_orcid` with work counts, optional cites, and ORCID-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
