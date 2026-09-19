@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.63 — 2026-09-19
+
+- Forty-seventh live SearchAdapter: OpenAlex works-by-has_issn extras (`tools.oahasisn`) grouping works via `group_by=has_issn` with work counts, optional cites, and ISSN-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasissn-oa` / `works-hasissn-oa`; `multi` includes oahasisn. Public imports stay on `tools.research`. PubMed keeps the `pubmed` / `ncbi` / `medline` aliases.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_issn-list shape.
+- No PubMed heading invented.
+
 ## 0.16.62 — 2026-09-19
 
 - Forty-sixth live SearchAdapter: OpenAlex works-by-has_pmcid extras (`tools.oahaspmcid`) grouping works via `group_by=has_pmcid` with work counts, optional cites, and PMCID-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
