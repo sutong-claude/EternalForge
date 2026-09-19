@@ -80,6 +80,7 @@
 - [x] Forty-fifth live SearchAdapter (OpenAlex works-by-has_pmid extras)
 - [x] Forty-sixth live SearchAdapter (OpenAlex works-by-has_pmcid extras)
 - [x] Forty-seventh live SearchAdapter (OpenAlex works-by-has_issn extras)
+- [x] Forty-eighth live SearchAdapter (OpenAlex works-by-has_orcid extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
