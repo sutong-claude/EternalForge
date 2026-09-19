@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.77 — 2026-09-19
+
+- Sixty-first live SearchAdapter: OpenAlex works-by-has_oa_diamond extras (`tools.oahasodiamond`) grouping works via `group_by=has_oa_diamond` with work counts, optional cites, and diamond-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasodiamond-oa` / `works-hasodiamond-oa`; `multi` includes oahasodiamond. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_oa_diamond-list shape.
+- No PubMed heading invented.
+
 ## 0.16.76 — 2026-09-19
 
 - Sixtieth live SearchAdapter: OpenAlex works-by-has_oa_green extras (`tools.oahasogreen`) grouping works via `group_by=has_oa_green` with work counts, optional cites, and green-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
