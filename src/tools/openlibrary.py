@@ -42,6 +42,7 @@ from tools.oahaspdf import OaHasPdfAdapter
 from tools.oahaspmcid import OaHasPmcidAdapter
 from tools.oahaspmid import OaHasPmidAdapter
 from tools.oahasrefs import OaHasRefsAdapter
+from tools.oaisoa import OaIsOaAdapter
 from tools.oairextra import OaireExtraAdapter
 from tools.oainstitution import OaInstitutionAdapter
 from tools.oalang import OaLangAdapter
@@ -268,6 +269,7 @@ class MultiAdapter:
             OaHasOaBronzeAdapter(timeout=timeout),
             OaHasOaGreenAdapter(timeout=timeout),
             OaHasOaDiamondAdapter(timeout=timeout),
+            OaIsOaAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
