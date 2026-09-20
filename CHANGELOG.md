@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.85 — 2026-09-20
+
+- Sixty-ninth live SearchAdapter: OpenAlex works-by-has_oa_license extras (`tools.oahasoaalic`) grouping works via `group_by=has_oa_license` with work counts, optional cites, and license-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `hasoaalic-oa` / `works-hasoaalic-oa`; `multi` includes oahasoaalic. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_oa_license-list shape.
+- No PubMed heading invented.
+
 ## 0.16.84 — 2026-09-20
 
 - Sixty-eighth live SearchAdapter: OpenAlex works-by-has_oa_version extras (`tools.oahasoaver`) grouping works via `group_by=has_oa_version` with work counts, optional cites, and version-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
@@ -61,11 +68,4 @@
 - Sixtieth live SearchAdapter: OpenAlex works-by-has_oa_green extras (`tools.oahasogreen`) grouping works via `group_by=has_oa_green` with work counts, optional cites, and green-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
 - Aliases `hasogreen-oa` / `works-hasogreen-oa`; `multi` includes oahasogreen. Public imports stay on `tools.research`.
 - Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_oa_green-list shape.
-- No PubMed heading invented.
-
-## 0.16.75 — 2026-09-19
-
-- Fifty-ninth live SearchAdapter: OpenAlex works-by-has_oa_bronze extras (`tools.oahasobronze`) grouping works via `group_by=has_oa_bronze` with work counts, optional cites, and bronze-OA-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `hasobronze-oa` / `works-hasobronze-oa`; `multi` includes oahasobronze. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and has_oa_bronze-list shape.
 - No PubMed heading invented.
