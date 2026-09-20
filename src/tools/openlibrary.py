@@ -46,6 +46,7 @@ from tools.oabestlicid import OaBestLicIdAdapter
 from tools.oabestver import OaBestVerAdapter
 from tools.oabestsrc import OaBestSrcAdapter
 from tools.oabestsrcid import OaBestSrcIdAdapter
+from tools.oabestsrctype import OaBestSrcTypeAdapter
 from tools.oahasoapub import OaHasOaPubAdapter
 from tools.oahasoarepo import OaHasOaRepoAdapter
 from tools.oahasoasub import OaHasOaSubAdapter
@@ -296,6 +297,7 @@ class MultiAdapter:
             OaBestVerAdapter(timeout=timeout),
             OaBestSrcAdapter(timeout=timeout),
             OaBestSrcIdAdapter(timeout=timeout),
+            OaBestSrcTypeAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
