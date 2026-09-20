@@ -107,6 +107,7 @@
 - [x] Seventy-second live SearchAdapter (OpenAlex works-by-best_oa_location.license_id extras)
 - [x] Seventy-third live SearchAdapter (OpenAlex works-by-best_oa_location.version extras)
 - [x] Seventy-fourth live SearchAdapter (OpenAlex works-by-best_oa_location.source extras)
+- [x] Seventy-fifth live SearchAdapter (OpenAlex works-by-best_oa_location.source.id extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
