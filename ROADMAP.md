@@ -115,6 +115,7 @@
 - [x] Eightieth live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization_lineage extras)
 - [x] Eighty-first live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization_lineage_names extras)
 - [x] Eighty-second live SearchAdapter (OpenAlex works-by-best_oa_location.source.is_in_doaj extras)
+- [x] Eighty-third live SearchAdapter (OpenAlex works-by-best_oa_location.source.is_core extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
