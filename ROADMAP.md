@@ -111,6 +111,7 @@
 - [x] Seventy-sixth live SearchAdapter (OpenAlex works-by-best_oa_location.source.type extras)
 - [x] Seventy-seventh live SearchAdapter (OpenAlex works-by-best_oa_location.source.issn_l extras)
 - [x] Seventy-eighth live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization extras)
+- [x] Seventy-ninth live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization_name extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
