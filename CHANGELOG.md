@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.98 — 2026-09-20
+
+- Eighty-second live SearchAdapter: OpenAlex works-by-best_oa_location.source.is_in_doaj extras (`tools.oabestdoaj`) grouping works via `group_by=best_oa_location.source.is_in_doaj` with work counts, optional cites, and best-OA-source-DOAJ-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `bestdoaj-oa` / `works-bestdoaj-oa`; `multi` includes oabestdoaj. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and is_in_doaj-list shape.
+- No PubMed heading invented.
+
 ## 0.16.97 — 2026-09-20
 
 - Eighty-first live SearchAdapter: OpenAlex works-by-best_oa_location.source.host_organization_lineage_names extras (`tools.oabestholinames`) grouping works via `group_by=best_oa_location.source.host_organization_lineage_names` with work counts, optional cites, and best-OA-host-organization-lineage-names-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
