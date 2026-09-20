@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.89 — 2026-09-20
+
+- Seventy-third live SearchAdapter: OpenAlex works-by-best_oa_location.version extras (`tools.oabestver`) grouping works via `group_by=best_oa_location.version` with work counts, optional cites, and best-OA-version-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `bestver-oa` / `works-bestver-oa`; `multi` includes oabestver. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and versions-list shape.
+- No PubMed heading invented.
+
 ## 0.16.88 — 2026-09-20
 
 - Seventy-second live SearchAdapter: OpenAlex works-by-best_oa_location.license_id extras (`tools.oabestlicid`) grouping works via `group_by=best_oa_location.license_id` with work counts, optional cites, and best-OA-license-id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
