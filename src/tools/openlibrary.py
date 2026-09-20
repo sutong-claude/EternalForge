@@ -57,6 +57,7 @@ from tools.oabestcore import OaBestCoreAdapter
 from tools.oabestisoa import OaBestIsOaAdapter
 from tools.oabestissns import OaBestIssnsAdapter
 from tools.oabestdname import OaBestDnameAdapter
+from tools.oapridname import OaPriDnameAdapter
 from tools.oahasoapub import OaHasOaPubAdapter
 from tools.oahasoarepo import OaHasOaRepoAdapter
 from tools.oahasoasub import OaHasOaSubAdapter
@@ -318,6 +319,7 @@ class MultiAdapter:
             OaBestIsOaAdapter(timeout=timeout),
             OaBestIssnsAdapter(timeout=timeout),
             OaBestDnameAdapter(timeout=timeout),
+            OaPriDnameAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
