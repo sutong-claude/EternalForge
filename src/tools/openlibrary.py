@@ -53,6 +53,7 @@ from tools.oabesthoname import OaBestHoNameAdapter
 from tools.oabestholineage import OaBestHoLineageAdapter
 from tools.oabestholinames import OaBestHoLinamesAdapter
 from tools.oabestdoaj import OaBestDoajAdapter
+from tools.oabestcore import OaBestCoreAdapter
 from tools.oahasoapub import OaHasOaPubAdapter
 from tools.oahasoarepo import OaHasOaRepoAdapter
 from tools.oahasoasub import OaHasOaSubAdapter
@@ -310,6 +311,7 @@ class MultiAdapter:
             OaBestHoLineageAdapter(timeout=timeout),
             OaBestHoLinamesAdapter(timeout=timeout),
             OaBestDoajAdapter(timeout=timeout),
+            OaBestCoreAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
