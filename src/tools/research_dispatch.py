@@ -205,6 +205,9 @@ LIVE_EXTRA = {
     "oahasoofile",
     "hasoafile-oa",
     "works-hasoafile-oa",
+    "oahasoaurl",
+    "hasoaurl-oa",
+    "works-hasoaurl-oa",
     "multi",
     "all",
 }
@@ -243,6 +246,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oahasoanyrepo as oaanyrepomod
         from tools import oahasoadomain as oadomainmod
         from tools import oahasoofile as oafilemod
+        from tools import oahasoaurl as oaurlmod
         from tools import oahasoapub as oapubmod
         from tools import oahasoarepo as oarepomod
         from tools import oahasoasub as oasubmod
@@ -406,6 +410,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oadomainmod.OaHasOaDomainAdapter()
         if key in {"oahasoofile", "hasoafile-oa", "works-hasoafile-oa"}:
             return oafilemod.OaHasOaFileAdapter()
+        if key in {"oahasoaurl", "hasoaurl-oa", "works-hasoaurl-oa"}:
+            return oaurlmod.OaHasOaUrlAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
