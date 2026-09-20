@@ -247,6 +247,9 @@ LIVE_EXTRA = {
     "oabestholineage",
     "bestholineage-oa",
     "works-bestholineage-oa",
+    "oabestholinames",
+    "bestholinames-oa",
+    "works-bestholinames-oa",
     "multi",
     "all",
 }
@@ -299,6 +302,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oabesthost as oabhostmod
         from tools import oabesthoname as oabhnamemod
         from tools import oabestholineage as oabhlineagemod
+        from tools import oabestholinames as oabhlinamesmod
         from tools import oahasoapub as oapubmod
         from tools import oahasoarepo as oarepomod
         from tools import oahasoasub as oasubmod
@@ -490,6 +494,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oabhnamemod.OaBestHoNameAdapter()
         if key in {"oabestholineage", "bestholineage-oa", "works-bestholineage-oa"}:
             return oabhlineagemod.OaBestHoLineageAdapter()
+        if key in {"oabestholinames", "bestholinames-oa", "works-bestholinames-oa"}:
+            return oabhlinamesmod.OaBestHoLinamesAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
