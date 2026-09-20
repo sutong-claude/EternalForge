@@ -39,6 +39,7 @@ from tools.oahasoadomain import OaHasOaDomainAdapter
 from tools.oahasoofile import OaHasOaFileAdapter
 from tools.oahasoaurl import OaHasOaUrlAdapter
 from tools.oahasoaver import OaHasOaVerAdapter
+from tools.oahasoaalic import OaHasOaLicAdapter
 from tools.oahasoapub import OaHasOaPubAdapter
 from tools.oahasoarepo import OaHasOaRepoAdapter
 from tools.oahasoasub import OaHasOaSubAdapter
@@ -282,6 +283,7 @@ class MultiAdapter:
             OaHasOaFileAdapter(timeout=timeout),
             OaHasOaUrlAdapter(timeout=timeout),
             OaHasOaVerAdapter(timeout=timeout),
+            OaHasOaLicAdapter(timeout=timeout),
         ]
 
     def search(self, query: str, max_results: int = 5) -> list[Hit]:
