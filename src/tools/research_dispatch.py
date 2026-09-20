@@ -232,6 +232,9 @@ LIVE_EXTRA = {
     "oabestsrcid",
     "bestsrcid-oa",
     "works-bestsrcid-oa",
+    "oabestsrctype",
+    "bestsrctype-oa",
+    "works-bestsrctype-oa",
     "multi",
     "all",
 }
@@ -279,6 +282,7 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
         from tools import oabestver as oabvermod
         from tools import oabestsrc as oabsrcmod
         from tools import oabestsrcid as oabsrcidmod
+        from tools import oabestsrctype as oabsrctypemod
         from tools import oahasoapub as oapubmod
         from tools import oahasoarepo as oarepomod
         from tools import oahasoasub as oasubmod
@@ -460,6 +464,8 @@ def get_adapter(name: str | None = None) -> SearchAdapter:
             return oabsrcmod.OaBestSrcAdapter()
         if key in {"oabestsrcid", "bestsrcid-oa", "works-bestsrcid-oa"}:
             return oabsrcidmod.OaBestSrcIdAdapter()
+        if key in {"oabestsrctype", "bestsrctype-oa", "works-bestsrctype-oa"}:
+            return oabsrctypemod.OaBestSrcTypeAdapter()
         return olmod.OpenLibraryAdapter()
     cls = ADAPTERS.get(key)
     if cls is None:
