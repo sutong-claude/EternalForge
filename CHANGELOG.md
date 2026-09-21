@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.108 — 2026-09-21
+
+- Ninety-second live SearchAdapter: OpenAlex works-by-primary_location.source.is_core extras (`tools.oapricore`) grouping works via `group_by=primary_location.source.is_core` with work counts, optional cites, and primary-source-is_core-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `pricore-oa` / `works-pricore-oa`; `multi` includes oapricore. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and is_core-list shape.
+- No PubMed heading invented.
+
 ## 0.16.107 — 2026-09-21
 
 - Ninety-first live SearchAdapter: OpenAlex works-by-primary_location.source.is_in_doaj extras (`tools.oapridoaj`) grouping works via `group_by=primary_location.source.is_in_doaj` with work counts, optional cites, and primary-source-is_in_doaj-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
