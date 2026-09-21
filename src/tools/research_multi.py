@@ -107,6 +107,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaprilicid", "OaPriLicIdAdapter"),
     ("oapriisoaloc", "OaPriIsOaLocAdapter"),
     ("oapripdfurl", "OaPriPdfUrlAdapter"),
+    ("oaprilpage", "OaPriLpageAdapter"),
 ]
 
 
