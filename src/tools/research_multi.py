@@ -112,6 +112,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oabestpdfurl", "OaBestPdfUrlAdapter"),
     ("oabestisoaloc", "OaBestIsOaLocAdapter"),
     ("oalocisoa", "OaLocIsOaAdapter"),
+    ("oalocpdfurl", "OaLocPdfUrlAdapter"),
 ]
 
 
