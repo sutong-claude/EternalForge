@@ -123,6 +123,7 @@
 - [x] Eighty-eighth live SearchAdapter (OpenAlex works-by-primary_location.source.issn extras)
 - [x] Eighty-ninth live SearchAdapter (OpenAlex works-by-primary_location.source.issn_l extras)
 - [x] Ninetieth live SearchAdapter (OpenAlex works-by-primary_location.source.is_oa extras)
+- [x] Ninety-first live SearchAdapter (OpenAlex works-by-primary_location.source.is_in_doaj extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)

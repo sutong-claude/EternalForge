@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.107 — 2026-09-21
+
+- Ninety-first live SearchAdapter: OpenAlex works-by-primary_location.source.is_in_doaj extras (`tools.oapridoaj`) grouping works via `group_by=primary_location.source.is_in_doaj` with work counts, optional cites, and primary-source-is_in_doaj-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `pridoaj-oa` / `works-pridoaj-oa`; `multi` includes oapridoaj. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and is_in_doaj-list shape.
+- No PubMed heading invented.
+
 ## 0.16.106 — 2026-09-20
 
 - Ninetieth live SearchAdapter: OpenAlex works-by-primary_location.source.is_oa extras (`tools.oapriisoa`) grouping works via `group_by=primary_location.source.is_oa` with work counts, optional cites, and primary-source-is_oa-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
