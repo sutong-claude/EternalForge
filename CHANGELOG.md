@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.125 — 2026-09-21
+
+- Hundred-and-ninth live SearchAdapter: OpenAlex works-by-locations.pdf_url extras (`tools.oalocpdfurl`) grouping works via `group_by=locations.pdf_url` with work counts, optional cites, and locations-pdf-url-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `locpdfurl-oa` / `works-locpdfurl-oa`; `multi` includes oalocpdfurl. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and pdf_urls-list shape.
+- No PubMed heading invented.
+
 ## 0.16.124 — 2026-09-21
 
 - Hundred-and-eighth live SearchAdapter: OpenAlex works-by-locations.is_oa extras (`tools.oalocisoa`) grouping works via `group_by=locations.is_oa` with work counts, optional cites, and locations-is_oa-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
