@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.115 — 2026-09-21
+
+- Ninety-ninth live SearchAdapter: OpenAlex works-by-primary_location.version extras (`tools.oapriver`) grouping works via `group_by=primary_location.version` with work counts, optional cites, and primary-version-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `priver-oa` / `works-priver-oa`; `multi` includes oapriver. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and versions-list shape.
+- No PubMed heading invented.
+
 ## 0.16.114 — 2026-09-21
 
 - Ninety-eighth live SearchAdapter: OpenAlex works-by-primary_location.source.type extras (`tools.oaprisrctype`) grouping works via `group_by=primary_location.source.type` with work counts, optional cites, and primary-source-type-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
