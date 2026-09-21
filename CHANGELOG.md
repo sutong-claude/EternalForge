@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.122 — 2026-09-21
+
+- Hundred-and-sixth live SearchAdapter: OpenAlex works-by-best_oa_location.pdf_url extras (`tools.oabestpdfurl`) grouping works via `group_by=best_oa_location.pdf_url` with work counts, optional cites, and best-OA-pdf-url-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `bestpdfurl-oa` / `works-bestpdfurl-oa`; `multi` includes oabestpdfurl. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and pdf_urls-list shape.
+- No PubMed heading invented.
+
 ## 0.16.121 — 2026-09-21
 
 - Hundred-and-fifth live SearchAdapter: OpenAlex works-by-best_oa_location.landing_page_url extras (`tools.oabestlpage`) grouping works via `group_by=best_oa_location.landing_page_url` with work counts, optional cites, and best-OA-landing-page-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
