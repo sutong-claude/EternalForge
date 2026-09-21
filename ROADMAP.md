@@ -129,6 +129,7 @@
 - [x] Ninety-fourth live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization_name extras)
 - [x] Ninety-fifth live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization_lineage extras)
 - [x] Ninety-sixth live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization_lineage_names extras)
+- [x] Ninety-seventh live SearchAdapter (OpenAlex works-by-primary_location.source.id extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
