@@ -132,6 +132,7 @@
 - [x] Ninety-seventh live SearchAdapter (OpenAlex works-by-primary_location.source.id extras)
 - [x] Ninety-eighth live SearchAdapter (OpenAlex works-by-primary_location.source.type extras)
 - [x] Ninety-ninth live SearchAdapter (OpenAlex works-by-primary_location.version extras)
+- [x] Hundredth live SearchAdapter (OpenAlex works-by-primary_location.license extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)

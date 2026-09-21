@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.116 — 2026-09-21
+
+- Hundredth live SearchAdapter: OpenAlex works-by-primary_location.license extras (`tools.oaprilic`) grouping works via `group_by=primary_location.license` with work counts, optional cites, and primary-license-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `prilic-oa` / `works-prilic-oa`; `multi` includes oaprilic. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and licenses-list shape.
+- No PubMed heading invented.
+
 ## 0.16.115 — 2026-09-21
 
 - Ninety-ninth live SearchAdapter: OpenAlex works-by-primary_location.version extras (`tools.oapriver`) grouping works via `group_by=primary_location.version` with work counts, optional cites, and primary-version-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
@@ -40,11 +47,4 @@
 - Ninety-fourth live SearchAdapter: OpenAlex works-by-primary_location.source.host_organization_name extras (`tools.oaprihoname`) grouping works via `group_by=primary_location.source.host_organization_name` with work counts, optional cites, and primary-source-host_organization_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
 - Aliases `prihoname-oa` / `works-prihoname-oa`; `multi` includes oaprihoname. Public imports stay on `tools.research`.
 - Tests cover empty query, aliases, group_by mapping (most works first), limit, and host_organization_names-list shape.
-- No PubMed heading invented.
-
-## 0.16.109 — 2026-09-21
-
-- Ninety-third live SearchAdapter: OpenAlex works-by-primary_location.source.host_organization extras (`tools.oaprihost`) grouping works via `group_by=primary_location.source.host_organization` with work counts, optional cites, and primary-source-host_organization-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `prihost-oa` / `works-prihost-oa`; `multi` includes oaprihost. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and host_organizations-list shape.
 - No PubMed heading invented.
