@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.120 — 2026-09-21
+
+- Hundred-and-fourth live SearchAdapter: OpenAlex works-by-primary_location.landing_page_url extras (`tools.oaprilpage`) grouping works via `group_by=primary_location.landing_page_url` with work counts, optional cites, and primary-landing-page-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `prilpage-oa` / `works-prilpage-oa`; `multi` includes oaprilpage. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and landing_page_urls-list shape.
+- No PubMed heading invented.
+
 ## 0.16.119 — 2026-09-21
 
 - Hundred-and-third live SearchAdapter: OpenAlex works-by-primary_location.pdf_url extras (`tools.oapripdfurl`) grouping works via `group_by=primary_location.pdf_url` with work counts, optional cites, and primary-pdf-url-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
