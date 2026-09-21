@@ -99,6 +99,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaprihost", "OaPriHostAdapter"),
     ("oaprihoname", "OaPriHoNameAdapter"),
     ("oapriholineage", "OaPriHoLineageAdapter"),
+    ("oapriholinames", "OaPriHoLinamesAdapter"),
 ]
 
 
