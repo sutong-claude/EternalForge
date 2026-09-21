@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.117 — 2026-09-21
+
+- Hundred-and-first live SearchAdapter: OpenAlex works-by-primary_location.license_id extras (`tools.oaprilicid`) grouping works via `group_by=primary_location.license_id` with work counts, optional cites, and primary-license-id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `prilicid-oa` / `works-prilicid-oa`; `multi` includes oaprilicid. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and license_ids-list shape.
+- No PubMed heading invented.
+
 ## 0.16.116 — 2026-09-21
 
 - Hundredth live SearchAdapter: OpenAlex works-by-primary_location.license extras (`tools.oaprilic`) grouping works via `group_by=primary_location.license` with work counts, optional cites, and primary-license-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
