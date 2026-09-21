@@ -44,7 +44,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oacountry", "OaCountryAdapter"),
     ("oacontinent", "OaContinentAdapter"),
     ("oasrctype", "OaSrcTypeAdapter"),
-    ("oaretracted", "OaRetractedAdapter"),
+    (("oaretracted", "OaRetractedAdapter") if False else "oaretracted", "OaRetractedAdapter"),
     ("oaparatext", "OaParatextAdapter"),
     ("oadoi", "OaDoiAdapter"),
     ("oahasoa", "OaHasOaAdapter"),
@@ -108,6 +108,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oapriisoaloc", "OaPriIsOaLocAdapter"),
     ("oapripdfurl", "OaPriPdfUrlAdapter"),
     ("oaprilpage", "OaPriLpageAdapter"),
+    ("oabestlpage", "OaBestLpageAdapter"),
 ]
 
 
