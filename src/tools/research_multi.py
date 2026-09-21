@@ -72,7 +72,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oahasoofile", "OaHasOaFileAdapter"),
     ("oahasoaurl", "OaHasOaUrlAdapter"),
     ("oahasoaver", "OaHasOaVerAdapter"),
-    (("oahasoaalic", "OaHasOaLicAdapter") if False else ("oahasoaalic", "OaHasOaLicAdapter")),
+    ("oahasoaalic", "OaHasOaLicAdapter"),
     ("oahasoaalicid", "OaHasOaLicIdAdapter"),
     ("oabestlic", "OaBestLicAdapter"),
     ("oabestlicid", "OaBestLicIdAdapter"),
