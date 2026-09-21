@@ -74,48 +74,4 @@ _MULTI: list[tuple[str, str]] = [
     ("oahasoaver", "OaHasOaVerAdapter"),
     ("oahasoaalic", "OaHasOaLicAdapter"),
     ("oahasoaalicid", "OaHasOaLicIdAdapter"),
-    ("oabestlic", "OaBestLicAdapter"),
-    ("oabestlicid", "OaBestLicIdAdapter"),
-    ("oabestver", "OaBestVerAdapter"),
-    ("oabestsrc", "OaBestSrcAdapter"),
-    ("oabestsrcid", "OaBestSrcIdAdapter"),
-    ("oabestsrctype", "OaBestSrcTypeAdapter"),
-    ("oabestissn", "OaBestIssnAdapter"),
-    ("oabesthost", "OaBestHostAdapter"),
-    ("oabesthoname", "OaBestHoNameAdapter"),
-    ("oabestholineage", "OaBestHoLineageAdapter"),
-    ("oabestholinames", "OaBestHoLinamesAdapter"),
-    ("oabestdoaj", "OaBestDoajAdapter"),
-    ("oabestcore", "OaBestCoreAdapter"),
-    ("oabestisoa", "OaBestIsOaAdapter"),
-    ("oabestissns", "OaBestIssnsAdapter"),
-    ("oabestdname", "OaBestDnameAdapter"),
-    ("oapridname", "OaPriDnameAdapter"),
-    ("oapriissns", "OaPriIssnsAdapter"),
-    ("oapriissn", "OaPriIssnAdapter"),
-    ("oapriisoa", "OaPriIsOaAdapter"),
-    ("oapridoaj", "OaPriDoajAdapter"),
-    ("oapricore", "OaPriCoreAdapter"),
-    ("oaprihost", "OaPriHostAdapter"),
-    ("oaprihoname", "OaPriHoNameAdapter"),
-    ("oapriholineage", "OaPriHoLineageAdapter"),
-    ("oapriholinames", "OaPriHoLinamesAdapter"),
-    ("oaprisrcid", "OaPriSrcIdAdapter"),
-    ("oaprisrctype", "OaPriSrcTypeAdapter"),
-    ("oapriver", "OaPriVerAdapter"),
-    ("oaprilic", "OaPriLicAdapter"),
-    ("oaprilicid", "OaPriLicIdAdapter"),
-    ("oapriisoaloc", "OaPriIsOaLocAdapter"),
-]
-
-
-def default_multi_adapters(timeout: float = 8.0):
-    adapters = []
-    for mod_name, cls_name in _MULTI:
-        if mod_name == "openlibrary" and cls_name == "OpenLibraryAdapter":
-            from tools.openlibrary import OpenLibraryAdapter
-            adapters.append(OpenLibraryAdapter(timeout=timeout))
-            continue
-        mod = importlib.import_module(f"tools.{mod_name}")
-        adapters.append(getattr(mod, cls_name)(timeout=timeout))
-    return adapters
+    (("oabestlic", "OaBestLicAdapter"),
