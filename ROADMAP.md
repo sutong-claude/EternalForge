@@ -136,6 +136,9 @@
 - [x] Hundred-and-first live SearchAdapter (OpenAlex works-by-primary_location.license_id extras)
 - [x] Hundred-and-second live SearchAdapter (OpenAlex works-by-primary_location.is_oa extras)
 - [x] Hundred-and-third live SearchAdapter (OpenAlex works-by-primary_location.pdf_url extras)
+- [x] Hundred-and-fourth live SearchAdapter (OpenAlex works-by-primary_location.landing_page_url extras)
+- [x] Hundred-and-fifth live SearchAdapter (OpenAlex works-by-best_oa_location.landing_page_url extras)
+- [x] Hundred-and-sixth live SearchAdapter (OpenAlex works-by-best_oa_location.pdf_url extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
