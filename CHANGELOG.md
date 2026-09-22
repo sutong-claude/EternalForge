@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.130 — 2026-09-21
+
+- Hundred-and-fourteenth live SearchAdapter: OpenAlex works-by-locations.source.id extras (`tools.oalocsrcid`) grouping works via `group_by=locations.source.id` with work counts, optional cites, and locations-source-id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `locsrcid-oa` / `works-locsrcid-oa`; `multi` includes oalocsrcid. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and source_ids-list shape.
+- No PubMed heading invented.
+
 ## 0.16.129 — 2026-09-21
 
 - Hundred-and-thirteenth live SearchAdapter: OpenAlex works-by-locations.license_id extras (`tools.oaloclicid`) grouping works via `group_by=locations.license_id` with work counts, optional cites, and locations-license-id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
