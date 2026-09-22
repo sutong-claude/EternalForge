@@ -93,7 +93,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oapridname", "OaPriDnameAdapter"),
     ("oapriissns", "OaPriIssnsAdapter"),
     ("oapriissn", "OaPriIssnAdapter"),
-    (("oapriisoa", "OaPriIsOaAdapter") if False else ("oapriisoa", "OaPriIsOaAdapter")),
+    ("oapriisoa", "OaPriIsOaAdapter"),
     ("oapridoaj", "OaPriDoajAdapter"),
     ("oapricore", "OaPriCoreAdapter"),
     ("oaprihost", "OaPriHostAdapter"),
