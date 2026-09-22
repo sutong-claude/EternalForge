@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.143 — 2026-09-22
+
+- Hundred-and-twenty-seventh live SearchAdapter: OpenAlex works-by-authorships.institutions.type extras (`tools.oaauthtype`) grouping works via `group_by=authorships.institutions.type` with work counts, optional cites, and authorships-institutions-type-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `authtype-oa` / `works-authtype-oa`; `multi` includes oaauthtype. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and types-list shape.
+- No PubMed heading invented.
+
 ## 0.16.142 — 2026-09-22
 
 - Hundred-and-twenty-sixth live SearchAdapter: OpenAlex works-by-authorships.institutions.country_code extras (`tools.oaauthcc`) grouping works via `group_by=authorships.institutions.country_code` with work counts, optional cites, and authorships-institutions-country_code-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
