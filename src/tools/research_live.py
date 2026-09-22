@@ -126,6 +126,7 @@ _SPECS: list[tuple[tuple[str, ...], str, str]] = [
     (("oalochost", "lochost-oa", "works-lochost-oa"), "oalochost", "OaLocHostAdapter"),
     (("oalochoname", "lochoname-oa", "works-lochoname-oa"), "oalochoname", "OaLocHoNameAdapter"),
     (("oalocholineage", "locholineage-oa", "works-locholineage-oa"), "oalocholineage", "OaLocHoLineageAdapter"),
+    (("oalocholinames", "locholinames-oa", "works-locholinames-oa"), "oalocholinames", "OaLocHoLinamesAdapter"),
 ]
 
 _LIVE = {alias: (mod, cls) for aliases, mod, cls in _SPECS for alias in aliases}
