@@ -43,7 +43,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaostatus", "OaOaStatusAdapter"),
     ("oacountry", "OaCountryAdapter"),
     ("oacontinent", "OaContinentAdapter"),
-    (("oasrctype", "OaSrcTypeAdapter") if False else ("oasrctype", "OaSrcTypeAdapter")),
+    ("oasrctype", "OaSrcTypeAdapter"),
     ("oaretracted", "OaRetractedAdapter"),
     ("oaparatext", "OaParatextAdapter"),
     ("oadoi", "OaDoiAdapter"),
