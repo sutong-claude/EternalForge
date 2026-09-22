@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.146 — 2026-09-22
+
+- Hundred-and-thirtieth live SearchAdapter: OpenAlex works-by-authorships.institutions.display_name extras (`tools.oaauthdname`) grouping works via `group_by=authorships.institutions.display_name` with work counts, optional cites, and authorships-institutions-display_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `authdname-oa` / `works-authdname-oa`; `multi` includes oaauthdname. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and display_names-list shape.
+- No PubMed heading invented.
+
 ## 0.16.145 — 2026-09-22
 
 - Hundred-and-twenty-ninth live SearchAdapter: OpenAlex works-by-authorships.institutions.ror extras (`tools.oaauthror`) grouping works via `group_by=authorships.institutions.ror` with work counts, optional cites, and authorships-institutions-ror-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
