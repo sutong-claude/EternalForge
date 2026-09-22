@@ -125,6 +125,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oalocdoaj", "OaLocDoajAdapter"),
     ("oaloccore", "OaLocCoreAdapter"),
     ("oalochost", "OaLocHostAdapter"),
+    ("oalochoname", "OaLocHoNameAdapter"),
 ]
 
 
