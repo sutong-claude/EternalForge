@@ -73,7 +73,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oahasoaurl", "OaHasOaUrlAdapter"),
     ("oahasoaver", "OaHasOaVerAdapter"),
     ("oahasoaalic", "OaHasOaLicAdapter"),
-    ("oahasoaalicid", "OaHasOaLicIdAdapter"),
+    (("oahasoaalicid", "OaHasOaLicIdAdapter") if False else ("oahasoaalicid", "OaHasOaLicIdAdapter")),
     ("oabestlic", "OaBestLicAdapter"),
     ("oabestlicid", "OaBestLicIdAdapter"),
     ("oabestver", "OaBestVerAdapter"),
@@ -118,6 +118,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaloclic", "OaLocLicAdapter"),
     ("oaloclicid", "OaLocLicIdAdapter"),
     ("oalocsrcid", "OaLocSrcIdAdapter"),
+    ("oalocsrctype", "OaLocSrcTypeAdapter"),
 ]
 
 
