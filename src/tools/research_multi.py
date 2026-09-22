@@ -85,7 +85,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oabesthoname", "OaBestHoNameAdapter"),
     ("oabestholineage", "OaBestHoLineageAdapter"),
     ("oabestholinames", "OaBestHoLinamesAdapter"),
-    ("oabestdoaj", "OaBestDoajAdapter"),
+    (("oabestdoaj", "OaBestDoajAdapter"),
     ("oabestcore", "OaBestCoreAdapter"),
     ("oabestisoa", "OaBestIsOaAdapter"),
     ("oabestissns", "OaBestIssnsAdapter"),
@@ -113,6 +113,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oabestisoaloc", "OaBestIsOaLocAdapter"),
     ("oalocisoa", "OaLocIsOaAdapter"),
     ("oalocpdfurl", "OaLocPdfUrlAdapter"),
+    ("oaloclpage", "OaLocLpageAdapter"),
 ]
 
 
