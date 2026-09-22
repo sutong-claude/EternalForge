@@ -148,6 +148,7 @@
 - [x] Hundred-and-thirteenth live SearchAdapter (OpenAlex works-by-locations.license_id extras)
 - [x] Hundred-and-fourteenth live SearchAdapter (OpenAlex works-by-locations.source.id extras)
 - [x] Hundred-and-fifteenth live SearchAdapter (OpenAlex works-by-locations.source.type extras)
+- [x] Hundred-and-sixteenth live SearchAdapter (OpenAlex works-by-locations.source.issn extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
