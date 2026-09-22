@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.138 — 2026-09-22
+
+- Hundred-and-twenty-second live SearchAdapter: OpenAlex works-by-locations.source.host_organization_name extras (`tools.oalochoname`) grouping works via `group_by=locations.source.host_organization_name` with work counts, optional cites, and locations-source-host_organization_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `lochoname-oa` / `works-lochoname-oa`; `multi` includes oalochoname. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and host_organization_names-list shape.
+- No PubMed heading invented.
+
 ## 0.16.137 — 2026-09-22
 
 - Hundred-and-twenty-first live SearchAdapter: OpenAlex works-by-locations.source.host_organization extras (`tools.oalochost`) grouping works via `group_by=locations.source.host_organization` with work counts, optional cites, and locations-source-host_organization-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
