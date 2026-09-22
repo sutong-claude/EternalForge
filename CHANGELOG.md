@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.128 — 2026-09-21
+
+- Hundred-and-twelfth live SearchAdapter: OpenAlex works-by-locations.license extras (`tools.oaloclic`) grouping works via `group_by=locations.license` with work counts, optional cites, and locations-license-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `loclic-oa` / `works-loclic-oa`; `multi` includes oaloclic. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and licenses-list shape.
+- No PubMed heading invented.
+
 ## 0.16.127 — 2026-09-21
 
 - Hundred-and-eleventh live SearchAdapter: OpenAlex works-by-locations.version extras (`tools.oalocver`) grouping works via `group_by=locations.version` with work counts, optional cites, and locations-version-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.

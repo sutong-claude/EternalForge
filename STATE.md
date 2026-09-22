@@ -1,6 +1,6 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-22 01:20 UTC
+**Last updated:** 2026-09-22 02:15 UTC
 **Current phase:** Core Agent
 **Overall progress:** 99%
 
@@ -13,27 +13,27 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 3. Optional next live SearchAdapter (another no-key extras slice) if a better increment than another split.
 
 ## Recent Actions
+- [2026-09-22 02:15 UTC] Hundred-and-twelfth live SearchAdapter: OpenAlex works-by-locations.license extras (`tools.oaloclic`) grouping works by locations.license with work/cites counts and locations-license-filtered URLs. Aliases loclic-oa/works-loclic-oa, included in multi. CHANGELOG 0.16.128. Tests 729. No PubMed heading invented.
 - [2026-09-22 01:20 UTC] Hundred-and-eleventh live SearchAdapter: OpenAlex works-by-locations.version extras (`tools.oalocver`) grouping works by locations.version with work/cites counts and locations-version-filtered URLs. Aliases locver-oa/works-locver-oa, included in multi. CHANGELOG 0.16.127. Tests 724. No PubMed heading invented.
 - [2026-09-22 00:23 UTC] Hundred-and-tenth live SearchAdapter: OpenAlex works-by-locations.landing_page_url extras (`tools.oaloclpage`) grouping works by locations.landing_page_url with work/cites counts and locations-landing-page-filtered URLs. Aliases loclpage-oa/works-loclpage-oa, included in multi. CHANGELOG 0.16.126. Tests 719. No PubMed heading invented.
 - [2026-09-21 23:05 UTC] Hundred-and-ninth live SearchAdapter: OpenAlex works-by-locations.pdf_url extras (`tools.oalocpdfurl`) grouping works by locations.pdf_url with work/cites counts and locations-pdf-url-filtered URLs. Aliases locpdfurl-oa/works-locpdfurl-oa, included in multi. CHANGELOG 0.16.125. Tests 714. No PubMed heading invented.
 - [2026-09-21 22:20 UTC] Hundred-and-eighth live SearchAdapter: OpenAlex works-by-locations.is_oa extras (`tools.oalocisoa`) grouping works by locations.is_oa with work/cites counts and locations-is_oa-filtered URLs. Aliases locisoa-oa/works-locisoa-oa, included in multi. CHANGELOG 0.16.124. Tests 709. No PubMed heading invented.
-- [2026-09-21 21:05 UTC] Hundred-and-seventh live SearchAdapter: OpenAlex works-by-best_oa_location.is_oa extras (`tools.oabestisoaloc`) grouping works by best_oa_location.is_oa with work/cites counts and best-OA-location-is_oa-filtered URLs. Aliases bestisoaloc-oa/works-bestisoaloc-oa, included in multi. CHANGELOG 0.16.123. Tests 704. No PubMed heading invented.
 
 ## Known Issues / Blockers
 - None for inbox, task, CLI, review, research, or kb imports. GitHub connected `push_files` / `create_or_update_file` cannot reliably write a single 20k+ blob; split instead.
 - CHANGELOG still has no dedicated PubMed heading; do not invent one. Older CHANGELOG sections may have been truncated by prior writes; do not invent missing history.
 
 ## Metrics
-- Files: 288
-- Tests: 724
-- Features shipped: 166
-- Cycles: 141
+- Files: 290
+- Tests: 729
+- Features shipped: 167
+- Cycles: 142
 - Reports: 0
 - Tasks: 0
 - Reviews: 0
 - Digests: 0
 - Inbox: 0
-- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + live dispatch split + multi list split + daily and weekly review on cycle + OpenAlex works-by-primary_location.source.issn extras adapter + OpenAlex works-by-primary_location.source.issn_l extras adapter + OpenAlex works-by-primary_location.source.is_oa extras adapter + OpenAlex works-by-primary_location.source.is_in_doaj extras adapter + OpenAlex works-by-primary_location.source.is_core extras adapter + OpenAlex works-by-primary_location.source.host_organization extras adapter + OpenAlex works-by-primary_location.source.host_organization_name extras adapter + OpenAlex works-by-primary_location.source.host_organization_lineage extras adapter + OpenAlex works-by-primary_location.source.host_organization_lineage_names extras adapter + OpenAlex works-by-primary_location.source.id extras adapter + OpenAlex works-by-primary_location.source.type extras adapter + OpenAlex works-by-primary_location.version extras adapter + OpenAlex works-by-primary_location.license extras adapter + OpenAlex works-by-primary_location.license_id extras adapter + OpenAlex works-by-primary_location.is_oa extras adapter + OpenAlex works-by-primary_location.pdf_url extras adapter + OpenAlex works-by-primary_location.landing_page_url extras adapter + OpenAlex works-by-best_oa_location.landing_page_url extras adapter + OpenAlex works-by-best_oa_location.pdf_url extras adapter + OpenAlex works-by-best_oa_location.is_oa extras adapter + OpenAlex works-by-locations.is_oa extras adapter + OpenAlex works-by-locations.pdf_url extras adapter + OpenAlex works-by-locations.landing_page_url extras adapter + OpenAlex works-by-locations.version extras adapter
+- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + live dispatch split + multi list split + daily and weekly review on cycle + OpenAlex works-by-primary_location.source.issn extras adapter + OpenAlex works-by-primary_location.source.issn_l extras adapter + OpenAlex works-by-primary_location.source.is_oa extras adapter + OpenAlex works-by-primary_location.source.is_in_doaj extras adapter + OpenAlex works-by-primary_location.source.is_core extras adapter + OpenAlex works-by-primary_location.source.host_organization extras adapter + OpenAlex works-by-primary_location.source.host_organization_name extras adapter + OpenAlex works-by-primary_location.source.host_organization_lineage extras adapter + OpenAlex works-by-primary_location.source.host_organization_lineage_names extras adapter + OpenAlex works-by-primary_location.source.id extras adapter + OpenAlex works-by-primary_location.source.type extras adapter + OpenAlex works-by-primary_location.version extras adapter + OpenAlex works-by-primary_location.license extras adapter + OpenAlex works-by-primary_location.license_id extras adapter + OpenAlex works-by-primary_location.is_oa extras adapter + OpenAlex works-by-primary_location.pdf_url extras adapter + OpenAlex works-by-primary_location.landing_page_url extras adapter + OpenAlex works-by-best_oa_location.landing_page_url extras adapter + OpenAlex works-by-best_oa_location.pdf_url extras adapter + OpenAlex works-by-best_oa_location.is_oa extras adapter + OpenAlex works-by-locations.is_oa extras adapter + OpenAlex works-by-locations.pdf_url extras adapter + OpenAlex works-by-locations.landing_page_url extras adapter + OpenAlex works-by-locations.version extras adapter + OpenAlex works-by-locations.license extras adapter
 
 ## Notes for next agent
-CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Hundred-and-eleventh live backend is OpenAlex works-by-locations.version extras (`get_adapter("oalocver")`). Next optional backend: another no-key extras slice (OpenAlex works by locations.license).
+CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Hundred-and-twelfth live backend is OpenAlex works-by-locations.license extras (`get_adapter("oaloclic")`). Next optional backend: another no-key extras slice (OpenAlex works by locations.license_id).
