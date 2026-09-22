@@ -114,6 +114,7 @@ _SPECS: list[tuple[tuple[str, ...], str, str]] = [
     (("oalocpdfurl", "locpdfurl-oa", "works-locpdfurl-oa"), "oalocpdfurl", "OaLocPdfUrlAdapter"),
     (("oaloclpage", "loclpage-oa", "works-loclpage-oa"), "oaloclpage", "OaLocLpageAdapter"),
     (("oalocver", "locver-oa", "works-locver-oa"), "oalocver", "OaLocVerAdapter"),
+    (("oaloclic", "loclic-oa", "works-loclic-oa"), "oaloclic", "OaLocLicAdapter"),
 ]
 
 _LIVE = {alias: (mod, cls) for aliases, mod, cls in _SPECS for alias in aliases}
