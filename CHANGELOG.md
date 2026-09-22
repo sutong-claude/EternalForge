@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.145 — 2026-09-22
+
+- Hundred-and-twenty-ninth live SearchAdapter: OpenAlex works-by-authorships.institutions.ror extras (`tools.oaauthror`) grouping works via `group_by=authorships.institutions.ror` with work counts, optional cites, and authorships-institutions-ror-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `authror-oa` / `works-authror-oa`; `multi` includes oaauthror. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and rors-list shape.
+- No PubMed heading invented.
+
 ## 0.16.144 — 2026-09-22
 
 - Hundred-and-twenty-eighth live SearchAdapter: OpenAlex works-by-authorships.institutions.id extras (`tools.oaauthid`) grouping works via `group_by=authorships.institutions.id` with work counts, optional cites, and authorships-institutions-id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
@@ -33,11 +40,4 @@
 - Hundred-and-twenty-fourth live SearchAdapter: OpenAlex works-by-locations.source.host_organization_lineage_names extras (`tools.oalocholinames`) grouping works via `group_by=locations.source.host_organization_lineage_names` with work counts, optional cites, and locations-source-host_organization_lineage_names-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
 - Aliases `locholinames-oa` / `works-locholinames-oa`; `multi` includes oalocholinames. Public imports stay on `tools.research`.
 - Tests cover empty query, aliases, group_by mapping (most works first), limit, and host_organization_lineage_names-list shape.
-- No PubMed heading invented.
-
-## 0.16.139 — 2026-09-22
-
-- Hundred-and-twenty-third live SearchAdapter: OpenAlex works-by-locations.source.host_organization_lineage extras (`tools.oalocholineage`) grouping works via `group_by=locations.source.host_organization_lineage` with work counts, optional cites, and locations-source-host_organization_lineage-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `locholineage-oa` / `works-locholineage-oa`; `multi` includes oalocholineage. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and host_organization_lineages-list shape.
 - No PubMed heading invented.

@@ -153,6 +153,7 @@
 - [x] Hundred-and-eighteenth live SearchAdapter (OpenAlex works-by-locations.source.is_oa extras)
 - [x] Hundred-and-nineteenth live SearchAdapter (OpenAlex works-by-locations.source.is_in_doaj extras)
 - [x] Hundred-and-twentieth live SearchAdapter (OpenAlex works-by-locations.source.is_core extras)
+- [x] Hundred-and-twenty-ninth live SearchAdapter (OpenAlex works-by-authorships.institutions.ror extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
