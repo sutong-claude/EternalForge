@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.133 — 2026-09-22
+
+- Hundred-and-seventeenth live SearchAdapter: OpenAlex works-by-locations.source.issn_l extras (`tools.oalocissn`) grouping works via `group_by=locations.source.issn_l` with work counts, optional cites, and locations-source-issn_l-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `locissn-oa` / `works-locissn-oa`; `multi` includes oalocissn. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and issn_ls-list shape.
+- No PubMed heading invented.
+
 ## 0.16.132 — 2026-09-21
 
 - Hundred-and-sixteenth live SearchAdapter: OpenAlex works-by-locations.source.issn extras (`tools.oalocissns`) grouping works via `group_by=locations.source.issn` with work counts, optional cites, and locations-source-issn-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
