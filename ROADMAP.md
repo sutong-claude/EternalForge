@@ -142,6 +142,7 @@
 - [x] Hundred-and-seventh live SearchAdapter (OpenAlex works-by-best_oa_location.is_oa extras)
 - [x] Hundred-and-eighth live SearchAdapter (OpenAlex works-by-locations.is_oa extras)
 - [x] Hundred-and-ninth live SearchAdapter (OpenAlex works-by-locations.pdf_url extras)
+- [x] Hundred-and-tenth live SearchAdapter (OpenAlex works-by-locations.landing_page_url extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
