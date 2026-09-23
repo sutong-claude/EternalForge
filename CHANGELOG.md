@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.160 — 2026-09-23
+
+- Hundred-and-forty-fourth live SearchAdapter: OpenAlex works-by-ids.pmid extras (`tools.oapmid`) grouping works via `group_by=ids.pmid` with work counts, optional cites, and ids.pmid-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `pmid-oa` / `works-pmid-oa`; `multi` includes oapmid. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and pmids-list shape.
+- No PubMed heading invented.
+
 ## 0.16.159 — 2026-09-23
 
 - Hundred-and-forty-third live SearchAdapter: OpenAlex works-by-ids.mag extras (`tools.oamag`) grouping works via `group_by=ids.mag` with work counts, optional cites, and ids.mag-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
