@@ -153,6 +153,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaidsopenalex", "OaIdsOpenalexAdapter"),
     ("oaidswikidata", "OaIdsWikidataAdapter"),
     ("oarefs", "OaRefsAdapter"),
+    ("oarelated", "OaRelatedAdapter"),
 ]
 
 
