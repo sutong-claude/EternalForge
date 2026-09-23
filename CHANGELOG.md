@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.154 — 2026-09-23
+
+- Hundred-and-thirty-eighth live SearchAdapter: OpenAlex works-by-authorships.author_position extras (`tools.oaauthorpos`) grouping works via `group_by=authorships.author_position` with work counts, optional cites, and authorships-author_position-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `authorpos-oa` / `works-authorpos-oa`; `multi` includes oaauthorpos. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and author_positions-list shape.
+- No PubMed heading invented.
+
 ## 0.16.153 — 2026-09-23
 
 - Hundred-and-thirty-seventh live SearchAdapter: OpenAlex works-by-authorships.raw_affiliation_string extras (`tools.oaauthoraffil`) grouping works via `group_by=authorships.raw_affiliation_string` with work counts, optional cites, and authorships-raw_affiliation_string-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
