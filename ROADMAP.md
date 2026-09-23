@@ -157,6 +157,7 @@
 - [x] Hundred-and-thirtieth live SearchAdapter (OpenAlex works-by-authorships.institutions.display_name extras)
 - [x] Hundred-and-thirty-first live SearchAdapter (OpenAlex works-by-authorships.institutions.lineage extras)
 - [x] Hundred-and-thirty-second live SearchAdapter (OpenAlex works-by-authorships.institutions.lineage_names extras)
+- [x] Hundred-and-thirty-third live SearchAdapter (OpenAlex works-by-authorships.author.id extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
