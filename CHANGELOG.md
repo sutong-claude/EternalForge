@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.165 — 2026-09-23
+
+- Hundred-and-forty-ninth live SearchAdapter: OpenAlex works-by-referenced_works extras (`tools.oarefs`) grouping works via `group_by=referenced_works` with work counts, optional cites, and referenced_works-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `refs-oa` / `works-refs-oa`; `multi` includes oarefs. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and referenced_work_ids-list shape. Work IDs are normalized to the `W…` suffix.
+- No PubMed heading invented.
+
 ## 0.16.164 — 2026-09-23
 
 - Hundred-and-forty-eighth live SearchAdapter: OpenAlex works-by-ids.wikidata extras (`tools.oaidswikidata`) grouping works via `group_by=ids.wikidata` with work counts, optional cites, and ids.wikidata-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
