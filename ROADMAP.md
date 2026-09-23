@@ -161,6 +161,7 @@
 - [x] Hundred-and-thirty-fourth live SearchAdapter (OpenAlex works-by-authorships.author.orcid extras)
 - [x] Hundred-and-thirty-fifth live SearchAdapter (OpenAlex works-by-authorships.author.display_name extras)
 - [x] Hundred-and-thirty-sixth live SearchAdapter (OpenAlex works-by-authorships.is_corresponding extras)
+- [x] Hundred-and-thirty-seventh live SearchAdapter (OpenAlex works-by-authorships.raw_affiliation_string extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
