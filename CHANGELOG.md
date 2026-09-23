@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.159 — 2026-09-23
+
+- Hundred-and-forty-third live SearchAdapter: OpenAlex works-by-ids.mag extras (`tools.oamag`) grouping works via `group_by=ids.mag` with work counts, optional cites, and ids.mag-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `mag-oa` / `works-mag-oa`; `multi` includes oamag. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and mags-list shape.
+- No PubMed heading invented.
+
 ## 0.16.158 — 2026-09-23
 
 - Hundred-and-forty-second live SearchAdapter: OpenAlex works-by-corresponding_institution_ids extras (`tools.oacorrinst`) grouping works via `group_by=corresponding_institution_ids` with work counts, optional cites, and corresponding_institution_ids-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
