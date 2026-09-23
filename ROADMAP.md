@@ -164,6 +164,13 @@
 - [x] Hundred-and-thirty-seventh live SearchAdapter (OpenAlex works-by-authorships.raw_affiliation_string extras)
 - [x] Hundred-and-thirty-eighth live SearchAdapter (OpenAlex works-by-authorships.author_position extras)
 - [x] Hundred-and-thirty-ninth live SearchAdapter (OpenAlex works-by-authorships.raw_affiliation_strings extras)
+- [x] Hundred-and-fortieth live SearchAdapter (OpenAlex works-by-authorships.raw_author_name extras)
+- [x] Hundred-and-forty-first live SearchAdapter (OpenAlex works-by-corresponding_author_ids extras)
+- [x] Hundred-and-forty-second live SearchAdapter (OpenAlex works-by-corresponding_institution_ids extras)
+- [x] Hundred-and-forty-third live SearchAdapter (OpenAlex works-by-ids.mag extras)
+- [x] Hundred-and-forty-fourth live SearchAdapter (OpenAlex works-by-ids.pmid extras)
+- [x] Hundred-and-forty-fifth live SearchAdapter (OpenAlex works-by-ids.pmcid extras)
+- [x] Hundred-and-forty-sixth live SearchAdapter (OpenAlex works-by-ids.doi extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
