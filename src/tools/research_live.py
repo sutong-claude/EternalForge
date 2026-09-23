@@ -153,6 +153,7 @@ _SPECS: list[tuple[tuple[str, ...], str, str]] = [
     (("oaidswikidata", "idswd-oa", "works-idswd-oa"), "oaidswikidata", "OaIdsWikidataAdapter"),
     (("oarefs", "refs-oa", "works-refs-oa"), "oarefs", "OaRefsAdapter"),
     (("oarelated", "related-oa", "works-related-oa"), "oarelated", "OaRelatedAdapter"),
+    (("oasdgs", "sdgs-oa", "works-sdgs-oa"), "oasdgs", "OaSdgsAdapter"),
 ]
 
 _LIVE = {alias: (mod, cls) for aliases, mod, cls in _SPECS for alias in aliases}
