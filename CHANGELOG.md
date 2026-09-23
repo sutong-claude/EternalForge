@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.157 — 2026-09-23
+
+- Hundred-and-forty-first live SearchAdapter: OpenAlex works-by-corresponding_author_ids extras (`tools.oacorrids`) grouping works via `group_by=corresponding_author_ids` with work counts, optional cites, and corresponding_author_ids-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `corrids-oa` / `works-corrids-oa`; `multi` includes oacorrids. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and corresponding_author_ids-list shape.
+- No PubMed heading invented.
+
 ## 0.16.156 — 2026-09-23
 
 - Hundred-and-fortieth live SearchAdapter: OpenAlex works-by-authorships.raw_author_name extras (`tools.oaauthorname`) grouping works via `group_by=authorships.raw_author_name` with work counts, optional cites, and authorships-raw_author_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
