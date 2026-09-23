@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.163 — 2026-09-23
+
+- Hundred-and-forty-seventh live SearchAdapter: OpenAlex works-by-ids.openalex extras (`tools.oaidsopenalex`) grouping works via `group_by=ids.openalex` with work counts, optional cites, and ids.openalex-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `idsoa-oa` / `works-idsoa-oa`; `multi` includes oaidsopenalex. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and openalex_ids-list shape. OpenAlex IDs are normalized to the `W…` suffix.
+- No PubMed heading invented.
+
 ## 0.16.162 — 2026-09-23
 
 - Hundred-and-forty-sixth live SearchAdapter: OpenAlex works-by-ids.doi extras (`tools.oaidsdoi`) grouping works via `group_by=ids.doi` with work counts, optional cites, and ids.doi-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
