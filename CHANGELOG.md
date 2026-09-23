@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.152 — 2026-09-23
+
+- Hundred-and-thirty-sixth live SearchAdapter: OpenAlex works-by-authorships.is_corresponding extras (`tools.oaauthorcorr`) grouping works via `group_by=authorships.is_corresponding` with work counts, optional cites, and authorships-is_corresponding-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `authorcorr-oa` / `works-authorcorr-oa`; `multi` includes oaauthorcorr. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and is_corresponding-list shape.
+- No PubMed heading invented.
+
 ## 0.16.151 — 2026-09-23
 
 - Hundred-and-thirty-fifth live SearchAdapter: OpenAlex works-by-authorships.author.display_name extras (`tools.oaauthordname`) grouping works via `group_by=authorships.author.display_name` with work counts, optional cites, and authorships-author-display_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
