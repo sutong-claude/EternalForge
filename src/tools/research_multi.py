@@ -71,7 +71,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oahasoadomain", "OaHasOaDomainAdapter"),
     ("oahasoofile", "OaHasOaFileAdapter"),
     ("oahasoaurl", "OaHasOaUrlAdapter"),
-    ("oahasoaver", "OaHasOaVerAdapter"),
+    (("oahasoaver", "OaHasOaVerAdapter"),
     ("oahasoaalic", "OaHasOaLicAdapter"),
     ("oahasoaalicid", "OaHasOaLicIdAdapter"),
     ("oabestlic", "OaBestLicAdapter"),
@@ -137,6 +137,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaauthlin", "OaAuthLinAdapter"),
     ("oaauthlinnames", "OaAuthLinNamesAdapter"),
     ("oaauthorid", "OaAuthorIdAdapter"),
+    ("oaauthororcid", "OaAuthorOrcidAdapter"),
 ]
 
 
