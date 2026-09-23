@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.167 — 2026-09-23
+
+- Hundred-and-fifty-first live SearchAdapter: OpenAlex works-by-sustainable_development_goals extras (`tools.oasdgs`) grouping works via `group_by=sustainable_development_goals.id` with work counts, optional cites, and SDG-id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `sdgs-oa` / `works-sdgs-oa`; `multi` includes oasdgs. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and sdgs-list shape. SDG ids keep the UN metadata URL when present.
+- No PubMed heading invented.
+
 ## 0.16.166 — 2026-09-23
 
 - Hundred-and-fiftieth live SearchAdapter: OpenAlex works-by-related_works extras (`tools.oarelated`) grouping works via `group_by=related_works` with work counts, optional cites, and related_works-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
