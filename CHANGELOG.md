@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.162 — 2026-09-23
+
+- Hundred-and-forty-sixth live SearchAdapter: OpenAlex works-by-ids.doi extras (`tools.oaidsdoi`) grouping works via `group_by=ids.doi` with work counts, optional cites, and ids.doi-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `idsdoi-oa` / `works-idsdoi-oa`; `multi` includes oaidsdoi. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and dois-list shape. DOI URLs are normalized to the `10.` prefix.
+- No PubMed heading invented.
+
 ## 0.16.161 — 2026-09-23
 
 - Hundred-and-forty-fifth live SearchAdapter: OpenAlex works-by-ids.pmcid extras (`tools.oapmcid`) grouping works via `group_by=ids.pmcid` with work counts, optional cites, and ids.pmcid-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
