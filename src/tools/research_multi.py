@@ -144,6 +144,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaauthorpos", "OaAuthorPosAdapter"),
     ("oaauthoraffils", "OaAuthorAffilsAdapter"),
     ("oaauthorname", "OaAuthorNameAdapter"),
+    ("oacorrids", "OaCorrIdsAdapter"),
 ]
 
 
