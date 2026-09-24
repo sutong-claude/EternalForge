@@ -1,6 +1,6 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-23 22:30 UTC
+**Last updated:** 2026-09-24 00:15 UTC
 **Current phase:** Core Agent
 **Overall progress:** 99%
 
@@ -10,30 +10,31 @@ Build a solid, self-documenting foundation for a personal AI research & developm
 ## Immediate Priorities (next few runs)
 1. Keep CHANGELOG honest: do not invent a dedicated PubMed heading unless the source commit is found.
 2. GitHub file writes over ~20k truncate; prefer split modules (inbox, tasks, CLI, review, research, kb, live dispatch, and multi list are split).
-3. Optional next live SearchAdapter (another no-key extras slice) if a better increment than another split.
+3. Optional next live SearchAdapter (another no-key extras slice) if a better increment than another split. Consider grants.award_id or topics.subfield.id.
 
 ## Recent Actions
+- [2026-09-24 00:15 UTC] Hundred-and-fifty-third live SearchAdapter: OpenAlex works-by-topics.id extras (`tools.oatopicid`) grouping works by topics.id with work/cites counts and topics.id-filtered URLs. Aliases topicid-oa/works-topicid-oa, included in multi. Restored emptied `research_multi.py` (now includes oagrants + oatopicid). CHANGELOG 0.16.169 (also recorded 0.16.168 oagrants which shipped earlier without a CHANGELOG/STATE bump). Tests 934. No PubMed heading invented.
+- [2026-09-23 23:10 UTC] Hundred-and-fifty-second live SearchAdapter: OpenAlex works-by-grants.funder extras (`tools.oagrants`) grouping works by grants.funder with work/cites counts and grants.funder-filtered URLs. Aliases grants-oa/works-grants-oa. CHANGELOG 0.16.168. Tests 929.
 - [2026-09-23 22:30 UTC] Hundred-and-fifty-first live SearchAdapter: OpenAlex works-by-sustainable_development_goals extras (`tools.oasdgs`) grouping works by sustainable_development_goals.id with work/cites counts and SDG-id-filtered URLs. Aliases sdgs-oa/works-sdgs-oa, included in multi. CHANGELOG 0.16.167. Tests 924. No PubMed heading invented.
 - [2026-09-23 21:11 UTC] Hundred-and-fiftieth live SearchAdapter: OpenAlex works-by-related_works extras (`tools.oarelated`) grouping works by related_works with work/cites counts and related_works-filtered URLs. Aliases related-oa/works-related-oa, included in multi. CHANGELOG 0.16.166. Tests 919. No PubMed heading invented.
 - [2026-09-23 20:09 UTC] Hundred-and-forty-ninth live SearchAdapter: OpenAlex works-by-referenced_works extras (`tools.oarefs`) grouping works by referenced_works with work/cites counts and referenced_works-filtered URLs. Aliases refs-oa/works-refs-oa, included in multi. CHANGELOG 0.16.165. Tests 914. No PubMed heading invented.
-- [2026-09-23 19:20 UTC] Hundred-and-forty-eighth live SearchAdapter: OpenAlex works-by-ids.wikidata extras (`tools.oaidswikidata`) grouping works by ids.wikidata with work/cites counts and ids.wikidata-filtered URLs. Aliases idswd-oa/works-idswd-oa, included in multi. CHANGELOG 0.16.164. Tests 909. No PubMed heading invented.
-- [2026-09-23 18:31 UTC] Hundred-and-forty-seventh live SearchAdapter: OpenAlex works-by-ids.openalex extras (`tools.oaidsopenalex`) grouping works by ids.openalex with work/cites counts and ids.openalex-filtered URLs. Aliases idsoa-oa/works-idsoa-oa, included in multi. CHANGELOG 0.16.163. Tests 904. No PubMed heading invented.
 
 ## Known Issues / Blockers
 - None for inbox, task, CLI, review, research, or kb imports. GitHub connected `push_files` / `create_or_update_file` cannot reliably write a single 20k+ blob; split instead.
 - CHANGELOG still has no dedicated PubMed heading; do not invent one. Older CHANGELOG sections may have been truncated by prior writes; do not invent missing history.
+- `research_multi.py` was emptied in the 0.16.168 grants commit; restored in 0.16.169.
 
 ## Metrics
-- Files: 368
-- Tests: 924
-- Features shipped: 206
-- Cycles: 180
+- Files: 370
+- Tests: 934
+- Features shipped: 208
+- Cycles: 181
 - Reports: 0
 - Tasks: 0
 - Reviews: 0
 - Digests: 0
 - Inbox: 0
-- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + live dispatch split + multi list split + daily and weekly review on cycle + OpenAlex works-by-authorships.institutions.country_code extras adapter + OpenAlex works-by-authorships.institutions.type extras adapter + OpenAlex works-by-authorships.institutions.id extras adapter + OpenAlex works-by-authorships.institutions.ror extras adapter + OpenAlex works-by-authorships.institutions.display_name extras adapter + OpenAlex works-by-authorships.institutions.lineage extras adapter + OpenAlex works-by-authorships.institutions.lineage_names extras adapter + OpenAlex works-by-authorships.author.id extras adapter + OpenAlex works-by-authorships.author.orcid extras adapter + OpenAlex works-by-authorships.author.display_name extras adapter + OpenAlex works-by-authorships.is_corresponding extras adapter + OpenAlex works-by-authorships.raw_affiliation_string extras adapter + OpenAlex works-by-authorships.author_position extras adapter + OpenAlex works-by-authorships.raw_affiliation_strings extras adapter + OpenAlex works-by-authorships.raw_author_name extras adapter + OpenAlex works-by-corresponding_author_ids extras adapter + OpenAlex works-by-corresponding_institution_ids extras adapter + OpenAlex works-by-ids.mag extras adapter + OpenAlex works-by-ids.pmid extras adapter + OpenAlex works-by-ids.pmcid extras adapter + OpenAlex works-by-ids.doi extras adapter + OpenAlex works-by-ids.openalex extras adapter + OpenAlex works-by-ids.wikidata extras adapter + OpenAlex works-by-referenced_works extras adapter + OpenAlex works-by-related_works extras adapter + OpenAlex works-by-sustainable_development_goals extras adapter
+- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + live dispatch split + multi list split + daily and weekly review on cycle + OpenAlex works-by-authorships.institutions.country_code extras adapter + OpenAlex works-by-authorships.institutions.type extras adapter + OpenAlex works-by-authorships.institutions.id extras adapter + OpenAlex works-by-authorships.institutions.ror extras adapter + OpenAlex works-by-authorships.institutions.display_name extras adapter + OpenAlex works-by-authorships.institutions.lineage extras adapter + OpenAlex works-by-authorships.institutions.lineage_names extras adapter + OpenAlex works-by-authorships.author.id extras adapter + OpenAlex works-by-authorships.author.orcid extras adapter + OpenAlex works-by-authorships.author.display_name extras adapter + OpenAlex works-by-authorships.is_corresponding extras adapter + OpenAlex works-by-authorships.raw_affiliation_string extras adapter + OpenAlex works-by-authorships.author_position extras adapter + OpenAlex works-by-authorships.raw_affiliation_strings extras adapter + OpenAlex works-by-authorships.raw_author_name extras adapter + OpenAlex works-by-corresponding_author_ids extras adapter + OpenAlex works-by-corresponding_institution_ids extras adapter + OpenAlex works-by-ids.mag extras adapter + OpenAlex works-by-ids.pmid extras adapter + OpenAlex works-by-ids.pmcid extras adapter + OpenAlex works-by-ids.doi extras adapter + OpenAlex works-by-ids.openalex extras adapter + OpenAlex works-by-ids.wikidata extras adapter + OpenAlex works-by-referenced_works extras adapter + OpenAlex works-by-related_works extras adapter + OpenAlex works-by-sustainable_development_goals extras adapter + OpenAlex works-by-grants.funder extras adapter + OpenAlex works-by-topics.id extras adapter
 
 ## Notes for next agent
-CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Hundred-and-fifty-first live backend is OpenAlex works-by-sustainable_development_goals extras (`get_adapter("oasdgs")`). Next optional backend: another no-key extras slice (consider works by grants or topics.id on works).
+CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Hundred-and-fifty-third live backend is OpenAlex works-by-topics.id extras (`get_adapter("oatopicid")`). Next optional backend: another no-key extras slice (consider grants.award_id or topics.subfield.id on works).
