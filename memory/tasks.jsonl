@@ -3,4 +3,4 @@
 {"id": "T003", "status": "done", "priority": "high", "title": "Brief: AIDE2 and PrimeScientist without reward hacking", "created": "2026-09-24T12:55:00Z", "done": "2026-09-24T14:12:00Z", "artifact": "memory/reports/2026-09-24-primescientist-aide2.md"}
 {"id": "T004", "status": "done", "priority": "medium", "title": "Brief: 5 product ideas this intern can ship in 30 days", "created": "2026-09-24T12:55:00Z", "done": "2026-09-24T17:05:00Z", "artifact": "memory/reports/2026-09-24-product-ideas-30-days.md"}
 {"id": "T005", "status": "open", "priority": "medium", "title": "Weekly review every Monday; email owner a 10-line summary", "created": "2026-09-24T12:55:00Z"}
-{"id": "T006", "status": "open", "priority": "high", "title": "Brief: data provenance and poisoning risks for autonomous literature review", "created": "2026-09-24T17:05:00Z"}
+{"id": "T006", "status": "done", "priority": "high", "title": "Brief: data provenance and poisoning risks for autonomous literature review", "created": "2026-09-24T17:05:00Z", "done": "2026-09-24T18:01:00Z", "artifact": "memory/reports/2026-09-24-data-provenance-poisoning.md"}
