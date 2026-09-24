@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.173 — 2026-09-24
+
+- Hundred-and-fifty-seventh live SearchAdapter: OpenAlex works-by-topics.domain.id extras (`tools.oatdomain`) grouping works via `group_by=topics.domain.id` with work counts, optional cites, and topics.domain.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `domain-oa` / `works-domain-oa`; `multi` includes oatdomain. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and domains-list shape. Domain IDs are normalized to the numeric suffix (strip URL tail / `domain:` prefix).
+- No PubMed heading invented.
+
 ## 0.16.172 — 2026-09-24
 
 - Hundred-and-fifty-sixth live SearchAdapter: OpenAlex works-by-topics.field.id extras (`tools.oatfield`) grouping works via `group_by=topics.field.id` with work counts, optional cites, and topics.field.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
