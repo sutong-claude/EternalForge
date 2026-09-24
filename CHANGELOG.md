@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.180 — 2026-09-24
+
+- Hundred-and-sixty-fourth live SearchAdapter: OpenAlex works-by-concepts.wikidata extras (`tools.oaconcwd`) grouping works via `group_by=concepts.wikidata` with work counts, optional cites, and concepts.wikidata-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `concwd-oa` / `works-concwd-oa`; `multi` includes oaconcwd. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and concepts-list shape. Wikidata keys keep the Q-id suffix (strip URL tail / `wikidata:` / `wd:` / `concept:` prefix).
+- No PubMed heading invented.
+
 ## 0.16.179 — 2026-09-24
 
 - Hundred-and-sixty-third live SearchAdapter: OpenAlex works-by-keywords.display_name extras (`tools.oakwdn`) grouping works via `group_by=keywords.display_name` with work counts, optional cites, and keywords.display_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
@@ -33,25 +40,4 @@
 - Hundred-and-fifty-ninth live SearchAdapter: OpenAlex works-by-topics.keywords extras (`tools.oakw`) grouping works via `group_by=topics.keywords` with work counts, optional cites, and topics.keywords-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
 - Aliases `keywords-oa` / `works-keywords-oa`; `multi` includes oakw. Public imports stay on `tools.research`.
 - Tests cover empty query, aliases, group_by mapping (most works first), limit, and keywords-list shape. Keyword keys keep the display string (strip URL tail / `keyword:` prefix).
-- No PubMed heading invented.
-
-## 0.16.174 — 2026-09-24
-
-- Hundred-and-fifty-eighth live SearchAdapter: OpenAlex works-by-primary_topic.id extras (`tools.oaprtopic`) grouping works via `group_by=primary_topic.id` with work counts, optional cites, and primary_topic.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `prtopic-oa` / `works-prtopic-oa`; `multi` includes oaprtopic. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and primary_topics-list shape. Topic IDs are normalized to the `T…` suffix (strip URL tail / `topic:` prefix).
-- No PubMed heading invented.
-
-## 0.16.173 — 2026-09-24
-
-- Hundred-and-fifty-seventh live SearchAdapter: OpenAlex works-by-topics.domain.id extras (`tools.oatdomain`) grouping works via `group_by=topics.domain.id` with work counts, optional cites, and topics.domain.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `domain-oa` / `works-domain-oa`; `multi` includes oatdomain. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and domains-list shape. Domain IDs are normalized to the numeric suffix (strip URL tail / `domain:` prefix).
-- No PubMed heading invented.
-
-## 0.16.172 — 2026-09-24
-
-- Hundred-and-fifty-sixth live SearchAdapter: OpenAlex works-by-topics.field.id extras (`tools.oatfield`) grouping works via `group_by=topics.field.id` with work counts, optional cites, and topics.field.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `field-oa` / `works-field-oa`; `multi` includes oatfield. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and fields-list shape. Field IDs are normalized to the numeric suffix (strip URL tail / `field:` prefix).
 - No PubMed heading invented.
