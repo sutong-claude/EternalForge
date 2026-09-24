@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.174 — 2026-09-24
+
+- Hundred-and-fifty-eighth live SearchAdapter: OpenAlex works-by-primary_topic.id extras (`tools.oaprtopic`) grouping works via `group_by=primary_topic.id` with work counts, optional cites, and primary_topic.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `prtopic-oa` / `works-prtopic-oa`; `multi` includes oaprtopic. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and primary_topics-list shape. Topic IDs are normalized to the `T…` suffix (strip URL tail / `topic:` prefix).
+- No PubMed heading invented.
+
 ## 0.16.173 — 2026-09-24
 
 - Hundred-and-fifty-seventh live SearchAdapter: OpenAlex works-by-topics.domain.id extras (`tools.oatdomain`) grouping works via `group_by=topics.domain.id` with work counts, optional cites, and topics.domain.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
