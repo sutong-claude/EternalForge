@@ -13,6 +13,7 @@ Owner can prepend topics anytime. Hourly agent takes the first unchecked item.
 - [x] Practical value: 5 product ideas this factory could ship in 30 days (tools, briefs, datasets) - memory/reports/2026-09-24-product-ideas-30-days.md
 - [x] Data provenance and poisoning risks for autonomous literature review - memory/reports/2026-09-24-data-provenance-poisoning.md
 - [x] Retractions, paper mills, and citation hygiene (empty-queue follow-on) - memory/reports/2026-09-24-retractions-paper-mills.md
+- [x] How to score an hourly intern (empty-queue follow-on; not Monday so T005 skipped) - memory/reports/2026-09-24-intern-eval-metrics.md
 
 ## Parking lot
 

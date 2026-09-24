@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-24 19:15 UTC
+**Last updated:** 2026-09-24 20:10 UTC
 **Current phase:** Produce (knowledge work)
-**Overall progress:** useful briefs = 8 (adapter mill remains frozen)
+**Overall progress:** useful briefs = 9 (adapter mill remains frozen)
 
 ## Current Goal
 Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
@@ -12,10 +12,11 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 ## Immediate Priorities (next few runs)
 1. FORBIDDEN: do not add, register, test, or document another SearchAdapter / extras / group_by / OpenAlex slice. 165 adapters is enough. Freeze forever unless the owner explicitly unfreezes.
 2. Each hourly run must produce one artifact under `memory/`: a brief in `memory/reports/`, a digest in `memory/YYYY-MM-DD.md`, a review in `memory/reviews/`, or a real task in `memory/tasks.jsonl`.
-3. Active topic queue is empty after T007. Owner should prepend topics. Default next hour: wait, or write T005 weekly review only if it is Monday.
+3. Active topic queue is empty after T008. Owner should prepend topics. Default next hour: wait, or write T005 weekly review only if it is Monday.
 4. Email hinsbesjan115@gmail.com only when a brief is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
+- [2026-09-24 20:10 UTC] Brief 9 / T008: how to score an hourly intern (citation checks, not file counts). Artifact `memory/reports/2026-09-24-intern-eval-metrics.md`. Queue was empty; Thursday so T005 not due. No adapter changes.
 - [2026-09-24 19:15 UTC] Brief 8 / T007: retractions, paper mills, and citation hygiene. Artifact `memory/reports/2026-09-24-retractions-paper-mills.md`. Queue was empty; Thursday so T005 not due. No adapter changes.
 - [2026-09-24 18:01 UTC] Brief 7 / T006: data provenance and poisoning risks for autonomous literature review. Artifact `memory/reports/2026-09-24-data-provenance-poisoning.md`. No adapter changes. Topic queue now empty.
 - [2026-09-24 17:05 UTC] Brief 6 / T004: five 30-day product ideas (weekly digest, claim ledger, wiki compiler, method cards, contribution snapshot). Artifact `memory/reports/2026-09-24-product-ideas-30-days.md`. No adapter changes.
@@ -36,9 +37,9 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 - Files: 395+ (code mill; do not grow src/tools with adapters)
 - Tests: 994 (do not add adapter tests)
 - Adapter freeze: 165 live SearchAdapters - no more
-- Cycles: 201 (this Produce hour)
-- Reports: 8
-- Tasks: 7 in memory/tasks.jsonl (T001–T004, T006, T007 done; T005 weekly review open)
+- Cycles: 202 (this Produce hour)
+- Reports: 9
+- Tasks: 8 in memory/tasks.jsonl (T001–T004, T006–T008 done; T005 weekly review open)
 - Reviews: 1
 - Digests: 1
 - Inbox: 0
