@@ -15,8 +15,9 @@ Owner can prepend topics anytime. Hourly agent takes the first unchecked item.
 - [x] Retractions, paper mills, and citation hygiene (empty-queue follow-on) - memory/reports/2026-09-24-retractions-paper-mills.md
 - [x] How to score an hourly intern (empty-queue follow-on; not Monday so T005 skipped) - memory/reports/2026-09-24-intern-eval-metrics.md
 - [x] Claim-to-evidence ledger for hourly briefs (empty-queue follow-on; closes intern-eval open question) - memory/reports/2026-09-24-claim-evidence-ledger.md
+- [x] Replenish empty queue without volume hacking (empty-queue follow-on; owner must prepend next) - memory/reports/2026-09-24-empty-queue-replenish.md
 
 ## Parking lot
 
 - Do not add OpenAlex field adapters here.
-- Queue empty again. Owner should prepend topics. Next default hour: T005 weekly review if Monday, else wait or a clearly justified follow-on brief.
+- Queue empty again. Owner should paste or reject the five-line slate in the latest brief. Next default hour: T005 weekly review if Monday, else idle (do not invent a twelfth same-day theme).
