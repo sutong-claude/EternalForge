@@ -20,4 +20,6 @@ Owner can prepend topics anytime. Hourly agent takes the first unchecked item.
 ## Parking lot
 
 - Do not add OpenAlex field adapters here.
-- Queue empty again. Owner should paste or reject the five-line slate in the latest brief. Next default hour: T005 weekly review if Monday, else idle (do not invent a twelfth same-day theme).
+- Queue empty. 2026-09-24 23:00 UTC hour wrote the end-of-day digest (`memory/2026-09-24.md`) and refreshed `memory/reviews/daily-2026-09-24.md` instead of inventing brief 12.
+- Owner should paste or reject the five-line slate in `memory/reports/2026-09-24-empty-queue-replenish.md`.
+- Next default hour: T005 weekly review if Monday, else idle.
