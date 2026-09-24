@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.175 — 2026-09-24
+
+- Hundred-and-fifty-ninth live SearchAdapter: OpenAlex works-by-topics.keywords extras (`tools.oakw`) grouping works via `group_by=topics.keywords` with work counts, optional cites, and topics.keywords-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `keywords-oa` / `works-keywords-oa`; `multi` includes oakw. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and keywords-list shape. Keyword keys keep the display string (strip URL tail / `keyword:` prefix).
+- No PubMed heading invented.
+
 ## 0.16.174 — 2026-09-24
 
 - Hundred-and-fifty-eighth live SearchAdapter: OpenAlex works-by-primary_topic.id extras (`tools.oaprtopic`) grouping works via `group_by=primary_topic.id` with work counts, optional cites, and primary_topic.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
