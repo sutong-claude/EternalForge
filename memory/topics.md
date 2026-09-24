@@ -10,7 +10,7 @@ Owner can prepend topics anytime. Hourly agent takes the first unchecked item.
 - [x] PrimeScientist / AIDE2: allocating effort and recursive self-improvement without reward hacking - memory/reports/2026-09-24-primescientist-aide2.md
 - [x] Open-source landscape: what a personal research intern should actually output each hour - memory/reports/2026-09-24-oss-intern-hourly-outputs.md
 - [x] Auto-RecSys / industry co-scientist loops - what transfers to a one-person shop - memory/reports/2026-09-24-auto-recsys-coscientist.md
-- [ ] Practical value: 5 product ideas this factory could ship in 30 days (tools, briefs, datasets)
+- [x] Practical value: 5 product ideas this factory could ship in 30 days (tools, briefs, datasets) - memory/reports/2026-09-24-product-ideas-30-days.md
 - [ ] Data provenance and poisoning risks for autonomous literature review
 
 ## Parking lot
