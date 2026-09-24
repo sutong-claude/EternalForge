@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.179 — 2026-09-24
+
+- Hundred-and-sixty-third live SearchAdapter: OpenAlex works-by-keywords.display_name extras (`tools.oakwdn`) grouping works via `group_by=keywords.display_name` with work counts, optional cites, and keywords.display_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `kwdn-oa` / `works-kwdn-oa`; `multi` includes oakwdn. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and keywords-list shape. Keyword names keep the display string (strip URL tail / `keyword:` prefix; hyphens become spaces).
+- No PubMed heading invented.
+
 ## 0.16.178 — 2026-09-24
 
 - Hundred-and-sixty-second live SearchAdapter: OpenAlex works-by-concepts.level extras (`tools.oaconclev`) grouping works via `group_by=concepts.level` with work counts, optional cites, and concepts.level-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
