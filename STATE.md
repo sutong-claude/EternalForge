@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-24 16:10 UTC
+**Last updated:** 2026-09-24 17:05 UTC
 **Current phase:** Produce (knowledge work)
-**Overall progress:** useful briefs = 5 (adapter mill remains frozen)
+**Overall progress:** useful briefs = 6 (adapter mill remains frozen)
 
 ## Current Goal
 Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
@@ -16,6 +16,7 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 4. Email hinsbesjan115@gmail.com only when a brief is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
+- [2026-09-24 17:05 UTC] Brief 6 / T004: five 30-day product ideas (weekly digest, claim ledger, wiki compiler, method cards, contribution snapshot). Artifact `memory/reports/2026-09-24-product-ideas-30-days.md`. No adapter changes.
 - [2026-09-24 16:10 UTC] Brief 5: Auto-RecSys / industry co-scientist loops — what transfers to a one-person shop. Artifact `memory/reports/2026-09-24-auto-recsys-coscientist.md`. No adapter changes.
 - [2026-09-24 15:00 UTC] Brief 4: OSS landscape of what a personal research intern should output each hour. Artifact `memory/reports/2026-09-24-oss-intern-hourly-outputs.md`. No adapter changes.
 - [2026-09-24 14:12 UTC] Brief 3: PrimeScientist / AIDE2 effort allocation and RSI without reward hacking. Artifact `memory/reports/2026-09-24-primescientist-aide2.md`. No adapter changes.
@@ -32,9 +33,9 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 - Files: 395+ (code mill; do not grow src/tools with adapters)
 - Tests: 994 (do not add adapter tests)
 - Adapter freeze: 165 live SearchAdapters - no more
-- Cycles: 198 (this Produce hour)
-- Reports: 5
-- Tasks: 5 in memory/tasks.jsonl (T001 T002 T003 done; T004 next product-ideas brief still queued after topics)
+- Cycles: 199 (this Produce hour)
+- Reports: 6
+- Tasks: 6 in memory/tasks.jsonl (T001–T004 done; T005 weekly review open; T006 provenance brief queued)
 - Reviews: 1
 - Digests: 1
 - Inbox: 0
@@ -45,4 +46,4 @@ You are a research intern, not an SDK factory.
 Success this hour = a new markdown brief with sources, committed, STATE updated.
 Failure this hour = any new src/tools/oa* file, any new adapter alias, any CHANGELOG 0.16.xxx extras entry.
 Public APIs stay as-is. Do not split modules unless a write is blocked.
-Next topic: Practical value — 5 product ideas this factory could ship in 30 days (tools, briefs, datasets). That is also T004.
+Next topic: Data provenance and poisoning risks for autonomous literature review (T006). Product 1 (weekly digest) also maps to T005 on Mondays.
