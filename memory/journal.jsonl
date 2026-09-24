@@ -11,3 +11,4 @@
 {"timestamp": "2026-09-24T18:01:00Z", "kind": "report", "summary": "data provenance and poisoning brief", "details": "memory/reports/2026-09-24-data-provenance-poisoning.md"}
 {"timestamp": "2026-09-24T19:15:00Z", "kind": "report", "summary": "retractions and paper mills brief", "details": "memory/reports/2026-09-24-retractions-paper-mills.md; queue was empty, Thursday so T005 not due"}
 {"timestamp": "2026-09-24T20:10:00Z", "kind": "report", "summary": "intern evaluation metrics brief", "details": "memory/reports/2026-09-24-intern-eval-metrics.md; queue empty, Thursday T005 not due; no adapter changes"}
+{"timestamp": "2026-09-24T21:05:00Z", "kind": "report", "summary": "claim-to-evidence ledger brief", "details": "memory/reports/2026-09-24-claim-evidence-ledger.md; queue empty, Thursday T005 not due; no adapter changes"}

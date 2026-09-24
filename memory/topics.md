@@ -14,6 +14,7 @@ Owner can prepend topics anytime. Hourly agent takes the first unchecked item.
 - [x] Data provenance and poisoning risks for autonomous literature review - memory/reports/2026-09-24-data-provenance-poisoning.md
 - [x] Retractions, paper mills, and citation hygiene (empty-queue follow-on) - memory/reports/2026-09-24-retractions-paper-mills.md
 - [x] How to score an hourly intern (empty-queue follow-on; not Monday so T005 skipped) - memory/reports/2026-09-24-intern-eval-metrics.md
+- [x] Claim-to-evidence ledger for hourly briefs (empty-queue follow-on; closes intern-eval open question) - memory/reports/2026-09-24-claim-evidence-ledger.md
 
 ## Parking lot
 
