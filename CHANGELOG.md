@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.170 — 2026-09-24
+
+- Hundred-and-fifty-fourth live SearchAdapter: OpenAlex works-by-grants.award_id extras (`tools.oaaward`) grouping works via `group_by=grants.award_id` with work counts, optional cites, and grants.award_id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `award-oa` / `works-award-oa`; `multi` includes oaaward. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and awards-list shape. Award IDs keep grant-agency strings (strip `award:` prefix / URL tail).
+- No PubMed heading invented.
+
 ## 0.16.169 — 2026-09-24
 
 - Hundred-and-fifty-third live SearchAdapter: OpenAlex works-by-topics.id extras (`tools.oatopicid`) grouping works via `group_by=topics.id` with work counts, optional cites, and topics.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
@@ -34,46 +41,4 @@
 - Hundred-and-forty-ninth live SearchAdapter: OpenAlex works-by-referenced_works extras (`tools.oarefs`) grouping works via `group_by=referenced_works` with work counts, optional cites, and referenced_works-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
 - Aliases `refs-oa` / `works-refs-oa`; `multi` includes oarefs. Public imports stay on `tools.research`.
 - Tests cover empty query, aliases, group_by mapping (most works first), limit, and referenced_work_ids-list shape. Work IDs are normalized to the `W…` suffix.
-- No PubMed heading invented.
-
-## 0.16.164 — 2026-09-23
-
-- Hundred-and-forty-eighth live SearchAdapter: OpenAlex works-by-ids.wikidata extras (`tools.oaidswikidata`) grouping works via `group_by=ids.wikidata` with work counts, optional cites, and ids.wikidata-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `idswd-oa` / `works-idswd-oa`; `multi` includes oaidswikidata. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and wikidata_ids-list shape. Wikidata IDs are normalized to the `Q…` suffix.
-- No PubMed heading invented.
-
-## 0.16.163 — 2026-09-23
-
-- Hundred-and-forty-seventh live SearchAdapter: OpenAlex works-by-ids.openalex extras (`tools.oaidsopenalex`) grouping works via `group_by=ids.openalex` with work counts, optional cites, and ids.openalex-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `idsoa-oa` / `works-idsoa-oa`; `multi` includes oaidsopenalex. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and openalex_ids-list shape. OpenAlex IDs are normalized to the `W…` suffix.
-- No PubMed heading invented.
-
-## 0.16.162 — 2026-09-23
-
-- Hundred-and-forty-sixth live SearchAdapter: OpenAlex works-by-ids.doi extras (`tools.oaidsdoi`) grouping works via `group_by=ids.doi` with work counts, optional cites, and ids.doi-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `idsdoi-oa` / `works-idsdoi-oa`; `multi` includes oaidsdoi. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and dois-list shape. DOI URLs are normalized to the `10.` prefix.
-- No PubMed heading invented.
-
-## 0.16.161 — 2026-09-23
-
-- Hundred-and-forty-fifth live SearchAdapter: OpenAlex works-by-ids.pmcid extras (`tools.oapmcid`) grouping works via `group_by=ids.pmcid` with work counts, optional cites, and ids.pmcid-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `pmcid-oa` / `works-pmcid-oa`; `multi` includes oapmcid. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and pmcids-list shape.
-- No PubMed heading invented.
-
-## 0.16.160 — 2026-09-23
-
-- Hundred-and-forty-fourth live SearchAdapter: OpenAlex works-by-ids.pmid extras (`tools.oapmid`) grouping works via `group_by=ids.pmid` with work counts, optional cites, and ids.pmid-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `pmid-oa` / `works-pmid-oa`; `multi` includes oapmid. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and pmids-list shape.
-- No PubMed heading invented.
-
-## 0.16.159 — 2026-09-23
-
-- Hundred-and-forty-third live SearchAdapter: OpenAlex works-by-ids.mag extras (`tools.oamag`) grouping works via `group_by=ids.mag` with work counts, optional cites, and ids.mag-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
-- Aliases `mag-oa` / `works-mag-oa`; `multi` includes oamag. Public imports stay on `tools.research`.
-- Tests cover empty query, aliases, group_by mapping (most works first), limit, and mags-list shape.
 - No PubMed heading invented.
