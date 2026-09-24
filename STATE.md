@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-24 21:05 UTC
+**Last updated:** 2026-09-24 22:10 UTC
 **Current phase:** Produce (knowledge work)
-**Overall progress:** useful briefs = 10 (adapter mill remains frozen)
+**Overall progress:** useful briefs = 11 (adapter mill remains frozen)
 
 ## Current Goal
 Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
@@ -11,11 +11,12 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 
 ## Immediate Priorities (next few runs)
 1. FORBIDDEN: do not add, register, test, or document another SearchAdapter / extras / group_by / OpenAlex slice. 165 adapters is enough. Freeze forever unless the owner explicitly unfreezes.
-2. Each hourly run must produce one artifact under `memory/`: a brief in `memory/reports/`, a digest in `memory/YYYY-MM-DD.md`, a review in `memory/reviews/`, or a real task in `memory/tasks.jsonl`.
-3. Active topic queue is empty after T009. Owner should prepend topics. Default next hour: wait, or write T005 weekly review only if it is Monday.
+2. Each hourly run must produce one artifact under `memory/` only when a topic exists or Monday T005 is due. Empty queue + not Monday = idle is allowed.
+3. Active topic queue is empty after T010. Owner should prepend topics (five-line slate sits in the latest brief). Default next hour: wait, or write T005 weekly review only if it is Monday.
 4. Email hinsbesjan115@gmail.com only when a brief is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
+- [2026-09-24 22:10 UTC] Brief 11 / T010: how to replenish an empty queue without volume hacking. Artifact `memory/reports/2026-09-24-empty-queue-replenish.md`. Queue empty; Thursday so T005 not due. No adapter changes.
 - [2026-09-24 21:05 UTC] Brief 10 / T009: claim-to-evidence ledger for hourly briefs. Artifact `memory/reports/2026-09-24-claim-evidence-ledger.md`. Queue was empty; Thursday so T005 not due. No adapter changes.
 - [2026-09-24 20:10 UTC] Brief 9 / T008: how to score an hourly intern (citation checks, not file counts). Artifact `memory/reports/2026-09-24-intern-eval-metrics.md`. Queue was empty; Thursday so T005 not due. No adapter changes.
 - [2026-09-24 19:15 UTC] Brief 8 / T007: retractions, paper mills, and citation hygiene. Artifact `memory/reports/2026-09-24-retractions-paper-mills.md`. Queue was empty; Thursday so T005 not due. No adapter changes.
@@ -32,15 +33,15 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 - Adapter mill burned ~10 days / ~193 cycles cloning OpenAlex group_by fields. CHANGELOG history truncated. Do not invent missing PubMed headings or missing adapter numbers.
 - Count only files that exist under `memory/`.
 - GitHub writes over ~20k truncate; keep briefs focused.
-- Topic queue empty; next intern must not invent adapters to fill the hour.
+- Topic queue empty; next intern must not invent adapters or a twelfth same-day theme to fill the hour.
 
 ## Metrics
 - Files: 395+ (code mill; do not grow src/tools with adapters)
 - Tests: 994 (do not add adapter tests)
 - Adapter freeze: 165 live SearchAdapters - no more
-- Cycles: 203 (this Produce hour)
-- Reports: 10
-- Tasks: 9 in memory/tasks.jsonl (T001–T004, T006–T009 done; T005 weekly review open)
+- Cycles: 204 (this Produce hour)
+- Reports: 11
+- Tasks: 10 in memory/tasks.jsonl (T001–T004, T006–T010 done; T005 weekly review open)
 - Reviews: 1
 - Digests: 1
 - Inbox: 0
@@ -48,7 +49,7 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 
 ## Notes for next agent
 You are a research intern, not an SDK factory.
-Success this hour = a new markdown brief with sources, committed, STATE updated — or a weekly review if Monday and the queue is empty.
+Success this hour = a new markdown brief with sources, committed, STATE updated — or a weekly review if Monday and the queue is empty — or an explicit idle if queue empty and not Monday.
 Failure this hour = any new src/tools/oa* file, any new adapter alias, any CHANGELOG 0.16.xxx extras entry.
 Public APIs stay as-is. Do not split modules unless a write is blocked.
 Next priority: owner-prepended topic if any; otherwise T005 weekly review on Monday. Do not unfreeze adapters.
