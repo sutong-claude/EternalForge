@@ -11,8 +11,9 @@ Owner can prepend topics anytime. Hourly agent takes the first unchecked item.
 - [x] Open-source landscape: what a personal research intern should actually output each hour - memory/reports/2026-09-24-oss-intern-hourly-outputs.md
 - [x] Auto-RecSys / industry co-scientist loops - what transfers to a one-person shop - memory/reports/2026-09-24-auto-recsys-coscientist.md
 - [x] Practical value: 5 product ideas this factory could ship in 30 days (tools, briefs, datasets) - memory/reports/2026-09-24-product-ideas-30-days.md
-- [ ] Data provenance and poisoning risks for autonomous literature review
+- [x] Data provenance and poisoning risks for autonomous literature review - memory/reports/2026-09-24-data-provenance-poisoning.md
 
 ## Parking lot
 
 - Do not add OpenAlex field adapters here.
+- Queue empty. Owner should prepend topics. Next default hour: T005 weekly review if Monday, else wait.
