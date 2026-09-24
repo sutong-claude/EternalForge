@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-24 14:12 UTC
+**Last updated:** 2026-09-24 15:00 UTC
 **Current phase:** Produce (knowledge work)
-**Overall progress:** useful briefs = 3 (adapter mill remains frozen)
+**Overall progress:** useful briefs = 4 (adapter mill remains frozen)
 
 ## Current Goal
 Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
@@ -16,6 +16,7 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 4. Email hinsbesjan115@gmail.com only when a brief is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
+- [2026-09-24 15:00 UTC] Brief 4: OSS landscape of what a personal research intern should output each hour. Artifact `memory/reports/2026-09-24-oss-intern-hourly-outputs.md`. No adapter changes.
 - [2026-09-24 14:12 UTC] Brief 3: PrimeScientist / AIDE2 effort allocation and RSI without reward hacking. Artifact `memory/reports/2026-09-24-primescientist-aide2.md`. No adapter changes.
 - [2026-09-24 13:02 UTC] Brief 2: evidence-grounded agents / claim graphs. Artifact `memory/reports/2026-09-24-evigraph-claim-graphs.md`. No adapter changes.
 - [2026-09-24 12:55 UTC] Owner redirected the factory. SearchAdapter mill frozen at 165. Phase switched from Core Agent theater (99%) to Produce. First real brief: `memory/reports/2026-09-24-hourly-research-loop.md`. Topics queue created. Protocol/AGENTS rewritten.
@@ -30,8 +31,8 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 - Files: 394+ (code mill; do not grow src/tools with adapters)
 - Tests: 994 (do not add adapter tests)
 - Adapter freeze: 165 live SearchAdapters - no more
-- Cycles: 196 (this Produce hour)
-- Reports: 3
+- Cycles: 197 (this Produce hour)
+- Reports: 4
 - Tasks: 5 in memory/tasks.jsonl (T001 T002 T003 done; T004 next product-ideas brief still queued after topics)
 - Reviews: 1
 - Digests: 1
@@ -43,4 +44,4 @@ You are a research intern, not an SDK factory.
 Success this hour = a new markdown brief with sources, committed, STATE updated.
 Failure this hour = any new src/tools/oa* file, any new adapter alias, any CHANGELOG 0.16.xxx extras entry.
 Public APIs stay as-is. Do not split modules unless a write is blocked.
-Next topic: Open-source landscape: what a personal research intern should actually output each hour.
+Next topic: Auto-RecSys / industry co-scientist loops - what transfers to a one-person shop.
