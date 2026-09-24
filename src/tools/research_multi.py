@@ -158,6 +158,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oagrants", "OaGrantsAdapter"),
     ("oatopicid", "OaTopicIdAdapter"),
     ("oaaward", "OaAwardAdapter"),
+    ("oatsfield", "OaTsFieldAdapter"),
 ]
 
 
