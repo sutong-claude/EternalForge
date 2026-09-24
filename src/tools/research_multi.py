@@ -168,6 +168,7 @@ _MULTI: list[tuple[str, str]] = [
     ("oaconclev", "OaConcLevAdapter"),
     ("oakwdn", "OaKwDnAdapter"),
     ("oaconcwd", "OaConcWdAdapter"),
+    ("oaconcdn", "OaConcDnAdapter"),
 ]
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.181 — 2026-09-24
+
+- Hundred-and-sixty-fifth live SearchAdapter: OpenAlex works-by-concepts.display_name extras (`tools.oaconcdn`) grouping works via `group_by=concepts.display_name` with work counts, optional cites, and concepts.display_name-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `concdn-oa` / `works-concdn-oa`; `multi` includes oaconcdn. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and concepts-list shape. Concept names keep the display string (strip URL tail / `concept:` prefix; hyphens become spaces).
+- No PubMed heading invented.
+
 ## 0.16.180 — 2026-09-24
 
 - Hundred-and-sixty-fourth live SearchAdapter: OpenAlex works-by-concepts.wikidata extras (`tools.oaconcwd`) grouping works via `group_by=concepts.wikidata` with work counts, optional cites, and concepts.wikidata-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
