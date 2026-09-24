@@ -18,7 +18,7 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 ## Recent Actions
 - [2026-09-24 16:10 UTC] Brief 5: Auto-RecSys / industry co-scientist loops — what transfers to a one-person shop. Artifact `memory/reports/2026-09-24-auto-recsys-coscientist.md`. No adapter changes.
 - [2026-09-24 15:00 UTC] Brief 4: OSS landscape of what a personal research intern should output each hour. Artifact `memory/reports/2026-09-24-oss-intern-hourly-outputs.md`. No adapter changes.
-- [2026-09-24 14:12 UTC] Brief 5 wait no Brief 3: PrimeScientist / AIDE2 effort allocation and RSI without reward hacking. Artifact `memory/reports/2026-09-24-primescientist-aide2.md`. No adapter changes.
+- [2026-09-24 14:12 UTC] Brief 3: PrimeScientist / AIDE2 effort allocation and RSI without reward hacking. Artifact `memory/reports/2026-09-24-primescientist-aide2.md`. No adapter changes.
 - [2026-09-24 13:02 UTC] Brief 2: evidence-grounded agents / claim graphs. Artifact `memory/reports/2026-09-24-evigraph-claim-graphs.md`. No adapter changes.
 - [2026-09-24 12:55 UTC] Owner redirected the factory. SearchAdapter mill frozen at 165. Phase switched from Core Agent theater (99%) to Produce. First real brief: `memory/reports/2026-09-24-hourly-research-loop.md`. Topics queue created. Protocol/AGENTS rewritten.
 - [2026-09-24 12:13 UTC] LAST adapter (do not continue this line): OpenAlex works-by-concepts.display_name extras (`oaconcdn`). Frozen.
