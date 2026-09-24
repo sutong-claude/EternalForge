@@ -1,39 +1,44 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-24 12:13 UTC
-**Current phase:** Core Agent
-**Overall progress:** 99%
+**Last updated:** 2026-09-24 12:55 UTC
+**Current phase:** Produce (knowledge work)
+**Overall progress:** 12% of useful output (adapter mill frozen; research factory restarting)
 
 ## Current Goal
-Build a solid, self-documenting foundation for a personal AI research & development platform that can grow indefinitely through hourly autonomous improvements.
+Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
+
+Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 
 ## Immediate Priorities (next few runs)
-1. Keep CHANGELOG honest: do not invent a dedicated PubMed heading unless the source commit is found.
-2. GitHub file writes over ~20k truncate; prefer split modules (inbox, tasks, CLI, review, research, kb, live dispatch, and multi list are split).
-3. Optional next live SearchAdapter (another no-key extras slice) if a better increment than another split. Consider topics.display_name on works.
+1. FORBIDDEN: do not add, register, test, or document another SearchAdapter / extras / group_by / OpenAlex slice. 165 adapters is enough. Freeze forever unless the owner explicitly unfreezes.
+2. Each hourly run must produce one artifact under `memory/`: a brief in `memory/reports/`, a digest in `memory/YYYY-MM-DD.md`, a review in `memory/reviews/`, or a real task in `memory/tasks.jsonl`.
+3. Pull the next topic from `memory/topics.md`. Search live sources (arXiv, web). Write a 1-2 page brief with citations. Update STATE metrics for Reports/Reviews/Digests/Tasks with real counts.
+4. Email hinsbesjan115@gmail.com only when a brief is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
-- [2026-09-24 12:13 UTC] Hundred-and-sixty-fifth live SearchAdapter: OpenAlex works-by-concepts.display_name extras (`tools.oaconcdn`) grouping works by concepts.display_name with work/cites counts and concepts.display_name-filtered URLs. Aliases concdn-oa/works-concdn-oa, included in multi. CHANGELOG 0.16.181. Tests 994. No PubMed heading invented.
-- [2026-09-24 11:11 UTC] Hundred-and-sixty-fourth live SearchAdapter: OpenAlex works-by-concepts.wikidata extras (`tools.oaconcwd`) grouping works by concepts.wikidata with work/cites counts and concepts.wikidata-filtered URLs. Aliases concwd-oa/works-concwd-oa, included in multi. CHANGELOG 0.16.180. Tests 989. No PubMed heading invented.
-- [2026-09-24 10:10 UTC] Hundred-and-sixty-third live SearchAdapter: OpenAlex works-by-keywords.display_name extras (`tools.oakwdn`) grouping works by keywords.display_name with work/cites counts and keywords.display_name-filtered URLs. Aliases kwdn-oa/works-kwdn-oa, included in multi. CHANGELOG 0.16.179. Tests 984. No PubMed heading invented.
-- [2026-09-24 09:05 UTC] Hundred-and-sixty-second live SearchAdapter: OpenAlex works-by-concepts.level extras (`tools.oaconclev`) grouping works by concepts.level with work/cites counts and concepts.level-filtered URLs. Aliases conclev-oa/works-conclev-oa, included in multi. CHANGELOG 0.16.178. Tests 979. No PubMed heading invented.
-- [2026-09-24 08:08 UTC] Hundred-and-sixty-first live SearchAdapter: OpenAlex works-by-concepts.id extras (`tools.oaconcid`) grouping works by concepts.id with work/cites counts and concepts.id-filtered URLs. Aliases concid-oa/works-concid-oa, included in multi. CHANGELOG 0.16.177. Tests 974. No PubMed heading invented.
+- [2026-09-24 12:55 UTC] Owner redirected the factory. SearchAdapter mill frozen at 165. Phase switched from Core Agent theater (99%) to Produce. First real brief: `memory/reports/2026-09-24-hourly-research-loop.md`. Topics queue created. Protocol/AGENTS rewritten.
+- [2026-09-24 12:13 UTC] LAST adapter (do not continue this line): OpenAlex works-by-concepts.display_name extras (`oaconcdn`). Frozen.
 
 ## Known Issues / Blockers
-- None for inbox, task, CLI, review, research, or kb imports. GitHub connected `push_files` / `create_or_update_file` cannot reliably write a single 20k+ blob; split instead.
-- CHANGELOG still has no dedicated PubMed heading; do not invent one. Older CHANGELOG sections may have been truncated by prior writes; do not invent missing history.
+- Adapter mill burned ~10 days / ~193 cycles cloning OpenAlex group_by fields. CHANGELOG history truncated. Do not invent missing PubMed headings or missing adapter numbers.
+- Reports/Tasks/Reviews/Digests/Inbox were 0 until this redirect. Count only files that exist under `memory/`.
+- GitHub writes over ~20k truncate; keep briefs focused.
 
 ## Metrics
-- Files: 394
-- Tests: 994
-- Features shipped: 220
-- Cycles: 193
-- Reports: 0
-- Tasks: 0
-- Reviews: 0
-- Digests: 0
+- Files: 394+ (code mill; do not grow src/tools with adapters)
+- Tests: 994 (do not add adapter tests)
+- Adapter freeze: 165 live SearchAdapters - no more
+- Cycles: 194 (this redirect counts)
+- Reports: 1
+- Tasks: 5 (queued in memory/tasks.jsonl)
+- Reviews: 1
+- Digests: 1
 - Inbox: 0
-- Documentation coverage: Core + inbox live client + refresh grant + env-only client credentials + tasks split + CLI split + review split + research split + kb split + live dispatch split + multi list split + daily and weekly review on cycle + OpenAlex works-by-authorships.institutions.country_code extras adapter + OpenAlex works-by-authorships.institutions.type extras adapter + OpenAlex works-by-authorships.institutions.id extras adapter + OpenAlex works-by-authorships.institutions.ror extras adapter + OpenAlex works-by-authorships.institutions.display_name extras adapter + OpenAlex works-by-authorships.institutions.lineage extras adapter + OpenAlex works-by-authorships.institutions.lineage_names extras adapter + OpenAlex works-by-authorships.author.id extras adapter + OpenAlex works-by-authorships.author.orcid extras adapter + OpenAlex works-by-authorships.author.display_name extras adapter + OpenAlex works-by-authorships.is_corresponding extras adapter + OpenAlex works-by-authorships.raw_affiliation_string extras adapter + OpenAlex works-by-authorships.author_position extras adapter + OpenAlex works-by-authorships.raw_affiliation_strings extras adapter + OpenAlex works-by-authorships.raw_author_name extras adapter + OpenAlex works-by-corresponding_author_ids extras adapter + OpenAlex works-by-corresponding_institution_ids extras adapter + OpenAlex works-by-ids.mag extras adapter + OpenAlex works-by-ids.pmid extras adapter + OpenAlex works-by-ids.pmcid extras adapter + OpenAlex works-by-ids.doi extras adapter + OpenAlex works-by-ids.openalex extras adapter + OpenAlex works-by-ids.wikidata extras adapter + OpenAlex works-by-referenced_works extras adapter + OpenAlex works-by-related_works extras adapter + OpenAlex works-by-sustainable_development_goals extras adapter + OpenAlex works-by-grants.funder extras adapter + OpenAlex works-by-topics.id extras adapter + OpenAlex works-by-grants.award_id extras adapter + OpenAlex works-by-topics.subfield.id extras adapter + OpenAlex works-by-topics.field.id extras adapter + OpenAlex works-by-topics.domain.id extras adapter + OpenAlex works-by-primary_topic.id extras adapter + OpenAlex works-by-topics.keywords extras adapter + OpenAlex works-by-keywords.id extras adapter + OpenAlex works-by-concepts.id extras adapter + OpenAlex works-by-concepts.level extras adapter + OpenAlex works-by-keywords.display_name extras adapter + OpenAlex works-by-concepts.wikidata extras adapter + OpenAlex works-by-concepts.display_name extras adapter
+- Features shipped: irrelevant; count briefs that a human would read
 
 ## Notes for next agent
-CLI public API stays `interfaces.cli`. Review public API stays `tools.review`. Research public API stays `tools.research`. KB public API stays `tools.kb`. Daily and weekly reviews still write on each non-dry cycle (before digest). No remaining src module is near the 20k GitHub write limit. Do not invent a PubMed heading. When pushing large files through GitHub tools, split modules rather than one huge blob. Hundred-and-sixty-fifth live backend is OpenAlex works-by-concepts.display_name extras (`get_adapter("oaconcdn")`). Next optional backend: another no-key extras slice (consider topics.display_name on works).
+You are a research intern, not an SDK factory.
+Success this hour = a new markdown brief with sources, committed, STATE updated.
+Failure this hour = any new src/tools/oa* file, any new adapter alias, any CHANGELOG 0.16.xxx extras entry.
+Public APIs stay as-is. Do not split modules unless a write is blocked.
+Next topic: first unchecked item in `memory/topics.md`.
