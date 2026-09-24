@@ -1,205 +1,25 @@
 # EternalForge Roadmap
 
-## Phase 0 – Bootstrap
-- [x] Create repository and vision
-- [x] Directory structure and architecture doc
-- [x] STATE-driven continuous improvement process
+## Phase 0 - Bootstrap
+- [x] Repo, STATE loop, architecture
 
-## Phase 1 – Core Agent (current)
-- [x] Plan-act-reflect loop
-- [x] Persistent memory (STATE.md + JSONL)
-- [x] CLI surface
-- [x] Research tool beyond skeleton (adapter interface + Wikipedia)
-- [x] Daily knowledge capture
-- [x] Persist research hits into the JSONL journal
-- [x] Second live SearchAdapter (DuckDuckGo Instant Answer)
-- [x] Third live SearchAdapter (Open Library) + merge-hits MultiAdapter
-- [x] Knowledge-base index over memory/ markdown + journal
-- [x] Journal kind filter on status / recent dump
-- [x] Knowledge base query filters (kind / date)
-- [x] Automated report generation from journal research hits
-- [x] Index research reports in the knowledge base
-- [x] Tag or source facet on KB hits
-- [x] Surface report count in status
-- [x] Deduplicate tags when merging journal extra_tags + extracted tags
-- [x] Fourth live SearchAdapter (Hacker News Algolia)
-- [x] Persist Reports=N in STATE metrics on cycle
-- [x] Persist journal tags on MemoryEntry writes
-- [x] Fifth live SearchAdapter (arXiv)
-- [x] Journal recent dump filter by persisted tag
-- [x] Task-tracking skeleton
-- [x] Persist Tasks=N in STATE metrics on cycle
-- [x] Task due dates / priority on the tracker
-- [x] Task list sort by due/priority; overdue flag
-- [x] Surface Reports/Tasks in CHANGELOG cycle extras
-- [x] Task list filter by tag and due-soon window
-- [x] Sixth live SearchAdapter (Crossref)
-- [x] Task set notes and tags
-- [x] Task title edit on set
-- [x] Task list text search on title + notes
-- [x] Task list filter by id prefix or created window
-- [x] Task list filter by updated window or exact id
-- [x] Seventh live SearchAdapter (Semantic Scholar)
-- [x] Eighth live SearchAdapter (PubMed)
-- [x] Ninth live SearchAdapter (Europe PMC)
-- [x] Tenth live SearchAdapter (OpenAlex)
-- [x] Eleventh live SearchAdapter (Zenodo)
-- [x] Twelfth live SearchAdapter (DataCite)
-- [x] Thirteenth live SearchAdapter (DOAJ)
-- [x] Fourteenth live SearchAdapter (Wikidata)
-- [x] Fifteenth live SearchAdapter (OpenAIRE)
-- [x] Sixteenth live SearchAdapter (CORE)
-- [x] Seventeenth live SearchAdapter (Semantic Scholar Graph extras)
-- [x] Eighteenth live SearchAdapter (Unpaywall)
-- [x] Nineteenth live SearchAdapter (Crossref extras)
-- [x] Twentieth live SearchAdapter (OpenAlex extras)
-- [x] Twenty-first live SearchAdapter (OpenAIRE extras)
-- [x] Twenty-second live SearchAdapter (Europe PMC extras)
-- [x] Twenty-third live SearchAdapter (ORCID extras)
-- [x] Twenty-fourth live SearchAdapter (DataCite extras)
-- [x] Twenty-fifth live SearchAdapter (Crossref funder extras)
-- [x] Twenty-sixth live SearchAdapter (OpenAlex funder extras)
-- [x] Twenty-seventh live SearchAdapter (ORCID works extras)
-- [x] Twenty-eighth live SearchAdapter (OpenAlex topics extras)
-- [x] Twenty-ninth live SearchAdapter (OpenAlex concepts extras)
-- [x] Thirtieth live SearchAdapter (OpenAlex sources extras)
-- [x] Thirty-first live SearchAdapter (OpenAlex publishers extras)
-- [x] Thirty-second live SearchAdapter (OpenAlex institutions extras)
-- [x] Thirty-third live SearchAdapter (OpenAlex authors extras)
-- [x] Thirty-fourth live SearchAdapter (OpenAlex works-by-year extras)
-- [x] Thirty-fifth live SearchAdapter (OpenAlex works-by-type extras)
-- [x] Thirty-sixth live SearchAdapter (OpenAlex works-by-language extras)
-- [x] Thirty-seventh live SearchAdapter (OpenAlex works-by-OA-status extras)
-- [x] Thirty-eighth live SearchAdapter (OpenAlex works-by-country extras)
-- [x] Thirty-ninth live SearchAdapter (OpenAlex works-by-continent extras)
-- [x] Fortieth live SearchAdapter (OpenAlex works-by-source-type extras)
-- [x] Forty-first live SearchAdapter (OpenAlex works-by-retraction extras)
-- [x] Forty-second live SearchAdapter (OpenAlex works-by-paratext extras)
-- [x] Forty-third live SearchAdapter (OpenAlex works-by-has_doi extras)
-- [x] Forty-fourth live SearchAdapter (OpenAlex works-by-has_oa extras)
-- [x] Forty-fifth live SearchAdapter (OpenAlex works-by-has_pmid extras)
-- [x] Forty-sixth live SearchAdapter (OpenAlex works-by-has_pmcid extras)
-- [x] Forty-seventh live SearchAdapter (OpenAlex works-by-has_issn extras)
-- [x] Forty-eighth live SearchAdapter (OpenAlex works-by-has_orcid extras)
-- [x] Forty-ninth live SearchAdapter (OpenAlex works-by-has_raw_affiliation_string extras)
-- [x] Fiftieth live SearchAdapter (OpenAlex works-by-has_references extras)
-- [x] Fifty-first live SearchAdapter (OpenAlex works-by-has_abstract extras)
-- [x] Fifty-second live SearchAdapter (OpenAlex works-by-has_pdf extras)
-- [x] Fifty-third live SearchAdapter (OpenAlex works-by-has_fulltext extras)
-- [x] Fifty-fourth live SearchAdapter (OpenAlex works-by-has_oa_accepted_or_published extras)
-- [x] Fifty-fifth live SearchAdapter (OpenAlex works-by-has_oa_submitted extras)
-- [x] Fifty-sixth live SearchAdapter (OpenAlex works-by-has_oa_repository extras)
-- [x] Fifty-seventh live SearchAdapter (OpenAlex works-by-has_oa_gold extras)
-- [x] Fifty-eighth live SearchAdapter (OpenAlex works-by-has_oa_hybrid extras)
-- [x] Fifty-ninth live SearchAdapter (OpenAlex works-by-has_oa_bronze extras)
-- [x] Sixtieth live SearchAdapter (OpenAlex works-by-has_oa_green extras)
-- [x] Sixty-first live SearchAdapter (OpenAlex works-by-has_oa_diamond extras)
-- [x] Sixty-second live SearchAdapter (OpenAlex works-by-is_oa extras)
-- [x] Sixty-third live SearchAdapter (OpenAlex works-by-has_oa_any_repository extras)
-- [x] Sixty-fourth live SearchAdapter (OpenAlex works-by-has_oa_publisher extras)
-- [x] Sixty-fifth live SearchAdapter (OpenAlex works-by-has_oa_domain extras)
-- [x] Sixty-sixth live SearchAdapter (OpenAlex works-by-has_oa_file extras)
-- [x] Sixty-seventh live SearchAdapter (OpenAlex works-by-has_oa_url extras)
-- [x] Sixty-eighth live SearchAdapter (OpenAlex works-by-has_oa_version extras)
-- [x] Sixty-ninth live SearchAdapter (OpenAlex works-by-has_oa_license extras)
-- [x] Seventieth live SearchAdapter (OpenAlex works-by-has_oa_license_id extras)
-- [x] Seventy-first live SearchAdapter (OpenAlex works-by-best_oa_location.license extras)
-- [x] Seventy-second live SearchAdapter (OpenAlex works-by-best_oa_location.license_id extras)
-- [x] Seventy-third live SearchAdapter (OpenAlex works-by-best_oa_location.version extras)
-- [x] Seventy-fourth live SearchAdapter (OpenAlex works-by-best_oa_location.source extras)
-- [x] Seventy-fifth live SearchAdapter (OpenAlex works-by-best_oa_location.source.id extras)
-- [x] Seventy-sixth live SearchAdapter (OpenAlex works-by-best_oa_location.source.type extras)
-- [x] Seventy-seventh live SearchAdapter (OpenAlex works-by-best_oa_location.source.issn_l extras)
-- [x] Seventy-eighth live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization extras)
-- [x] Seventy-ninth live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization_name extras)
-- [x] Eightieth live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization_lineage extras)
-- [x] Eighty-first live SearchAdapter (OpenAlex works-by-best_oa_location.source.host_organization_lineage_names extras)
-- [x] Eighty-second live SearchAdapter (OpenAlex works-by-best_oa_location.source.is_in_doaj extras)
-- [x] Eighty-third live SearchAdapter (OpenAlex works-by-best_oa_location.source.is_core extras)
-- [x] Eighty-fourth live SearchAdapter (OpenAlex works-by-best_oa_location.source.is_oa extras)
-- [x] Eighty-fifth live SearchAdapter (OpenAlex works-by-best_oa_location.source.issn extras)
-- [x] Eighty-sixth live SearchAdapter (OpenAlex works-by-best_oa_location.source.display_name extras)
-- [x] Eighty-seventh live SearchAdapter (OpenAlex works-by-primary_location.source.display_name extras)
-- [x] Eighty-eighth live SearchAdapter (OpenAlex works-by-primary_location.source.issn extras)
-- [x] Eighty-ninth live SearchAdapter (OpenAlex works-by-primary_location.source.issn_l extras)
-- [x] Ninetieth live SearchAdapter (OpenAlex works-by-primary_location.source.is_oa extras)
-- [x] Ninety-first live SearchAdapter (OpenAlex works-by-primary_location.source.is_in_doaj extras)
-- [x] Ninety-second live SearchAdapter (OpenAlex works-by-primary_location.source.is_core extras)
-- [x] Ninety-third live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization extras)
-- [x] Ninety-fourth live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization_name extras)
-- [x] Ninety-fifth live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization_lineage extras)
-- [x] Ninety-sixth live SearchAdapter (OpenAlex works-by-primary_location.source.host_organization_lineage_names extras)
-- [x] Ninety-seventh live SearchAdapter (OpenAlex works-by-primary_location.source.id extras)
-- [x] Ninety-eighth live SearchAdapter (OpenAlex works-by-primary_location.source.type extras)
-- [x] Ninety-ninth live SearchAdapter (OpenAlex works-by-primary_location.version extras)
-- [x] Hundredth live SearchAdapter (OpenAlex works-by-primary_location.license extras)
-- [x] Hundred-and-first live SearchAdapter (OpenAlex works-by-primary_location.license_id extras)
-- [x] Hundred-and-second live SearchAdapter (OpenAlex works-by-primary_location.is_oa extras)
-- [x] Hundred-and-third live SearchAdapter (OpenAlex works-by-primary_location.pdf_url extras)
-- [x] Hundred-and-fourth live SearchAdapter (OpenAlex works-by-primary_location.landing_page_url extras)
-- [x] Hundred-and-fifth live SearchAdapter (OpenAlex works-by-best_oa_location.landing_page_url extras)
-- [x] Hundred-and-sixth live SearchAdapter (OpenAlex works-by-best_oa_location.pdf_url extras)
-- [x] Hundred-and-seventh live SearchAdapter (OpenAlex works-by-best_oa_location.is_oa extras)
-- [x] Hundred-and-eighth live SearchAdapter (OpenAlex works-by-locations.is_oa extras)
-- [x] Hundred-and-ninth live SearchAdapter (OpenAlex works-by-locations.pdf_url extras)
-- [x] Hundred-and-tenth live SearchAdapter (OpenAlex works-by-locations.landing_page_url extras)
-- [x] Hundred-and-eleventh live SearchAdapter (OpenAlex works-by-locations.version extras)
-- [x] Hundred-and-twelfth live SearchAdapter (OpenAlex works-by-locations.license extras)
-- [x] Hundred-and-thirteenth live SearchAdapter (OpenAlex works-by-locations.license_id extras)
-- [x] Hundred-and-fourteenth live SearchAdapter (OpenAlex works-by-locations.source.id extras)
-- [x] Hundred-and-fifteenth live SearchAdapter (OpenAlex works-by-locations.source.type extras)
-- [x] Hundred-and-sixteenth live SearchAdapter (OpenAlex works-by-locations.source.issn extras)
-- [x] Hundred-and-seventeenth live SearchAdapter (OpenAlex works-by-locations.source.issn_l extras)
-- [x] Hundred-and-eighteenth live SearchAdapter (OpenAlex works-by-locations.source.is_oa extras)
-- [x] Hundred-and-nineteenth live SearchAdapter (OpenAlex works-by-locations.source.is_in_doaj extras)
-- [x] Hundred-and-twentieth live SearchAdapter (OpenAlex works-by-locations.source.is_core extras)
-- [x] Hundred-and-twenty-ninth live SearchAdapter (OpenAlex works-by-authorships.institutions.ror extras)
-- [x] Hundred-and-thirtieth live SearchAdapter (OpenAlex works-by-authorships.institutions.display_name extras)
-- [x] Hundred-and-thirty-first live SearchAdapter (OpenAlex works-by-authorships.institutions.lineage extras)
-- [x] Hundred-and-thirty-second live SearchAdapter (OpenAlex works-by-authorships.institutions.lineage_names extras)
-- [x] Hundred-and-thirty-third live SearchAdapter (OpenAlex works-by-authorships.author.id extras)
-- [x] Hundred-and-thirty-fourth live SearchAdapter (OpenAlex works-by-authorships.author.orcid extras)
-- [x] Hundred-and-thirty-fifth live SearchAdapter (OpenAlex works-by-authorships.author.display_name extras)
-- [x] Hundred-and-thirty-sixth live SearchAdapter (OpenAlex works-by-authorships.is_corresponding extras)
-- [x] Hundred-and-thirty-seventh live SearchAdapter (OpenAlex works-by-authorships.raw_affiliation_string extras)
-- [x] Hundred-and-thirty-eighth live SearchAdapter (OpenAlex works-by-authorships.author_position extras)
-- [x] Hundred-and-thirty-ninth live SearchAdapter (OpenAlex works-by-authorships.raw_affiliation_strings extras)
-- [x] Hundred-and-fortieth live SearchAdapter (OpenAlex works-by-authorships.raw_author_name extras)
-- [x] Hundred-and-forty-first live SearchAdapter (OpenAlex works-by-corresponding_author_ids extras)
-- [x] Hundred-and-forty-second live SearchAdapter (OpenAlex works-by-corresponding_institution_ids extras)
-- [x] Hundred-and-forty-third live SearchAdapter (OpenAlex works-by-ids.mag extras)
-- [x] Hundred-and-forty-fourth live SearchAdapter (OpenAlex works-by-ids.pmid extras)
-- [x] Hundred-and-forty-fifth live SearchAdapter (OpenAlex works-by-ids.pmcid extras)
-- [x] Hundred-and-forty-sixth live SearchAdapter (OpenAlex works-by-ids.doi extras)
-- [x] Hundred-and-fifty-second live SearchAdapter (OpenAlex works-by-grants.funder extras)
-- [x] Hundred-and-fifty-third live SearchAdapter (OpenAlex works-by-topics.id extras)
-- [x] Hundred-and-sixty-third live SearchAdapter (OpenAlex works-by-keywords.display_name extras)
-- [x] Index reviews in the knowledge base
-- [x] Surface review count in status / STATE metrics
-- [x] Reviews digest / documentation coverage note (`review --digest`)
-- [x] Index digest files distinctly in the KB; surface `digests=N` on status
-- [x] Write reviews digest automatically on each agent cycle
-- [x] Gmail / Drive listing sketch (fixture + capture-to-journal)
-- [x] Index inbox journal rows as source=inbox in the KB
-- [x] Surface inbox count in status / STATE metrics
+## Phase 1 - Core Agent (closed)
+- [x] Plan-act-reflect, CLI, memory, research adapter framework
+- [x] 165 live SearchAdapters - FROZEN 2026-09-24. Do not add more.
 
-## Phase 2 – Research Capabilities
-- Additional live search backends behind SearchAdapter
-- [x] Daily/weekly review sketch
+## Phase 2 - Produce (current)
+- [x] Stop adapter mill; rewrite hourly contract
+- [x] First real research brief
+- [ ] Evidence-grounded citation notes (EviGraph-style)
+- [ ] One brief per hour from memory/topics.md
+- [ ] Daily digest + Monday weekly review actually filled
+- [ ] Email owner a short summary when a brief ships
+- [ ] 30-day product/value memo
 
-## Phase 3 – Personal Productivity Platform
-- Task tracking (reviews)
-- Daily/weekly review
-- [x] Cycle writes a reviews digest
-- [x] Gmail / Drive listing sketch
-- [x] Live Gmail / Drive OAuth token probe (listing still stub-empty)
-- [x] Wire Google API client once tokens exist
-- [x] Index inbox captures in the knowledge base
-- [x] Surface inbox count on status
-- [x] Refresh Google tokens (refresh_token grant) when access_token expires
-- [x] Env-only Google client_id / client_secret (not persisted to token file)
+## Phase 3 - Personal productivity
+- [ ] Live Gmail/Drive capture into inbox (only if it produces notes the owner reads)
+- [ ] Task tracker used for real work, not metrics theater
 
-## Phase 4 – Self-Improvement & Scale
-- Automated testing gates
-- Architecture evolution
-- Public releases
+## Phase 4 - Self-improvement
+- [ ] Hidden eval: would a human spend 4 minutes on this page?
+- [ ] Allow src/ edits only when a brief is blocked by a real bug
