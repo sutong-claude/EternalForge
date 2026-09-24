@@ -171,6 +171,8 @@
 - [x] Hundred-and-forty-fourth live SearchAdapter (OpenAlex works-by-ids.pmid extras)
 - [x] Hundred-and-forty-fifth live SearchAdapter (OpenAlex works-by-ids.pmcid extras)
 - [x] Hundred-and-forty-sixth live SearchAdapter (OpenAlex works-by-ids.doi extras)
+- [x] Hundred-and-fifty-second live SearchAdapter (OpenAlex works-by-grants.funder extras)
+- [x] Hundred-and-fifty-third live SearchAdapter (OpenAlex works-by-topics.id extras)
 - [x] Index reviews in the knowledge base
 - [x] Surface review count in status / STATE metrics
 - [x] Reviews digest / documentation coverage note (`review --digest`)
