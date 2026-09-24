@@ -3,3 +3,4 @@
 {"timestamp": "2026-09-14T23:15:00Z", "kind": "feature", "summary": "Open Library + multi search", "details": "OpenLibraryAdapter, merge_hits, MultiAdapter, CLI backends multi/openlibrary"}
 {"timestamp": "2026-09-24T12:55:00Z", "kind": "redirect", "summary": "Freeze adapter mill; enter Produce phase", "details": "Owner rejected 165-adapter treadmill. First real brief on hourly-loop failure modes. Topics queue + tasks created."}
 {"timestamp": "2026-09-24T12:55:01Z", "kind": "report", "summary": "hourly-research-loop brief", "details": "memory/reports/2026-09-24-hourly-research-loop.md"}
+{"timestamp": "2026-09-24T13:02:00Z", "kind": "report", "summary": "EviGraph / claim-graph brief", "details": "memory/reports/2026-09-24-evigraph-claim-graphs.md"}
