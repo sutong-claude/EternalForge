@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.171 — 2026-09-24
+
+- Hundred-and-fifty-fifth live SearchAdapter: OpenAlex works-by-topics.subfield.id extras (`tools.oatsfield`) grouping works via `group_by=topics.subfield.id` with work counts, optional cites, and topics.subfield.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `subfield-oa` / `works-subfield-oa`; `multi` includes oatsfield. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and subfields-list shape. Subfield IDs are normalized to the numeric suffix (strip URL tail / `subfield:` prefix).
+- No PubMed heading invented.
+
 ## 0.16.170 — 2026-09-24
 
 - Hundred-and-fifty-fourth live SearchAdapter: OpenAlex works-by-grants.award_id extras (`tools.oaaward`) grouping works via `group_by=grants.award_id` with work counts, optional cites, and grants.award_id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
