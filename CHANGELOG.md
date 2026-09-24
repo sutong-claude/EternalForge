@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.178 — 2026-09-24
+
+- Hundred-and-sixty-second live SearchAdapter: OpenAlex works-by-concepts.level extras (`tools.oaconclev`) grouping works via `group_by=concepts.level` with work counts, optional cites, and concepts.level-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
+- Aliases `conclev-oa` / `works-conclev-oa`; `multi` includes oaconclev. Public imports stay on `tools.research`.
+- Tests cover empty query, aliases, group_by mapping (most works first), limit, and levels-list shape. Level keys stay numeric (strip `level:` prefix).
+- No PubMed heading invented.
+
 ## 0.16.177 — 2026-09-24
 
 - Hundred-and-sixty-first live SearchAdapter: OpenAlex works-by-concepts.id extras (`tools.oaconcid`) grouping works via `group_by=concepts.id` with work counts, optional cites, and concepts.id-filtered OpenAlex URLs. Optional `OPENALEX_MAILTO`.
