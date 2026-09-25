@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-24 23:05 UTC
+**Last updated:** 2026-09-25 01:05 UTC
 **Current phase:** Produce (knowledge work)
-**Overall progress:** useful briefs = 11; end-of-day digest + daily review refreshed (adapter mill remains frozen)
+**Overall progress:** useful briefs = 11; standing idle digest for 2026-09-25 (adapter mill remains frozen)
 
 ## Current Goal
 Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
@@ -11,11 +11,12 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 
 ## Immediate Priorities (next few runs)
 1. FORBIDDEN: do not add, register, test, or document another SearchAdapter / extras / group_by / OpenAlex slice. 165 adapters is enough. Freeze forever unless the owner explicitly unfreezes.
-2. Each hourly run must produce one artifact under `memory/` only when a topic exists or Monday T005 is due. Empty queue + not Monday = idle is allowed (end-of-day digest already written for 2026-09-24).
+2. Each hourly run must produce one artifact under `memory/` only when a topic exists or Monday T005 is due. Empty queue + not Monday = idle is allowed (standing digest already written for 2026-09-25).
 3. Active topic queue is empty after T010. Owner should prepend topics (five-line slate sits in Brief 11). Default next hour: wait, or write T005 weekly review only if it is Monday.
 4. Email hinsbesjan115@gmail.com only when a brief or digest is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
+- [2026-09-25 01:05 UTC] Standing idle digest. Queue empty; not Monday so T005 not due. Did not invent brief 12. Artifact `memory/2026-09-25.md`. No adapter changes.
 - [2026-09-24 23:05 UTC] End-of-day digest + daily review refresh. Queue empty; Thursday so T005 not due. Did not invent brief 12. Artifacts `memory/2026-09-24.md` and `memory/reviews/daily-2026-09-24.md`. No adapter changes.
 - [2026-09-24 22:10 UTC] Brief 11 / T010: how to replenish an empty queue without volume hacking. Artifact `memory/reports/2026-09-24-empty-queue-replenish.md`. Queue empty; Thursday so T005 not due. No adapter changes.
 - [2026-09-24 21:05 UTC] Brief 10 / T009: claim-to-evidence ledger for hourly briefs. Artifact `memory/reports/2026-09-24-claim-evidence-ledger.md`. Queue was empty; Thursday so T005 not due. No adapter changes.
@@ -34,17 +35,17 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 - Adapter mill burned ~10 days / ~193 cycles cloning OpenAlex group_by fields. CHANGELOG history truncated. Do not invent missing PubMed headings or missing adapter numbers.
 - Count only files that exist under `memory/`.
 - GitHub writes over ~20k truncate; keep briefs focused.
-- Topic queue empty; next intern must not invent adapters or a twelfth same-day theme to fill the hour.
+- Topic queue empty; next intern must not invent adapters or a twelfth same-theme brief to fill the hour.
 
 ## Metrics
 - Files: 395+ (code mill; do not grow src/tools with adapters)
 - Tests: 994 (do not add adapter tests)
 - Adapter freeze: 165 live SearchAdapters - no more
-- Cycles: 205 (this Produce hour)
+- Cycles: 206 (this Produce idle hour)
 - Reports: 11
 - Tasks: 10 in memory/tasks.jsonl (T001–T004, T006–T010 done; T005 weekly review open)
-- Reviews: 1 (refreshed end of day)
-- Digests: 1 (refreshed end of day)
+- Reviews: 1 (2026-09-24 end of day)
+- Digests: 2 (2026-09-24 closed + 2026-09-25 standing idle)
 - Inbox: 0
 - Features shipped: irrelevant; count briefs that a human would read
 
