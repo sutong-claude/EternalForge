@@ -1,8 +1,8 @@
 # EternalForge Live State
 
-**Last updated:** 2026-09-25 01:05 UTC
+**Last updated:** 2026-09-28 07:04 UTC
 **Current phase:** Produce (knowledge work)
-**Overall progress:** useful briefs = 11; standing idle digest for 2026-09-25 (adapter mill remains frozen)
+**Overall progress:** useful briefs = 11; weekly review T005 closed 2026-09-28; standing idle digest for 2026-09-25 (adapter mill remains frozen)
 
 ## Current Goal
 Use the hourly loop to produce readable work the owner can use: research briefs, literature notes, task lists, weekly reviews. Not more OpenAlex field adapters.
@@ -11,11 +11,12 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 
 ## Immediate Priorities (next few runs)
 1. FORBIDDEN: do not add, register, test, or document another SearchAdapter / extras / group_by / OpenAlex slice. 165 adapters is enough. Freeze forever unless the owner explicitly unfreezes.
-2. Each hourly run must produce one artifact under `memory/` only when a topic exists or Monday T005 is due. Empty queue + not Monday = idle is allowed (standing digest already written for 2026-09-25).
-3. Active topic queue is empty after T010. Owner should prepend topics (five-line slate sits in Brief 11). Default next hour: wait, or write T005 weekly review only if it is Monday.
+2. Each hourly run must produce one artifact under `memory/` only when a topic exists or Monday T005 is due. Empty queue + not the next Monday = idle is allowed.
+3. Active topic queue is empty after T010. T005 for 2026-09-28 is done (`memory/reviews/weekly-2026-09-28.md`). Owner should prepend topics (five-line slate sits in Brief 11). Default next hour: wait.
 4. Email hinsbesjan115@gmail.com only when a brief or digest is actually written (subject `[EternalForge]`).
 
 ## Recent Actions
+- [2026-09-28 07:04 UTC] T005 weekly review. Monday PDT, queue empty. Artifact `memory/reviews/weekly-2026-09-28.md`. Closed T005. Did not invent brief 12. No adapter changes.
 - [2026-09-25 01:05 UTC] Standing idle digest. Queue empty; not Monday so T005 not due. Did not invent brief 12. Artifact `memory/2026-09-25.md`. No adapter changes.
 - [2026-09-24 23:05 UTC] End-of-day digest + daily review refresh. Queue empty; Thursday so T005 not due. Did not invent brief 12. Artifacts `memory/2026-09-24.md` and `memory/reviews/daily-2026-09-24.md`. No adapter changes.
 - [2026-09-24 22:10 UTC] Brief 11 / T010: how to replenish an empty queue without volume hacking. Artifact `memory/reports/2026-09-24-empty-queue-replenish.md`. Queue empty; Thursday so T005 not due. No adapter changes.
@@ -41,10 +42,10 @@ Owner (2026-09-24): stop fake productivity. Ship knowledge, not wrapper code.
 - Files: 395+ (code mill; do not grow src/tools with adapters)
 - Tests: 994 (do not add adapter tests)
 - Adapter freeze: 165 live SearchAdapters - no more
-- Cycles: 206 (this Produce idle hour)
+- Cycles: Produce week closed with T005; do not count idle hours as features
 - Reports: 11
-- Tasks: 10 in memory/tasks.jsonl (T001–T004, T006–T010 done; T005 weekly review open)
-- Reviews: 1 (2026-09-24 end of day)
+- Tasks: 10 in memory/tasks.jsonl (T001–T010 done, including T005 2026-09-28)
+- Reviews: 2 (daily 2026-09-24 + weekly 2026-09-28)
 - Digests: 2 (2026-09-24 closed + 2026-09-25 standing idle)
 - Inbox: 0
 - Features shipped: irrelevant; count briefs that a human would read
@@ -54,4 +55,4 @@ You are a research intern, not an SDK factory.
 Success this hour = a new markdown brief with sources, committed, STATE updated — or a weekly review if Monday and the queue is empty — or an explicit idle if queue empty and not Monday.
 Failure this hour = any new src/tools/oa* file, any new adapter alias, any CHANGELOG 0.16.xxx extras entry.
 Public APIs stay as-is. Do not split modules unless a write is blocked.
-Next priority: owner-prepended topic if any; otherwise T005 weekly review on Monday. Do not unfreeze adapters. Do not write brief 12 on the same factory-failure theme.
+Next priority: owner-prepended topic if any; otherwise idle. Next T005 is the following Monday. Do not unfreeze adapters. Do not write brief 12 on the same factory-failure theme.
